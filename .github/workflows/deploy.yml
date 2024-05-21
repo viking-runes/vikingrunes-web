@@ -16,12 +16,18 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+      - name: Run Install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
 
       - name: Build project
-        run: npm run build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
