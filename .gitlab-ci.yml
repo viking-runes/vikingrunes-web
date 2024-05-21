@@ -9,8 +9,8 @@ pages:
     paths:
       - node_modules/
   script:
-    - npm install
-    - npm run build
+    - yarn install
+    - yarn build
   artifacts:
     paths:
       - dist
