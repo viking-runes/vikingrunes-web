@@ -1,0 +1,7 @@
+VITE_PROJECT_HOST=https://testnet.vikingrunes.io/rune-scaner
+
+VITE_ASSETS = https://cdn.vikingrunes.io/assets/images
+
+VITE_OPEN_DAO_URL=https://testnet.vikingrunes.io/opendao
+
+VITE_NETWORK_TYPE=testnet
