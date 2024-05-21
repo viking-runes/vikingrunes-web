@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>light</title>
+    <g id="Explorer" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Explorer-detail-page-Holders" transform="translate(-667.000000, -1185.000000)" fill="#EBB94C" fill-rule="nonzero">
+            <g id="light" transform="translate(667.000000, 1185.000000)">
+                <rect id="rect" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <path d="M9.58766667,0.885333328 C9.81533334,0.597 9.92666667,0.649666656 9.835,1.01033333 L8.678,5.55533333 L12.4813333,6.69866667 C12.6560467,6.751 12.7086667,6.912 12.5983333,7.05866667 L6.54333333,15.1233333 C6.32166666,15.4186667 6.21666666,15.37 6.31,15.0116667 L7.53466667,10.2996667 L3.141,9.52733333 C2.95966667,9.49533333 2.90366667,9.35433333 3.02,9.20666667 L9.58766667,0.885333328 Z" id="path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

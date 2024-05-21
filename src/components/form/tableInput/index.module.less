@@ -1,0 +1,48 @@
+.divider{
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-top: 0.5625rem;
+  margin-bottom: 1.875rem;
+  background-color: var(--border-default-color);
+}
+.add-button{
+  position: absolute;
+  right: -3.9rem;
+  top: -1rem;
+}
+.card{
+  padding: 1.8125rem 5rem 1.6875rem 3.125rem;
+  border: 1px solid var(--border-default-color);
+  border-radius: 0.625rem;
+}
+
+.head{
+  padding-bottom: 1.125rem;
+}
+
+.row{
+  position: relative;
+  display: flex;
+  gap: 5.25rem;
+
+  .address{
+    flex: 1;
+  }
+
+  .amount{
+    width: 33%;
+  }
+
+  .remove{
+    position: absolute;
+    top: 50%;
+    right: -3rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    svg{
+       fill: var(--ex-primary-color);
+    }
+  }
+}

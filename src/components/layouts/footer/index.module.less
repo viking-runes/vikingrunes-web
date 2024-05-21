@@ -1,0 +1,30 @@
+.page-footer{
+  position: relative;
+  z-index: 10000;
+  height: 5rem;
+  padding: 0 4.1875rem;
+  background-color: var(--bg-footer-color);
+  @media (max-width: 765px){
+    padding: 0 1.25rem;
+    height: 50px;
+    background-color:rgba(0,0,0,0);
+  }
+  .mobile-nav{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 53px;
+    background: #1A1C28;
+    z-index: 100001;
+  }
+
+  .content{
+    gap: 1.75rem;
+
+    .text{
+      display: block;
+      padding-top: 0.625rem;
+    }
+  }
+}

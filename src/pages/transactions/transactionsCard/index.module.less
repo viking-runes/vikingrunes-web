@@ -1,0 +1,57 @@
+.container{
+  gap: 2rem 0;
+  @media (max-width: 765px){
+    gap: 3px 0;
+    //gap: 0px 0;
+  }
+}
+.grid{
+  @media (max-width: 765px){
+    //gap: 0px 0!important;
+  }
+}
+.cash-wrapper{
+  gap:0.5rem 1rem;
+}
+.transaction-card-wrapper{
+  gap: 0.8125rem;
+  @media (max-width: 765px){
+    gap: 20px;
+  }
+
+  .transaction-card{
+    flex-direction: row-reverse;
+    padding: 1.375rem 2.3125rem;
+    border: 0.5px solid   var(--ex-card-border-color);
+    border-radius: var(--ex-card-border-radius);
+    background-color: var(--bg-footer-color);
+    gap: 0.4375rem;
+
+    .transaction-card-right{
+      flex: 1;
+      gap: 0.45rem;
+      @media (max-width: 765px){
+        gap: 0;
+      }
+      &.mobile{
+        @media (max-width: 765px){
+          gap: 0.45rem;
+        }
+      }
+    }
+
+    &.input{
+      flex-direction: row;
+    }
+
+    .go-to-detail{
+      width: 1rem;
+      font-size: 1rem;
+      font-size: 14px;
+
+      svg{
+        fill: var(--ex-primary-color);
+      }
+    }
+  }
+}

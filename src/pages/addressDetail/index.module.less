@@ -1,0 +1,40 @@
+.indicator{
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg,rgba(235, 185, 76, 1), rgba(235, 185, 76, 0.5))
+}
+
+.page{
+  padding-bottom: 2rem;
+
+  .card{
+    padding: 0.625rem 1.5rem;
+    border: 1px solid var(--ex-light-border-color);
+    border-radius: var(--ex-card-border-radius);
+    gap: 2rem;
+
+    .tabs-wrapper{
+      padding: 0.9375rem 0.9375rem 0;
+    }
+  }
+
+  .btn{
+    min-width: 5rem;
+    height: 2.5rem;
+    border: 1px solid var(--ex-card-border-color);
+    border-radius: var(--ex-card-border-radius);
+    background-color: var(--bg-footer-color);
+    color: var(--ex-transaction-code);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.5s ease;
+
+    &.send{
+      color: var(--ex-primary-color);
+    }
+
+    &:hover{
+      background-color: saturate(var(--bg-footer-color));
+    }
+  }
+}

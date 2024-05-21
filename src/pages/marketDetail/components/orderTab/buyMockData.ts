@@ -1,0 +1,32 @@
+export const buyMockData = [
+  {
+    rune: 'BOBOASDFDXXOO',
+    amount: '999,999',
+    unit: '999.99 Sats',
+    price: '123.111',
+    total: '999.99 BTC',
+    value: '123.111',
+    time: '1711903266',
+    status: 'Confirming',
+  },
+  {
+    rune: 'BOBOASDFDXXOO',
+    amount: '999,999',
+    unit: '999.99 Sats',
+    price: '123.111',
+    total: '999.99 BTC',
+    value: '123.111',
+    time: '1711903266',
+    status: 'Confirming',
+  },
+  {
+    rune: 'BOBOASDFDXXOO',
+    amount: '999,999',
+    unit: '999.99 Sats',
+    price: '123.111',
+    total: '999.99 BTC',
+    value: '123.111',
+    time: '1711903266',
+    status: 'Complete',
+  },
+];

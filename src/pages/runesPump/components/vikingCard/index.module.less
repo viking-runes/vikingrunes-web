@@ -1,0 +1,79 @@
+.wrapper{
+  position: relative;
+  width: 19.5rem;
+  height: 7rem;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+  background-size: cover;
+
+  .text-name{
+    display: inline-block;
+    overflow: hidden;
+    max-width: 7rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &.default{
+      color: #000;
+    }
+  }
+
+  &.danger{
+    background: url("../../../../assets/images/runesPump/dangerBox.png") no-repeat;
+    background-size: contain;
+  }
+
+  &.default{
+    background: url("../../../../assets/images/runesPump/blackImg.png") no-repeat;
+    background-size: contain;
+  }
+
+  &.primary{
+    background: url("../../../../assets/images/runesPump/primaryBg.png") no-repeat;
+    background-size: contain;
+  }
+
+  .btn{
+    width: 50px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .action{
+    padding-right: 2.5rem;
+  }
+
+  .info{
+    padding-left: 2rem;
+    width: 2rem;
+
+    .name{
+      color: #777E91;
+
+
+      &.danger{
+        color: #fff;
+      }
+    }
+
+    .value{
+      color: #000;
+    }
+  }
+
+  .img{
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 3.1875rem;
+    height: 3.1875rem;
+    transform: translate(-50%,-50%);
+
+    img{
+      display: block;
+      width: 100%;
+    }
+  }
+}

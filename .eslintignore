@@ -1,0 +1,5 @@
+prettierrc.js
+/lib
+/publish
+/node_modules
+**/vite.config.ts

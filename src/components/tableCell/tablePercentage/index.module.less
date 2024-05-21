@@ -1,0 +1,68 @@
+//.percentage{
+//  position: relative;
+//  &::after{
+//    position: absolute;
+//    background-color: var(--ex-primary-color);
+//    height: 0.125rem;
+//    left: 0;
+//    right: 0;
+//    bottom: -0.1rem;
+//    content: " ";
+//    display: block;
+//  }
+//}
+//.icon{
+//  width: 0.9rem;
+//  display: block;
+//  height: 0.9rem;
+//  border-radius: 50%;
+//  background-color: var(--ex-default-color);
+//  &.block{
+//    background-color: var(--ex-primary-color);
+//  }
+//}
+.tooltip{
+  :global(.MuiTooltip-tooltip){
+    background-color:#777E91;
+  }
+}
+.percentage-tooltip{
+  span{
+    color: #363944;
+  }
+  a{
+    color:  #FFFFFF;;
+  }
+}
+.percentage-bg{
+  width: 100%;
+  min-width: 13em;
+  .percentage-bar{
+    //flex: 1;
+    display: block;
+    width: calc(100% - 3em);
+    height: 2px;
+    background: #ffffff;
+    position: relative;
+    &::before,&::after{
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      content: ' ';
+      display: block;
+
+    }
+    &::before{
+      background: #FC8456;
+      width: var(--percentage-all)
+    }
+    &::after{
+      background: #EBB94C;
+      width:var(--percentage-fairmint)
+    }
+  }
+  .percentage-value{
+    color: #FC8456
+  }
+}

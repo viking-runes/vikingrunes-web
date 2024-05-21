@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>arrow_uparrow_up_arrow_uparrow_up</title>
+    <g id="Market" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-573.000000, -219.000000)" fill="#EBB94C" fill-rule="nonzero" id="groupgroup-3">
+            <g transform="translate(522.000000, 219.000000)">
+                <g id="arrowarrow_arrowarrow" transform="translate(51.000000, 0.000000)">
+                    <rect id="rectrect" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                    <polygon id="pathpath" points="11.0666667 6.26666667 11.0666667 9.33333333 12.4 9.33333333 12.4 4 7.06666667 4 7.06666667 5.33333333 10.1333333 5.33333333 4 11.4666667 4.93333333 12.4 11.0666667 6.26666667"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

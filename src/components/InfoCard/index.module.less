@@ -1,0 +1,61 @@
+.container{
+  gap: 2.5rem 0;
+}
+
+.info-card-com{
+  overflow: hidden;
+  width: 100%;
+  padding-top: 1.5rem;
+
+  &.transactions-card{
+    padding-bottom: 2rem;
+  }
+
+  .grid{
+    align-items: stretch;
+  }
+
+  .card{
+    height: 100%;
+    padding: var(--ex-card-padding);
+    border: 0.5px solid   var(--ex-card-border-color);
+    border-radius: var(--ex-card-border-radius);
+    background-color: #1A1C28;
+    gap: var(--ex-card-line-gutter);
+    @media (max-width: 765px){
+      padding-bottom: 0;
+      padding-left: 22px;
+      padding-right: 22px;
+
+      &.mobile{
+        padding-bottom: var(--ex-card-padding);
+      }
+    }
+
+    .line{
+      gap: var(--ex-card-info-gutter);
+
+      .title{
+        color: #777E91;
+        font-size: 1rem;
+        line-height: 1.125;
+        @media (max-width: 765px){
+          font-size: 1.33rem;
+        }
+      }
+
+      .info{
+        gap: 0.7em;
+        line-height: 1.07rem;
+
+        span{
+          font-size: 0.875rem;
+        }
+
+        .primary{
+          color: var(--ex-primary-color);
+        }
+      }
+    }
+  }
+}

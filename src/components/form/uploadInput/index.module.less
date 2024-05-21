@@ -1,0 +1,53 @@
+.upload{
+  :global(.MuiOutlinedInput-input){
+    opacity: 0;
+  }
+}
+
+.thumbnail{
+  position: absolute;
+  top: 50%;
+  left: 1.25rem;
+  display: block;
+  overflow: hidden;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.625rem;
+  transform: translateY(-50%);
+
+  img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.upload-input{
+  position: relative;
+  z-index: 4;
+
+  .upload{
+    position: relative;
+    z-index: 4;
+  }
+
+  .upload-icon{
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    right: 1em;
+    transform: translateY(-50%);
+
+    svg{
+      fill: var(--ex-primary-color);
+      transition: all ease .2s;
+    }
+
+    &.focused{
+      svg{
+        fill: var(--ex-primary-color);
+      }
+    }
+  }
+}
