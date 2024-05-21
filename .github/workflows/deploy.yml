@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 21.x
-          cache: 'node-21.x'
+          cache: 'npm'
 
       - name: Run Install
         uses: borales/actions-yarn@v4
