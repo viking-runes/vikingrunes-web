@@ -40,6 +40,8 @@ jobs:
 
       - run: cp dist/index.html dist/404.html
 
+      - run: cp CNAME_test dist/CNAME
+
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
