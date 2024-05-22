@@ -25,21 +25,6 @@ const navs: NavItem[] = [
   { name: 'ᛖXᛈᛚᛟᚱᛖᚱ', icon: <ExplorerIcon />, tooltip: 'Explorer', path: '/', includes: ['/', '/rune'], type: 'slice', needConnect: false },
   { name: 'ᚠᚨᛁᚱ ᛗᛁᚾᛏ', icon: <FairMintIcon />, mobile: 'FairMint', tooltip: 'Fair Mint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
   { name: 'ᛗᚨᚱᚲᛖᛏ', icon: <MarketIcon />, tooltip: 'Market', path: '/market', includes: ['/market'], needConnect: true },
-  {
-    name: (
-      <span className={cn('d-flex', styles.pump)}>
-        <PumpIcon />
-        <span className={cn('d-flex flex-column fontSize-12', styles.text)}>
-          <span>RUNES</span>
-          <span>PUMP</span>
-        </span>
-      </span>
-    ),
-    icon: <RunesPumpIcon />,
-    path: '/runesPump',
-    mobile: 'RunesPump',
-    includes: ['/runesPump'],
-  },
 ];
 const Nav: FC<{ type?: 'mobile' }> = ({ type }) => {
   const location = useLocation();
