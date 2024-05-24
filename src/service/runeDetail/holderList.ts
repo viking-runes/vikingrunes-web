@@ -19,6 +19,7 @@ export async function fetchHolderList<R>(page: number, rune_id: string) {
         address
         percentage
         balance
+        divisibility
       }
       pagination {
         page_no
