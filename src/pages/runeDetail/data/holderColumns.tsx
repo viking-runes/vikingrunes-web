@@ -20,6 +20,6 @@ const holderColumns: Array<GridColDef & IDataRow> = [
     type: 'progress',
     hideable: true,
   },
-  { headerName: 'Amount', field: 'format_amount', type: 'comma', align: 'center' },
+  { headerName: 'Amount', field: 'balance', type: 'comma', align: 'center' },
 ];
 export default holderColumns;

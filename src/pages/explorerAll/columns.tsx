@@ -1,5 +1,6 @@
 import { AvatarContent, EllipsisText, TablePercentage, AlignCell } from '@/components';
 import { TProfileColumnItem } from '@/types/table';
+import { onFormatNumber } from '@/utils';
 const columns: TProfileColumnItem = (fn) => [
   { headerName: '#', field: 'index', hideable: true },
   {
@@ -22,7 +23,7 @@ const columns: TProfileColumnItem = (fn) => [
     render: (row: IRuneData) => {
       return (
         <AlignCell width={'8rem'}>
-          <EllipsisText text={row['supply']?.toString()} />
+          <EllipsisText text={onFormatNumber(row['supply']?.toString(), row?.divisibility)} />
         </AlignCell>
       );
     },
@@ -39,6 +40,6 @@ const columns: TProfileColumnItem = (fn) => [
       );
     },
   },
-  { headerName: 'Holders', field: 'holders', columnType: 'sort' },
+  { headerName: 'Holders', field: 'holders', columnType: 'sort', type: 'comma' },
 ];
 export default columns;
