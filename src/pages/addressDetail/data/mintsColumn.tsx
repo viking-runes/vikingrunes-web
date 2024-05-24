@@ -16,7 +16,7 @@ const mintsColumn: Array<GridColDef & IDataRow> = [
       return <CommonButton type={get(BUTTON_MAP, [typeText])} text={typeText} />;
     },
   },
-  { headerName: 'Amount', field: 'format_amount', type: 'comma' },
+  { headerName: 'Amount', field: 'format_amount', type: 'div' },
   { headerName: 'From', field: 'from_address', type: 'copy', hideable: true },
   { headerName: 'To', field: 'to_address', type: 'copy', hideable: true },
   { headerName: 'Date', field: 'block_time', type: 'timestamp', hideable: true },

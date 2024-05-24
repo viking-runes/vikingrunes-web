@@ -6,11 +6,11 @@ import CapIcon from '@/assets/images/icon/etch/cap.svg?react';
 import styles from './index.module.less';
 import cn from 'classnames';
 import { get } from 'lodash';
-import { onFormat } from '@/utils';
+import { onFormat, onFormatNumber } from '@/utils';
 export const blockInfo = [
   { icon: <BlockIcon />, text: 'number Blocks left', dataArr: ['progress', 'blocks_left'] },
   { icon: <CapIcon />, text: 'Cap supply: number', dataArr: ['cap_supply'], isFormat: true },
-  { icon: <CloseIcon />, text: 'Premine: number', dataArr: ['premine'], isFormat: true },
+  { icon: <CloseIcon />, text: 'Premine: number', dataArr: ['premine'], isFormat: true, isDiv: true },
 ];
 const MintRuneInfo: FC<{ dataSource?: Partial<IRuneDetailItem>; style?: CSSProperties }> = ({ dataSource, style }) => {
   return (
@@ -29,7 +29,7 @@ const MintRuneInfo: FC<{ dataSource?: Partial<IRuneDetailItem>; style?: CSSPrope
               <span key={item.text + index} className={'d-flex line-height-15 gap-3 '}>
                 <i className={'d-flex'}>{item.icon}</i>
                 <span className={'d-flex flex-column gap-20'}>
-                  <span>{item.text?.replace('number', item.isFormat ? onFormat(value) : value)}</span>
+                  <span>{item.text?.replace('number', item.isFormat ? onFormat(item.isDiv ? onFormatNumber(value, dataSource?.divisibility) : value) : value)}</span>
                   <span>
                     {index === 0 && `Start/End height：${dataSource?.block?.start?.toString() || '888'}~${dataSource?.block?.end?.toString() || '9999'}`}
                     {index === 1 && `Current supply: ${onFormat(dataSource?.format_supply) || '999'}`}

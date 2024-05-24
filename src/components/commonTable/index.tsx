@@ -5,10 +5,10 @@ import styles from './index.module.less';
 import cn from 'classnames';
 import { GridColDef } from '@mui/x-data-grid';
 import { AvatarContent, SmCopyText, TimestampTableCell, TransactionsCode } from '@/components';
-import { onFormat } from '@/utils';
+import { onFormat, onFormatNumber } from '@/utils';
 export interface IDataRow {
   hideable?: boolean;
-  type?: 'avatar' | 'progress' | 'timestamp' | 'end-code' | 'copy' | 'comma';
+  type?: 'avatar' | 'progress' | 'timestamp' | 'end-code' | 'copy' | 'comma'|'div';
   render?: (record: unknown) => ReactNode;
   columnType?: 'sort';
   dataFormat?: (text: string) => string | number;
@@ -62,6 +62,7 @@ const CommonTable: FC<IProps> = (props) => {
                           item.render(row)
                         ) : text || text?.toString() === '0' ? (
                           <>
+                            {item.type === 'div' && onFormat(onFormatNumber(text, row.divisibility))}
                             {item.type === 'comma' && onFormat(text?.toString())}
                             {item.type === 'avatar' && <AvatarContent type={'default'} text={text?.toString()} />}
                             {item.type === 'copy' && <SmCopyText type={'address'} code={text?.toString()} />}
