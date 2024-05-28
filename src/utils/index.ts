@@ -37,10 +37,11 @@ export const onFormat = (num: string | number) => {
 };
 export const onFormatNumber = (s, div) => {
   if (div > 0) {
-    if (!isValid(s) || new Decimal(s)?.isNaN()) {
+    const number = s?.toString()?.split(',')?.join('');
+    if (!isValid(number) || new Decimal(number)?.isNaN()) {
       return s;
     }
-    return new Decimal(s).dividedBy(Decimal.pow(10, div))?.toFixed();
+    return new Decimal(number).dividedBy(Decimal.pow(10, div))?.toFixed();
   }
   return s;
 };
