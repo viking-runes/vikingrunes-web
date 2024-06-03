@@ -5,11 +5,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useWallet } from '@/stores/wallet.ts';
 import PumpIcon from '@/assets/images/icon/pumpIcon.svg?react';
-import { Tooltip } from '@mui/material';
 import ExplorerIcon from '@/assets/images/icon/layouts/explorer.svg?react';
 import FairMintIcon from '@/assets/images/icon/layouts/fairmint.svg?react';
 import MarketIcon from '@/assets/images/icon/layouts/market.svg?react';
-import RunesPumpIcon from '@/assets/images/icon/layouts/runespump.svg?react';
 type NavItem = {
   name: string | ReactNode;
   path: string;
@@ -22,9 +20,24 @@ type NavItem = {
 };
 
 const navs: NavItem[] = [
-  { name: 'ᛖXᛈᛚᛟᚱᛖᚱ', icon: <ExplorerIcon />, tooltip: 'Explorer', path: '/', includes: ['/', '/rune'], type: 'slice', needConnect: false },
-  { name: 'ᚠᚨᛁᚱ ᛗᛁᚾᛏ', icon: <FairMintIcon />, mobile: 'FairMint', tooltip: 'Fair Mint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
-  { name: 'ᛗᚨᚱᚲᛖᛏ', icon: <MarketIcon />, tooltip: 'Market', path: '/market', includes: ['/market'], needConnect: true },
+  { name: 'Explorer', icon: <ExplorerIcon />, tooltip: 'Explorer', path: '/explorer', includes: ['/explorer', '/rune'], needConnect: false },
+  { name: 'Fair mint', icon: <FairMintIcon />, mobile: 'FairMint', tooltip: 'Fair Mint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
+  { name: 'Market', icon: <MarketIcon />, tooltip: 'Market', path: '/market', includes: ['/market'], needConnect: true },
+  {
+    name: (
+      <span className={cn('d-flex', styles.pump)}>
+        <PumpIcon />
+        <span className={cn('d-flex align-items-center  fontSize-12', styles.text)}>Staking</span>
+      </span>
+    ),
+    path: '/staking',
+    includes: ['/staking'],
+  },
+  {
+    name: '$Viking',
+    path: '/viking',
+    includes: ['/viking'],
+  },
 ];
 const Nav: FC<{ type?: 'mobile' }> = ({ type }) => {
   const location = useLocation();
@@ -57,33 +70,11 @@ const Nav: FC<{ type?: 'mobile' }> = ({ type }) => {
                 })}
               >
                 {type === 'mobile' && <i>{nav.icon}</i>}
-                {type === 'mobile' ? (
-                  <span>{nav.mobile || nav.tooltip}</span>
-                ) : nav.type === 'slice' && typeof nav?.name === 'string' ? (
-                  nav.name?.split('').map((text, idx) => {
-                    return (
-                      <span className={cn({ [styles['lg']]: idx === 1 })} key={text + idx}>
-                        {text}
-                      </span>
-                    );
-                  })
-                ) : (
-                  nav.name
-                )}
+                {type === 'mobile' ? <span>{nav.mobile || nav.tooltip}</span> : nav.name}
               </span>
             </p>
           );
-          return (
-            <Fragment key={index + index}>
-              {nav?.tooltip ? (
-                <Tooltip placement={'top-start'} title={<span className={'fontSize-16'}>{nav.tooltip}</span>}>
-                  {child}
-                </Tooltip>
-              ) : (
-                child
-              )}
-            </Fragment>
-          );
+          return <Fragment key={index + index}>{child}</Fragment>;
         })}
     </nav>
   );

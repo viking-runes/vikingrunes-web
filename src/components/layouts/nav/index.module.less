@@ -1,7 +1,6 @@
 .nav{
   border-left: 1px solid var(--border-default-color);
   margin-top: 0.3125rem;
-  font-family: Trattatello;
   .mobile-nav{
     flex-direction: column;
     color: #777E91;
@@ -15,19 +14,27 @@
     font-family: "PT Mono";
     border-left:none;
   }
+  .active{
+    .pump{
+      svg{
+        fill: var(--ex-primary-color);
+      }
 
+      .text{
+        color: var(--ex-primary-color);
+      }
+    }
+  }
   .pump{
     svg{
       width: 1.5625rem;
       margin-bottom: 0.2rem;
-      fill: var(--ex-primary-color);
+      fill: #FFFFFF;
       transition: all .2s ease-in-out;
     }
 
     .text{
-      color: var(--ex-primary-color);
       font-family: "PT Mono";
-      line-height: 0.875rem;
     }
   }
   &.mobile{

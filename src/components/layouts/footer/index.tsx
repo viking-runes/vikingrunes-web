@@ -7,7 +7,7 @@ import Nav from '@/components/layouts/nav';
 const Footer: FC = () => {
   return (
     <footer className={cn(styles['page-footer'], 'd-flex align-items-center justify-content-between')}>
-      <div className={'d-flex content align-items-center d-media-none'}>
+      <div className={'d-flex content align-items-end d-media-none gap-16'}>
         <LogoCom />
         <p className={styles.text}>VIKINGRUNES.</p>
       </div>

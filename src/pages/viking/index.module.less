@@ -1,0 +1,28 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 20px;
+  color: #ffffff;
+  flex-wrap: wrap;
+  .item{
+    background-color:#1A1C28;
+    border-radius: 10px;
+    border: 1px solid #242738;
+    padding: 1rem 1.5625rem;
+    box-sizing: border-box;
+    text-align: center;
+    width: calc(25% - 10px);
+    margin-bottom: 15px;
+    @media (max-width: 765px){
+      width: 100%;
+    }
+    .title{
+      font-size: 16px;
+    }
+    .value{
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+}
