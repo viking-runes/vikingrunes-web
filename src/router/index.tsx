@@ -11,6 +11,7 @@ import MarketDetail from '@/pages/marketDetail';
 import RunesPump from '@/pages/runesPump';
 import ErrorBoundary from '@/components/errorBoundary';
 import MyAssets from '@/pages/profile/myAssets';
+import Staking from '@/pages/staking';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       },
       { path: '/etch', element: <Etch />, errorElement: <ErrorBoundary /> },
       { path: '/runesPump', element: <RunesPump />, errorElement: <ErrorBoundary /> },
+      { path: '/staking', element: <Staking />, errorElement: <ErrorBoundary /> },
     ],
   },
 ]);

@@ -21,6 +21,11 @@ const config = {
 
   mempoolUrl: isMainnet ? 'https://mempool.space' : 'https://mempool.space/testnet',
   openDaoHost: `${import.meta.env.VITE_OPEN_DAO_URL}`,
+
+  unisatUrl: `${import.meta.env.VITE_UNISAT_URL}`,
+  stakeServiceFee: 5000,
+
+  stakeUrl: `${import.meta.env.VITE_STAKE_URL}`,
 };
 
 export default config;

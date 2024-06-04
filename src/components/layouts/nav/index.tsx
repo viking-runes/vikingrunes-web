@@ -10,6 +10,7 @@ import ExplorerIcon from '@/assets/images/icon/layouts/explorer.svg?react';
 import FairMintIcon from '@/assets/images/icon/layouts/fairmint.svg?react';
 import MarketIcon from '@/assets/images/icon/layouts/market.svg?react';
 import RunesPumpIcon from '@/assets/images/icon/layouts/runespump.svg?react';
+
 type NavItem = {
   name: string | ReactNode;
   path: string;
@@ -19,19 +20,23 @@ type NavItem = {
   tooltip?: string;
   mobile?: string;
   icon?: ReactNode;
+  normalNav?: boolean;
 };
 
 const navs: NavItem[] = [
-  { name: 'ᛖXᛈᛚᛟᚱᛖᚱ', icon: <ExplorerIcon />, tooltip: 'Explorer', path: '/', includes: ['/', '/rune'], type: 'slice', needConnect: false },
-  { name: 'ᚠᚨᛁᚱ ᛗᛁᚾᛏ', icon: <FairMintIcon />, mobile: 'FairMint', tooltip: 'Fair Mint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
-  { name: 'ᛗᚨᚱᚲᛖᛏ', icon: <MarketIcon />, tooltip: 'Market', path: '/market', includes: ['/market'], needConnect: true },
+  { name: 'ᛖXᛈᛚᛟᚱᛖᚱ', icon: <ExplorerIcon />, tooltip: 'Explorer', path: '/', includes: ['/', '/rune'], type: 'slice', needConnect: false, normalNav: false },
+  { name: 'ᚠᚨᛁᚱ ᛗᛁᚾᛏ', icon: <FairMintIcon />, mobile: 'FairMint', tooltip: 'Fair Mint', path: '/fairMint', includes: ['/fairMint'], needConnect: true, normalNav: false },
+  // { name: 'ᛗᚨᚱᚲᛖᛏ', icon: <MarketIcon />, tooltip: 'Market', path: '/market', includes: ['/market'], needConnect: true, normalNav: false },
+  { name: 'Staking', icon: <RunesPumpIcon />, tooltip: 'Staking', path: '/staking', includes: ['/staking'], type: 'slice', needConnect: true, normalNav: true },
 ];
+
 const Nav: FC<{ type?: 'mobile' }> = ({ type }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { wallet } = useWallet();
   const path = `/${location.pathname?.split('/')?.[1] || ''}`;
+
   return (
     <nav className={cn('d-flex align-items-center', styles.nav, styles[type])}>
       {navs
@@ -54,6 +59,7 @@ const Nav: FC<{ type?: 'mobile' }> = ({ type }) => {
                 className={cn('d-flex align-items-center', {
                   [styles.active]: nav.includes?.includes(location.pathname),
                   [styles['mobile-nav']]: type === 'mobile',
+                  [styles['normal-nav']]: nav.normalNav,
                 })}
               >
                 {type === 'mobile' && <i>{nav.icon}</i>}

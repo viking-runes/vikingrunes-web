@@ -1,3 +1,6 @@
+export * from './common';
+export * from './stake';
+
 export interface IResponseBalance {
   confirmed: BalanceItem;
   pending: BalanceItem;
