@@ -13,6 +13,6 @@ export async function fetchPoolDetail(id) {
 }
 
 export async function txStake(body) {
-  const { data } = await axios.post(`/api/v1/tx/stake`, body);
+  const { data } = await axios.post(`/api/tx/stake`, body);
   return data.data;
 }

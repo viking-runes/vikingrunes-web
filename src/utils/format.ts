@@ -14,3 +14,9 @@ export function base64ToHex(str: string) {
     .map((c) => c.charCodeAt(0).toString(16).padStart(2, '0'))
     .join('');
 }
+
+export function bytesTobase64(bytes: Uint8Array) {
+  return btoa(String.fromCharCode(...bytes));
+}
+
+export const bytesToHex = (bytes) => Buffer.from(bytes).toString('hex');

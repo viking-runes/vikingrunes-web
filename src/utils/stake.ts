@@ -1,5 +1,7 @@
+import config from '@/config';
+import { bytesTobase64 } from '@/utils/format';
 import UniSat from '@/utils/unisat';
-import { nsaction, WIF, utils, p2tr, Script, ScriptNum, OP, SigHash, TEST_NETWORK } from '@scure/btc-signer';
+import { Script, ScriptNum, SigHash, Transaction, TEST_NETWORK, NETWORK, p2tr } from '@scure/btc-signer';
 
 const unisat_fetch = new UniSat();
 
@@ -11,6 +13,8 @@ const unisat_fetch = new UniSat();
 // console.log(utils.pubSchnorr(staker))
 
 const lock_time = BigInt(Math.floor(Date.now() / 1000) + 360 * 1000);
+
+const network = config.isMainnet ? NETWORK : TEST_NETWORK;
 
 export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee) {
   const utxos_result = await unisat_fetch.address_utxo(p2tr_ddress);
@@ -81,42 +85,56 @@ function lock_script(time, pubkey) {
   return Script.encode([ScriptNum().encode(time), 'CHECKLOCKTIMEVERIFY', 'DROP', Buffer.from(pubkey, 'hex'), 'CHECKSIG']);
 }
 
-const stake_amount = 10000;
-const service_fee = 2000;
-const network_fee = 26000;
-const vsize = 252;
+// const stake_amount = 10000;
+// const service_fee = 2000;
+// const network_fee = 26000;
+// const vsize = 252;
 
-export async function genrate_stake_psbt(p2tr_ddress) {
+export async function genrate_stake_psbt(staker_address, staker_pubkey, stake_amount, service_fee, network_fee) {
   const tx = new Transaction({
-    network: Testnet,
+    // network: network as any,
     // allowUnknowOutput: true,
     allowUnknownOutputs: true,
   });
 
-  const stake_utxo = await select_staker_utxo(p2tr_ddress, stake_amount, service_fee + network_fee);
+  const stake_utxo = await select_staker_utxo(staker_address, stake_amount, service_fee + network_fee);
+
+  console.log(staker_pubkey);
+  const p2trKey = p2tr(staker_pubkey, undefined, network);
 
   tx.addInput({
     txid: stake_utxo.txid,
     index: stake_utxo.vout,
     witnessUtxo: {
-      script: staker.p2tr.script,
+      script: p2trKey.script,
       amount: BigInt(stake_utxo.satoshis),
     },
     sighashType: SigHash.SINGLE_ANYONECANPAY,
-    tapInternalKey: staker.p2tr.tapInternalKey,
+    tapInternalKey: p2trKey.tapInternalKey,
   });
 
   tx.addOutput({
-    script: lock_script(lock_time, staker.pubkey),
+    script: lock_script(lock_time, staker_pubkey),
     amount: BigInt(stake_amount),
   });
 
-  // console.log( tx.inputs )
-  const idx = tx.sign(staker.privKey, [SigHash.SINGLE_ANYONECANPAY]);
+  // // console.log( tx.inputs )
+  // const idx = tx.sign(staker.privKey, [SigHash.SINGLE_ANYONECANPAY]);
 
-  tx.finalizeIdx(0);
+  // tx.finalizeIdx(0);
 
-  return tx;
+  // return tx;
+
+  const psbtBase64 = bytesTobase64(tx.toPSBT(0));
+  // const stake_tx = Transaction.fromPSBT(tx.toPSBT(0));
+
+  // const stake_input = stake_tx.getInput(0)
+  // const stake_output = stake_tx.getOutput(0)
+
+  // const pool_utxo = await select_pool_utxo()
+
+  console.log(psbtBase64);
+  return psbtBase64;
 }
 
 // (async () => {

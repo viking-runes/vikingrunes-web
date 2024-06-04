@@ -1,0 +1,65 @@
+@import url("src/assets/css/mix.less");
+
+.sats-select{
+  padding-top: 0.3125rem;
+  gap: 2.5rem;
+  @media (max-width: 765px){
+   gap:22px
+  }
+
+  .sats-item{
+    width: calc((100% - 5rem ) / 3);
+    padding: 0.6875rem 0 1rem;
+    border-radius: 0.625rem;
+    background-color: #000;
+    cursor: pointer;
+    transition: all ease 0.25s;
+    &.etch{
+      padding: 0.875rem 0 1.5625rem;
+    }
+
+    &:hover{
+      background-color: lighten(#000,10%);
+    }
+    &.etch{
+      &:hover{
+        background-color: lighten(#1A1C28,4%);
+      }
+      &.select{
+        border-color: var(--ex-primary-color);
+        background-color: var(--ex-primary-color);
+      }
+    }
+    &.select{
+      border-color: var(--ex-primary-color);
+      background-color: var(--ex-primary-color);
+    }
+    .card-border();
+    &.etch{
+      border: 1px solid #242738;
+      background: #1A1C28;
+      .icon{
+        margin-bottom: 1.3125rem;
+      }
+      .des{
+        margin-bottom: 0.8125rem;
+        font-size: 0.875rem;
+      }
+      .level{
+        font-size: 0.875rem;
+      }
+    }
+
+
+    .icon{
+      display: block;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-bottom: 0.69rem;
+    }
+
+    .des{
+      line-height: 1.15;
+    }
+  }
+}

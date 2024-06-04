@@ -10,15 +10,17 @@ import { ProfileBTCInfo } from '@/components';
 import { capProfileInfo } from '@/pages/etch/components/etchTab/columns';
 import { etchMockData } from '@/pages/etch/components/etchTab/mockdata';
 import CloseIcon from '@mui/icons-material/Close';
-import SatsSelect from '@/components/form/satsSelect';
 import { useWallet } from '@/stores/wallet';
-import { select_staker_utxo } from '@/utils/stake';
+import { genrate_stake_psbt, select_staker_utxo } from '@/utils/stake';
 import { useSnackbar } from '@/components/snackbar';
 import config from '@/config';
 import dayjs from 'dayjs';
 import { IResponseStakeItem } from '@/types';
 import { formatBalance } from '@/utils/format';
 import services from '@/service';
+import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
+import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
+import FeeRateSelector from '@/components/fee-rate-select';
 
 type Props = {
   data: IResponseStakeItem;
@@ -26,7 +28,10 @@ type Props = {
 
 export default function StakingCard({ data }: Props) {
   const [open, setOpen] = useState(false);
-  const [fee, setFee] = useState('low');
+  const [stakeLoading, setStakeLoading] = useState(false);
+  const { signPsbtWthoutBroadcast } = useSignPsbt();
+
+  const feeRate = useFeeRate(open);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,7 +41,7 @@ export default function StakingCard({ data }: Props) {
     setOpen(false);
   };
 
-  const { wallet } = useWallet();
+  const { wallet, getSignedPublicKey } = useWallet();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -133,8 +138,9 @@ export default function StakingCard({ data }: Props) {
                 RUNES
               </Button>
 
-              <Button
+              <LoadingButton
                 variant="contained"
+                loading={stakeLoading}
                 sx={{
                   borderRadius: 5,
                   '&:hover': {
@@ -142,31 +148,44 @@ export default function StakingCard({ data }: Props) {
                   },
                   '&:disabled': {
                     backgroundColor: '#777E91',
-                    color: '#ffffff',
                     cursor: 'not-allowed',
                   },
                 }}
                 onClick={async () => {
-                  const body = {
-                    pubkey: wallet.publicKey,
-                    psbt: 'yyyyyyyyyyyyyyyyyyyy',
-                    pool_id: data.uuid,
-                  };
-
+                  handleClickOpen();
+                  return;
+                  setStakeLoading(true);
                   try {
                     // await select_staker_utxo(wallet.address, data.amount, config.stakeServiceFee);
-                    await services.stake.txStake(body);
+                    //
+
+                    const psbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), data.amount);
+                    const signedPsbt = await signPsbtWthoutBroadcast(psbt);
+
+                    const body = {
+                      pubkey: wallet.publicKey,
+                      psbt: signedPsbt,
+                      pool_id: data.uuid,
+                    };
+
+                    console.log('🚀 ~ onClick={ ~ signedPsbt:', signedPsbt);
+
+                    const response = await services.stake.txStake(body);
+                    // console.log('🚀 ~ onClick={ ~ response:', response);
                   } catch (error) {
+                    console.log(error);
                     enqueueSnackbar(error?.message, {
                       variant: 'error',
                     });
+                  } finally {
+                    setStakeLoading(false);
                   }
-                }} //1.点击start  changeToLoadingButton 唤起钱包
+                }}
                 // disabled={isDisabled}
                 disabled={false}
               >
                 {isDisabled ? 'Ending' : 'Start'}
-              </Button>
+              </LoadingButton>
               {/* <LoadingButton
                 loadingPosition="start"
                 onClick={() => handleClickOpen()}
@@ -187,7 +206,7 @@ export default function StakingCard({ data }: Props) {
         </Box>
         {/* dialog */}
         <CommonDialog open={open} handleClose={handleDialogClose}>
-          <DialogTitle sx={{ m: 0, p: 2 }}>Stack</DialogTitle>
+          <DialogTitle sx={{ m: 0, p: 2 }}>Stake</DialogTitle>
           <IconButton
             onClick={handleDialogClose}
             sx={{
@@ -217,7 +236,7 @@ export default function StakingCard({ data }: Props) {
                 <Typography>9,000 $VIKING</Typography>
               </Stack>
               {/* <SatsSelect sats={props?.sats} selectType={inputProps?.select} onChange={onChange} value={value} /> */}
-              <SatsSelect onChange={(value) => setFee(value)} value={fee} />
+              <FeeRateSelector />
               <ProfileBTCInfo size={'lg'} columns={capProfileInfo} dataSource={etchMockData} />
             </Stack>
             <LoadingButton

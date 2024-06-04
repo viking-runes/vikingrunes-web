@@ -137,17 +137,18 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function ResponsiveBox(children) {
+function ResponsiveBox({ children }: any) {
   return (
     <Box
       height={{
         md: 40,
-        xs: 12,
+        xs: 16,
       }}
       width={{
         md: 40,
-        xs: 12,
+        xs: 16,
       }}
+      minWidth={16}
     >
       {children}
     </Box>
@@ -211,6 +212,10 @@ export default function StakingView() {
     md: 14,
     xs: 10,
   };
+  const responsiveTextFontSize = {
+    md: 16,
+    xs: 12,
+  };
 
   return (
     <>
@@ -222,8 +227,8 @@ export default function StakingView() {
         </Typography>
       </Stack>
       <Divider sx={{ my: 3, borderColor: 'rgba(255, 255, 255, 0.10)' }} />
-      <Grid container spacing={3} pt={3}>
-        <Grid container item xs={6} md={7} spacing={3}>
+      <Grid container spacing={{ md: 3, xs: 2 }} pt={3}>
+        <Grid container item xs={5} md={7} spacing={3}>
           <Grid item xs={12} md={6}>
             <StackingBox mb={3}>
               <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
@@ -231,7 +236,7 @@ export default function StakingView() {
                   <Typography fontSize={responsiveFontSize} color={'#777E91'}>
                     Total BTC Locked
                   </Typography>
-                  <Typography>{onFormat(999999999999)}</Typography>
+                  <Typography fontSize={responsiveTextFontSize}>{onFormat(999999999999)}</Typography>
                 </Stack>
 
                 <ResponsiveBox>
@@ -243,30 +248,14 @@ export default function StakingView() {
             <StackingBox>
               <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
                 <Stack spacing={1.5}>
-                  <Typography
-                    fontSize={{
-                      md: 14,
-                      xs: 10,
-                    }}
-                    color={'#777E91'}
-                  >
+                  <Typography fontSize={responsiveFontSize} color={'#777E91'}>
                     $VIKING Current Locked
                   </Typography>
-                  <Typography>{onFormat(999999999999)}</Typography>
+                  <Typography fontSize={responsiveTextFontSize}>{onFormat(999999999999)}</Typography>
                 </Stack>
-
-                <Box
-                  height={{
-                    md: 40,
-                    xs: 12,
-                  }}
-                  width={{
-                    md: 40,
-                    xs: 12,
-                  }}
-                >
+                <ResponsiveBox>
                   <img src={dollarImg} width={'100%'} height={'100%'} />
-                </Box>
+                </ResponsiveBox>
               </Stack>
             </StackingBox>
           </Grid>
@@ -298,7 +287,7 @@ export default function StakingView() {
           </Grid>
         </Grid>
 
-        <Grid item xs={6} md={5}>
+        <Grid item xs={7} md={5}>
           <StackingBox>
             <Stack spacing={2} height={'100%'} width={'100%'}>
               <Stack direction={'row'} alignItems={'center'} spacing={1.25}>
@@ -306,7 +295,7 @@ export default function StakingView() {
                 <Typography color={'#EBB94C'}>My staking</Typography>
               </Stack>
               <Stack px={3.25}>
-                <Grid container spacing={2.5}>
+                <Grid container spacing={{ md: 2.5, xs: 1 }}>
                   <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'block' } }}>
                     <Stack spacing={1.5}>
                       <Typography fontSize={14} color={'#777E91'}>
@@ -317,7 +306,7 @@ export default function StakingView() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Stack spacing={1.5}>
-                      <Typography fontSize={14} color={'#777E91'}>
+                      <Typography fontSize={responsiveFontSize} color={'#777E91'}>
                         BTC Current Locked
                       </Typography>
 
@@ -328,6 +317,7 @@ export default function StakingView() {
                         onClick={() => {
                           handleClickOpen();
                         }}
+                        fontSize={responsiveTextFontSize}
                       >
                         <Typography>{onFormat(999999999999)}</Typography>
                         <img src={nextImg} width={12} height={12} />
@@ -344,7 +334,7 @@ export default function StakingView() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Stack spacing={1.5}>
-                      <Typography fontSize={14} color={'#777E91'}>
+                      <Typography fontSize={responsiveFontSize} color={'#777E91'}>
                         $VIKING Current Locked
                       </Typography>
 
@@ -355,6 +345,7 @@ export default function StakingView() {
                         onClick={() => {
                           handleClickOpen();
                         }}
+                        fontSize={responsiveTextFontSize}
                       >
                         <Typography>{onFormat(1111)}</Typography>
                         <img src={nextImg} width={12} height={12} />
