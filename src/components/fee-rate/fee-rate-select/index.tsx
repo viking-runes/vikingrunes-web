@@ -7,12 +7,14 @@ import cn from 'classnames';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { CurrentSelectedRate } from '@/types';
 
-const FeeRateSelector = () => {
+export const FeeRateSelector = () => {
   const feeRate = useFeeRate();
 
   const [rate, setRate] = useState<string>(CurrentSelectedRate.hourFee);
 
   useEffect(() => {
+    feeRate.getFee();
+
     return () => {
       feeRate.setCurrentSelectedRate(CurrentSelectedRate.hourFee);
     };
@@ -65,4 +67,3 @@ const FeeRateSelector = () => {
     </ul>
   );
 };
-export default FeeRateSelector;
