@@ -9,51 +9,56 @@ const Advisors: FC = () => {
       introduction: 'Creator, Ordinals & Runes',
       link: 'https://x.com/rodarmor',
       avatar: 'https://cdn.vikingrunes.io/advisor/Casey.jpeg',
+      isDisabled: true,
     },
     {
       advisor: 'Leonidas',
       introduction: 'Top influencer in the RUNES Community, Runestone Initiator',
       link: 'https://x.com/LeonidasNFT',
       avatar: 'https://cdn.vikingrunes.io/advisor/Leonidas.jpeg',
+      isDisabled: true,
     },
     {
       advisor: '0xWizard',
       introduction: 'Top influencer in the Chinese Community',
       link: 'https://x.com/0xcryptowizard',
       avatar: 'https://cdn.vikingrunes.io/advisor/0xWizard.jpeg',
+      isDisabled: true,
     },
     {
       advisor: 'Mike In Space',
       introduction: 'Author, Stamps/Src20',
       link: 'https://x.com/mikeinspace',
       avatar: 'https://cdn.vikingrunes.io/advisor/MikeInSpace.jpeg',
+      isDisabled: true,
     },
     {
       advisor: 'domo',
       introduction: 'Creator of BRC-20 & Co-Founder, Layer 1 Foundation',
       link: 'https://x.com/domodata',
       avatar: 'https://cdn.vikingrunes.io/advisor/domo.jpeg',
+      isDisabled: true,
     },
     {
-      filter: true,
       advisor: 'cipher',
       introduction: 'CELL Studio co-Founder, RGB++ Protocol author',
       link: 'https://x.com/crypcipher',
       avatar: 'https://cdn.vikingrunes.io/advisor/cipher.png',
+      isDisabled: true,
     },
     {
-      filter: true,
       advisor: 'Michael',
       introduction: 'CBO of @TokenPocket_TP, Strategic Advisor of Vikingrunes',
       link: 'https://x.com/michaelwong123',
       avatar: 'https://cdn.vikingrunes.io/advisor/Michael.jpeg',
+      isDisabled: false,
     },
     {
-      filter: true,
       advisor: 'raph',
       introduction: 'Code Contributor Of Ordinals & Runes',
       link: 'https://x.com/raphjaph',
       avatar: 'https://cdn.vikingrunes.io/advisor/raph.png',
+      isDisabled: true,
     },
   ];
 
@@ -69,7 +74,7 @@ const Advisors: FC = () => {
                 window.open(item.link);
               }}
               key={item.advisor}
-              className={cn({ [styles.filter]: item.filter })}
+              className={cn({ [styles.filter]: !item.isDisabled })}
             >
               <i>
                 <img src={item.avatar} alt={item.introduction} />

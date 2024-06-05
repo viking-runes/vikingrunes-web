@@ -24,7 +24,9 @@ const Banner: FC = () => {
         </i>
         <h2 className={commonStyles.hello}>Hello</h2>
         <h3 className={commonStyles.title}>VIKINGRUNES</h3>
-        <p className={commonStyles.banner}>The first UTXO-based Bitcoin native staking service network, one of the basic services of the Bitcoin network, built using the UTXO-Staking protocol</p>
+        <p className={commonStyles.banner}>
+          The First UTXO-Based Bitcoin Native Staking Service Network, <br /> Decentralized and Self-hosted, built on UTXO-Staking Protocol.
+        </p>
         <ul className={cn(styles.link, 'd-flex flex-column')}>
           {linkItems.map((item) => (
             <Link to={item.path} key={item.name}>

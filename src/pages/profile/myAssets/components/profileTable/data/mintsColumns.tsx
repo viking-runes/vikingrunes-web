@@ -35,7 +35,7 @@ export const mintsColumns: Array<GridColDef & IDataRow> = [
     field: 'status',
     render: (record) => {
       return (
-        <div className={'d-inline-flex width-4rem text-align-left align-items-center'}>
+        <div className={'d-inline-flex width-5rem text-align-left align-items-center'}>
           <StatusButton type={record['mint_status']} text={record['mint_status']} />
         </div>
       );

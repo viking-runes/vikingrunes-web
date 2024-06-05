@@ -21,7 +21,7 @@ export const transfersColumns: Array<GridColDef & IDataRow> = [
     render: (record) => {
       const typeText = (get(record, 'action') || '')?.toLowerCase();
       return (
-        <div className={'d-inline-flex width-4rem text-align-left align-items-center'}>
+        <div className={'d-inline-flex width-3rem text-align-left align-items-center'}>
           <CommonButton type={get(BUTTON_MAP, [typeText])} text={typeText} />
         </div>
       );

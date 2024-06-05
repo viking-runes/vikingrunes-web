@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import useAddressList from '@/hooks/address/useAddressList.tsx';
 import { TableSkeleton } from '@/components';
 import EmptyPlaceholder from '@/components/layouts/emptyPlaceholder';
-import styles from './index.module.less'
+import styles from './index.module.less';
 const ProfileTable: FC<{ address: string }> = ({ address }) => {
   const [searchParams] = useSearchParams();
   useEffect(() => {

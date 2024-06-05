@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { formModalStyle } from '@/assets/styles/modalBox';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import styles from './index.module.less';
 import cn from 'classnames';
@@ -16,9 +16,10 @@ interface IProps {
   text?: React.ReactNode;
 }
 const ModalBox: FC<PropsWithChildren<IProps>> = ({ errorMsg, data, disabled, text, onClose, onConfirm, title, children }) => {
+  const matches = useMediaQuery('(max-width: 765px)');
   return (
     <div>
-      <Box sx={{ ...formModalStyle, width: '41.75rem' }}>
+      <Box sx={{ ...formModalStyle, width: matches ? '90vw' : '41.75rem' }}>
         <div className={styles.content}>
           <div className={cn(styles.header, 'd-flex justify-content-between align-items-center')}>
             <p>{title}</p>

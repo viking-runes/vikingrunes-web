@@ -51,19 +51,21 @@ export const mockTableData = [
 
 export const claimColumns: TProfileColumnItem = (fn) => [
   { headerName: 'Locked assets', field: 'lockedAssets' },
-  { headerName: 'Amount', field: 'amount' },
-  { headerName: 'Locked time', field: 'lockedTime' },
+  { headerName: 'Amount', field: 'amount', hideable: true },
+  { headerName: 'Locked time', field: 'lockedTime', hideable: true },
   {
     headerName: 'Reward',
     field: 'reward',
+    hideable: true,
     render: () => {
       return <UnitValue type={'no-style'} unitText={'ASDFG'} valueText={'999,999'} />;
     },
   },
-  { headerName: 'Countdown', field: 'countdown' },
+  { headerName: 'Countdown', field: 'countdown', hideable: true },
   {
     headerName: 'UTXO',
     field: 'utxo',
+    hideable: true,
     render: () => {
       return (
         <div className={'d-inline-flex width-4rem text-align-left align-items-center'}>
