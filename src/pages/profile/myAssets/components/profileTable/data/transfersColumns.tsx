@@ -28,7 +28,7 @@ export const transfersColumns: Array<GridColDef & IDataRow> = [
     },
   },
   { headerName: 'Amount', field: 'format_amount' },
-  { headerName: 'From', field: 'from_address', type: 'copy' },
-  { headerName: 'To', field: 'to_address', type: 'copy' },
-  { headerName: 'Date', field: 'block_time', type: 'timestamp' },
+  { headerName: 'From', field: 'from_address', type: 'copy', hideable: true },
+  { headerName: 'To', field: 'to_address', type: 'copy', hideable: true },
+  { headerName: 'Date', field: 'block_time', type: 'timestamp', hideable: true },
 ];

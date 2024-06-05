@@ -4,7 +4,6 @@ import styles from './index.module.less';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useWallet } from '@/stores/wallet.ts';
-import PumpIcon from '@/assets/images/icon/pumpIcon.svg?react';
 import ExplorerIcon from '@/assets/images/icon/layouts/explorer.svg?react';
 import FairMintIcon from '@/assets/images/icon/layouts/fairmint.svg?react';
 import MarketIcon from '@/assets/images/icon/layouts/market.svg?react';
@@ -23,16 +22,6 @@ const navs: NavItem[] = [
   { name: 'Explorer', icon: <ExplorerIcon />, tooltip: 'Explorer', path: '/explorer', includes: ['/explorer', '/rune'], needConnect: false },
   { name: 'Fair mint', icon: <FairMintIcon />, mobile: 'FairMint', tooltip: 'Fair Mint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
   { name: 'Market', icon: <MarketIcon />, tooltip: 'Market', path: '/market', includes: ['/market'], needConnect: true },
-  {
-    name: (
-      <span className={cn('d-flex', styles.pump)}>
-        <PumpIcon />
-        <span className={cn('d-flex align-items-center  fontSize-12', styles.text)}>Staking</span>
-      </span>
-    ),
-    path: '/staking',
-    includes: ['/staking'],
-  },
   {
     name: '$Viking',
     path: '/viking',

@@ -11,18 +11,21 @@
     border: 1px solid #242738;
     padding: 1rem 1.5625rem;
     box-sizing: border-box;
-    text-align: center;
     width: calc(25% - 10px);
+    display: flex;
+    flex-direction: column;
     margin-bottom: 15px;
+    gap: 13px;
     @media (max-width: 765px){
-      width: 100%;
+      width: calc(50% - 7px);
     }
     .title{
-      font-size: 16px;
+      font-size: 14px;
+      color: #777E91;
     }
     .value{
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 16px;
+      color: #F9F9F9;
     }
   }
 }

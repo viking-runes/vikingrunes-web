@@ -18,6 +18,7 @@ export const mintsColumns: Array<GridColDef & IDataRow> = [
   {
     headerName: 'Action',
     field: 'action',
+    hideable: true,
     render: (record) => {
       const typeText = (get(record, 'action') || '')?.toLowerCase();
       return (
@@ -28,7 +29,7 @@ export const mintsColumns: Array<GridColDef & IDataRow> = [
     },
   },
   { headerName: 'Amount', field: 'format_amount' },
-  { headerName: 'Date', field: 'block_time', type: 'timestamp' },
+  { headerName: 'Date', field: 'block_time', type: 'timestamp', hideable: true },
   {
     headerName: 'Status',
     field: 'status',

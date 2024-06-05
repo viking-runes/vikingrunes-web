@@ -8,7 +8,7 @@ const Link: FC = () => {
   return (
     <div className={'d-flex justify-content-center'}>
       <div className={styles.content}>
-        <h3 className={commonStyles.hello}>Links</h3>
+        <h3 className={cn(commonStyles.hello, commonStyles.link)}>Links</h3>
         <ul className={cn(styles.link, 'd-flex flex-column gap-16')}>
           {links.map((item) => (
             <li key={item.name} className={cn('d-flex gap-16 align-items-center fontSize-24')}>

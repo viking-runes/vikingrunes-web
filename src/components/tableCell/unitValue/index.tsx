@@ -3,14 +3,14 @@ import cn from 'classnames';
 import styles from './index.module.less';
 
 import BtcLineIcon from '@/assets/images/icon/profile/btc-line.svg?react';
-//import styles from '@/pages/profile/myAssets/components/profileTable/index.module.less';
 interface IProps {
   showIcon?: boolean;
   unitText: string;
   valueText: string;
+  type?: 'default' | 'no-style';
 }
 const UnitValue: FC<IProps> = (props) => {
-  const { showIcon, unitText, valueText } = props;
+  const { showIcon, unitText, valueText, type } = props;
   return (
     <div className={'d-flex justify-content-center align-items-center'}>
       <div className={cn(styles['table-value'], 'gap-7 d-flex flex-column justify-content-start')}>
@@ -22,7 +22,10 @@ const UnitValue: FC<IProps> = (props) => {
           )}
           <span>{unitText}</span>
         </p>
-        <p className={styles['table-value-text']}>${valueText}</p>
+        <p className={cn(styles['table-value-text'], styles[type])}>
+          {type === 'no-style' ? '' : '$'}
+          {valueText}
+        </p>
       </div>
     </div>
   );
