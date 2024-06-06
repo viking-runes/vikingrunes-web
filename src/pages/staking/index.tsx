@@ -1,4 +1,4 @@
-import { StackingBox, StakingCard, CommonDialog } from '@/pages/staking/components';
+import { StakingBox, StakingCard, CommonDialog } from '@/pages/staking/components';
 import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, Stack, Tab, Tabs, Tooltip, Typography } from '@mui/material';
 import lockedImg from '@/assets/images/staking/locking.png';
 import dollarImg from '@/assets/images/staking/dollar.png';
@@ -11,11 +11,8 @@ import faqImg from '@/assets/images/staking/faq.png';
 import nextImg from '@/assets/images/staking/next.png';
 import { onFormat } from '@/utils';
 import { useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import CloseIcon from '@mui/icons-material/Close';
 import { CommonTable, TableSkeleton } from '@/components';
 
-import { TProfileColumnItem } from '@/types/table';
 import services from '@/service';
 import { defaultPagination, defaultResponseList, IResponseStakeItem, IResponseStakePools } from '@/types';
 import { useWallet } from '@/stores/wallet';
@@ -28,63 +25,8 @@ import { useSnackbar } from '@/components/snackbar';
 import { genrate_stake_psbt } from '@/utils/stake';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { useTipDialog } from '@/pages/staking/components';
-
-const columns: TProfileColumnItem = () => [
-  // {
-  //   headerName: 'Rune',
-  //   field: 'rune',
-  //   type: 'avatar',
-  //   render: (row: any) => {
-  //     return (
-  //       <AlignCell width={'12rem'} onClick={() => fn(row['rune_id'])}>
-  //         <AvatarContent text={row['rune']} type={'table'} avatar={row?.['rune_logo']} />
-  //       </AlignCell>
-  //     );
-  //   },
-  // },
-  {
-    headerName: 'Current Locked',
-    field: 'Locked',
-    hideable: true,
-    render: (row: any) => {
-      return <Typography>{row['locked']}</Typography>;
-    },
-  },
-  {
-    headerName: 'Locked time',
-    field: 'time',
-    hideable: true,
-    render: (row: any) => {
-      return <Typography>{row['time']}</Typography>;
-    },
-  },
-  {
-    headerName: 'Countdown',
-    field: 'countdown',
-    hideable: true,
-    render: (row: any) => {
-      return <Typography>{row['countdown']}</Typography>;
-    },
-  },
-];
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  // change background color
-  '& .MuiPaper-root': {
-    backgroundColor: '#1A1C28',
-  },
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
-    borderBottom: 'none',
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
-  },
-  '& .MuiDialog-paper': {
-    borderRadius: '8px',
-    backgroundImage: 'none',
-  },
-}));
+import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
+import { useDialog } from '@/hooks/use-dialog';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -128,10 +70,13 @@ export default function StakingView() {
   const [currentTab, setCurrentTab] = useState(0);
   const [stakeLoading, setStakeLoading] = useState(false);
 
-  const tipDialog = useTipDialog();
+  const { TipDialog, ...tipDialog } = useTipDialog();
   const feeRate = useFeeRate();
 
-  const [dataSource, setDataSource] = useState<IResponseStakePools>(defaultResponseList);
+  const [stakePoolData, setStakePoolData] = useState<IResponseStakePools>(defaultResponseList);
+  const [mineBtcData, setMineBtcData] = useState<IResponseStakePools>(defaultResponseList);
+  const [mineVikingData, setMineVikingData] = useState<IResponseStakePools>(defaultResponseList);
+
   const [loading, setLoading] = useState(false);
   // const [params, setParams] = useState({ tab: 'all', holder: true, all_in_search: '' });
 
@@ -145,15 +90,8 @@ export default function StakingView() {
 
   const [currentSelectedPool, setCurrentSelectedPool] = useState<IResponseStakeItem>();
 
-  const [stakeDialogOpen, setStakeDialogOpen] = useState(false);
-
-  const handleStakeDialogOpen = () => {
-    setStakeDialogOpen(true);
-  };
-
-  const handleStakeDialogClose = () => {
-    setStakeDialogOpen(false);
-  };
+  const stakeDialog = useDialog();
+  const btcCurrentLockedDialog = useDialog();
 
   const fetchPools = async () => {
     const body = {
@@ -171,24 +109,14 @@ export default function StakingView() {
     const data = await services.stake.fetchPools(body);
 
     if (pagination.offset === 0) {
-      setDataSource(data);
+      setStakePoolData(data);
     } else {
-      setDataSource((pre) => ({ ...pre, rows: [...pre.rows, ...data.rows] }));
+      setStakePoolData((pre) => ({ ...pre, rows: [...pre.rows, ...data.rows] }));
     }
   };
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setCurrentTab(newValue);
-  };
-
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   useEffect(() => {
@@ -231,7 +159,7 @@ export default function StakingView() {
       console.log('🚀 ~ handleStakeConfirm ~ response:', response);
 
       enqueueSnackbar('Stake success', { variant: 'success' });
-      handleStakeDialogClose();
+      stakeDialog.handleClose();
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error?.message, {
@@ -255,7 +183,7 @@ export default function StakingView() {
       <Grid container spacing={{ md: 3, xs: 2 }} pt={3}>
         <Grid container item xs={5} md={7} spacing={3}>
           <Grid item xs={12} md={6}>
-            <StackingBox mb={3}>
+            <StakingBox mb={3}>
               <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
                 <Stack spacing={1.5}>
                   <Typography fontSize={responsiveFontSize} color={'#777E91'}>
@@ -268,9 +196,9 @@ export default function StakingView() {
                   <img src={btcImg} width={'100%'} height={'100%'} />
                 </ResponsiveBox>
               </Stack>
-            </StackingBox>
+            </StakingBox>
 
-            <StackingBox>
+            <StakingBox>
               <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
                 <Stack spacing={1.5}>
                   <Typography fontSize={responsiveFontSize} color={'#777E91'}>
@@ -282,11 +210,11 @@ export default function StakingView() {
                   <img src={dollarImg} width={'100%'} height={'100%'} />
                 </ResponsiveBox>
               </Stack>
-            </StackingBox>
+            </StakingBox>
           </Grid>
 
           <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'block' } }}>
-            <StackingBox mb={3}>
+            <StakingBox mb={3}>
               <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
                 <Stack spacing={1.5}>
                   <Typography fontSize={14} color={'#777E91'}>
@@ -296,9 +224,9 @@ export default function StakingView() {
                 </Stack>
                 <img src={btcImg} width={40} height={40} />
               </Stack>
-            </StackingBox>
+            </StakingBox>
 
-            <StackingBox>
+            <StakingBox>
               <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
                 <Stack spacing={1.5}>
                   <Typography fontSize={14} color={'#777E91'}>
@@ -308,12 +236,12 @@ export default function StakingView() {
                 </Stack>
                 <img src={dollarImg} width={40} height={40} />
               </Stack>
-            </StackingBox>
+            </StakingBox>
           </Grid>
         </Grid>
 
         <Grid item xs={7} md={5}>
-          <StackingBox>
+          <StakingBox>
             <Stack spacing={2} height={'100%'} width={'100%'}>
               <Stack direction={'row'} alignItems={'center'} spacing={1.25}>
                 <img src={lockedImg} width={16} height={16} />
@@ -343,7 +271,7 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          handleClickOpen();
+                          btcCurrentLockedDialog.handleOpen();
                         }}
                         fontSize={responsiveTextFontSize}
                       >
@@ -371,7 +299,7 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          handleClickOpen();
+                          btcCurrentLockedDialog.handleOpen();
                         }}
                         fontSize={responsiveTextFontSize}
                       >
@@ -383,7 +311,7 @@ export default function StakingView() {
                 </Grid>
               </Stack>
             </Stack>
-          </StackingBox>
+          </StakingBox>
         </Grid>
       </Grid>
       {/* tab */}
@@ -410,14 +338,14 @@ export default function StakingView() {
       </CustomTabPanel>
 
       <Grid container spacing={3} mb={3}>
-        {dataSource.rows.map((item, index) => {
+        {stakePoolData.rows.map((item, index) => {
           return (
             <StakingCard
               data={item}
               key={index}
               onClick={(item) => {
                 setCurrentSelectedPool(item);
-                handleStakeDialogOpen();
+                stakeDialog.handleOpen();
               }}
             />
           );
@@ -522,99 +450,52 @@ export default function StakingView() {
         })} */}
       </Grid>
 
-      <BootstrapDialog onClose={handleClose} open={open}>
-        <DialogTitle sx={{ m: 0, p: 2 }}>BTC Current Locked</DialogTitle>
-        <IconButton
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: '#EBB94C',
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <TableSkeleton loading={loading}>
-            <CommonTable
-              pagination={{
-                onChange: (_: React.ChangeEvent, page) => {
-                  if (page !== pagination.offset) {
-                    setPagination((pre) => ({ ...pre, page }));
-                  }
-                },
-                page: pagination.page,
-                count: pagination?.count,
-              }}
-              columns={columns(() => {})}
-              dataSource={dataSource.data}
-            />
-          </TableSkeleton>
-        </DialogContent>
-        {/* <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions> */}
-      </BootstrapDialog>
+      <CommonDialog handleClose={btcCurrentLockedDialog.handleClose} open={btcCurrentLockedDialog.open} title="BTC Current Locked">
+        <BTCLockedTable />
+      </CommonDialog>
 
-      <tipDialog.TipDialog></tipDialog.TipDialog>
+      <TipDialog></TipDialog>
 
       {/* dialog */}
-      <CommonDialog open={stakeDialogOpen} handleClose={handleStakeDialogClose}>
-        <DialogTitle sx={{ m: 0, p: 2 }}>Stake</DialogTitle>
-        <IconButton
-          onClick={handleStakeDialogClose}
+      <CommonDialog open={stakeDialog.open} handleClose={stakeDialog.handleClose} title="Stake">
+        <Stack spacing={3} px={2}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+            <Typography color="#777E91">Locked BTC</Typography>
+
+            <Typography>{formatBalance(currentSelectedPool?.amount)} BTC</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+            <Typography color="#777E91">Locked Time</Typography>
+
+            <Typography>{formatStakeDiffDays(currentSelectedPool)} Days</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+            <Typography color="#777E91">Reward once</Typography>
+
+            <Typography>{currentSelectedPool && currentSelectedPool?.runes[0].amount} $VIKING</Typography>
+          </Stack>
+          {/* <SatsSelect sats={props?.sats} selectType={inputProps?.select} onChange={onChange} value={value} /> */}
+          <FeeRateSelector polling={stakeDialog.open} />
+          <FeeRateInfo networkFee={feeRate.getNetworkFee(currentSelectedPool?.network_vsize)} serviceFee={currentSelectedPool?.service_fee} />
+        </Stack>
+        <LoadingButton
+          size="large"
+          fullWidth
+          loading={stakeLoading}
+          onClick={handleStakeConfirm}
+          variant="contained"
           sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: '#EBB94C',
+            borderRadius: 1.25,
+            mt: 3,
+            mb: 2,
+            backgroundColor: '#EBB94C',
+            '&:hover': {
+              backgroundColor: '#EBB94C',
+            },
           }}
         >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <Stack spacing={3} px={2}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <Typography color="#777E91">Locked BTC</Typography>
-
-              <Typography>{formatBalance(currentSelectedPool?.amount)} BTC</Typography>
-            </Stack>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <Typography color="#777E91">Locked Time</Typography>
-
-              <Typography>{formatStakeDiffDays(currentSelectedPool)} Days</Typography>
-            </Stack>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <Typography color="#777E91">Reward once</Typography>
-
-              <Typography>{currentSelectedPool && currentSelectedPool?.runes[0].amount} $VIKING</Typography>
-            </Stack>
-            {/* <SatsSelect sats={props?.sats} selectType={inputProps?.select} onChange={onChange} value={value} /> */}
-            <FeeRateSelector polling={stakeDialogOpen} />
-            <FeeRateInfo networkFee={feeRate.getNetworkFee(currentSelectedPool?.network_vsize)} serviceFee={currentSelectedPool?.service_fee} />
-          </Stack>
-          <LoadingButton
-            size="large"
-            fullWidth
-            loading={stakeLoading}
-            onClick={handleStakeConfirm}
-            variant="contained"
-            sx={{
-              borderRadius: 1.25,
-              mt: 3,
-              mb: 2,
-              backgroundColor: '#EBB94C',
-              '&:hover': {
-                backgroundColor: '#EBB94C',
-              },
-            }}
-          >
-            Confirm
-          </LoadingButton>
-        </DialogContent>
+          Confirm
+        </LoadingButton>
       </CommonDialog>
 
       {/* <Card sx={{ my: 3, p: 3 }}>

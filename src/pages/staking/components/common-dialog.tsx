@@ -1,10 +1,13 @@
-import { Dialog, styled } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, IconButton, styled } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 type Props = {
   // title: string;
   handleClose: () => void;
   open: boolean;
   children: React.ReactNode;
+
+  title?: string;
 };
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -25,10 +28,23 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export function CommonDialog({ children, open, handleClose }: Props) {
+export function CommonDialog({ children, open, handleClose, title = '' }: Props) {
   return (
     <BootstrapDialog onClose={handleClose} open={open} maxWidth="sm" fullWidth>
-      {children}
+      <DialogTitle sx={{ m: 0, p: 2 }}>{title}</DialogTitle>
+      <IconButton
+        onClick={handleClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: '#EBB94C',
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
+
+      <DialogContent dividers>{children}</DialogContent>
     </BootstrapDialog>
   );
 }
