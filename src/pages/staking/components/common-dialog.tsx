@@ -25,7 +25,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function CommonDialog({ children, open, handleClose }: Props) {
+export function CommonDialog({ children, open, handleClose }: Props) {
   return (
     <BootstrapDialog onClose={handleClose} open={open} maxWidth="sm" fullWidth>
       {children}

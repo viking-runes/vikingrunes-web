@@ -1,9 +1,9 @@
+import { useBtcPrice } from '@/components/coin-price';
 import { Stack, Typography } from '@mui/material';
 
 type Props = {
   networkFee: number;
-  serviceBaseFee: number;
-  total: number;
+  serviceFee: number;
 };
 
 type TypographyProps = {
@@ -22,7 +22,15 @@ function SecondaryTypography({ children }: TypographyProps) {
   );
 }
 
-export const FeeRateInfo = ({ networkFee, serviceBaseFee, total }: Props) => {
+export const FeeRateInfo = ({ networkFee, serviceFee }: Props) => {
+  const priceHook = useBtcPrice();
+
+  const networkFeePrice = priceHook.satToPrice(networkFee);
+  const serviceFeePrice = priceHook.satToPrice(serviceFee);
+
+  const total = networkFee + serviceFee;
+  const totalPrice = priceHook.satToPrice(total);
+
   return (
     <Stack spacing={3}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
@@ -31,16 +39,16 @@ export const FeeRateInfo = ({ networkFee, serviceBaseFee, total }: Props) => {
         <Stack direction="row" spacing={2}>
           <PrimaryTypography>~{networkFee} Sats</PrimaryTypography>
 
-          <SecondaryTypography>~{networkFee} Sats</SecondaryTypography>
+          <SecondaryTypography>~${networkFeePrice}</SecondaryTypography>
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <PrimaryTypography>Service Base Fee:</PrimaryTypography>
+        <PrimaryTypography>Service Fee:</PrimaryTypography>
 
         <Stack direction="row" spacing={2}>
-          <PrimaryTypography>~{serviceBaseFee} Sats</PrimaryTypography>
+          <PrimaryTypography>~{serviceFee} Sats</PrimaryTypography>
 
-          <SecondaryTypography>~{networkFee} Sats</SecondaryTypography>
+          <SecondaryTypography>~${serviceFeePrice} </SecondaryTypography>
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
@@ -49,7 +57,7 @@ export const FeeRateInfo = ({ networkFee, serviceBaseFee, total }: Props) => {
         <Stack direction="row" spacing={2}>
           <Typography fontSize={12}>~{total} Sats</Typography>
 
-          <SecondaryTypography>~{networkFee} Sats</SecondaryTypography>
+          <SecondaryTypography>~${totalPrice} </SecondaryTypography>
         </Stack>
       </Stack>
     </Stack>

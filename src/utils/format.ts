@@ -1,3 +1,6 @@
+import { IResponseStakeItem } from '@/types';
+import dayjs from 'dayjs';
+
 export const formatAddress = (address: string) => {
   if (!address) return '';
   return `${address.slice(0, 4)}...${address.slice(-4)}`;
@@ -20,3 +23,13 @@ export function bytesTobase64(bytes: Uint8Array) {
 }
 
 export const bytesToHex = (bytes) => Buffer.from(bytes).toString('hex');
+
+export const hexTobytes = (hex) => Buffer.from(hex, 'hex');
+
+export const formatStakeDiffDays = (data: IResponseStakeItem) => {
+  if (!data) return 0;
+  const endDate = dayjs(data.end_date);
+  const beginDate = dayjs(data.begin_date);
+  const diffInDays = endDate.diff(beginDate, 'day');
+  return diffInDays;
+};

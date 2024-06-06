@@ -7,7 +7,7 @@ export function useBtcPrice() {
 
   const setPrice = (price: number) => setBtcPrice(price);
 
-  const satToPrice = (sat: number) => (sat ? `$${(sat * 1e-8 * btcPrice).toFixed(2)}` : '-');
+  const satToPrice = (sat: number) => (sat ? `${(sat * 1e-8 * btcPrice).toFixed(2)}` : '-');
 
   return {
     btcPrice,

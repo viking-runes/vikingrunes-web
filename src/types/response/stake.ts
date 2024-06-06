@@ -14,6 +14,8 @@ export interface IResponseStakeItem {
   staked_count: number;
   status: string;
   ts_value: number;
+  service_fee: number;
+  network_vsize: number;
   begin_date: string;
   end_date: string;
   createdAt: string;

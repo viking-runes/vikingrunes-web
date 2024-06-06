@@ -1,5 +1,6 @@
 import config from '@/config';
-import { bytesTobase64 } from '@/utils/format';
+import { IResponseStakeItem } from '@/types';
+import { bytesTobase64, bytesToHex, hexTobytes } from '@/utils/format';
 import UniSat from '@/utils/unisat';
 import { Script, ScriptNum, SigHash, Transaction, TEST_NETWORK, NETWORK, p2tr } from '@scure/btc-signer';
 
@@ -12,7 +13,7 @@ const unisat_fetch = new UniSat();
 // console.log(`pool address: `, getAddress('tr', pool, Testnet ))
 // console.log(utils.pubSchnorr(staker))
 
-const lock_time = BigInt(Math.floor(Date.now() / 1000) + 360 * 1000);
+// const lock_time = BigInt(Math.floor(Date.now() / 1000) + 360 * 1000);
 
 const network = config.isMainnet ? NETWORK : TEST_NETWORK;
 
@@ -23,7 +24,7 @@ export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee)
   // console.log( utxos )
   let selected_utxo;
   for (const u of utxos) {
-    if (u.satoshis >= stake_amount + service_fee) {
+    if (u.satoshis >= +stake_amount + service_fee) {
       if (selected_utxo) {
         if (selected_utxo.satoshis > u.satoshis) {
           selected_utxo = u;
@@ -90,17 +91,17 @@ function lock_script(time, pubkey) {
 // const network_fee = 26000;
 // const vsize = 252;
 
-export async function genrate_stake_psbt(staker_address, staker_pubkey, stake_amount, service_fee, network_fee) {
+export async function genrate_stake_psbt(stakerAddress, stakerPubkey, stakePool: IResponseStakeItem, networkFee: number) {
   const tx = new Transaction({
     // network: network as any,
     // allowUnknowOutput: true,
     allowUnknownOutputs: true,
   });
 
-  const stake_utxo = await select_staker_utxo(staker_address, stake_amount, service_fee + network_fee);
+  const stake_utxo = await select_staker_utxo(stakerAddress, stakePool.amount, stakePool.service_fee + networkFee);
 
-  console.log(staker_pubkey);
-  const p2trKey = p2tr(staker_pubkey, undefined, network);
+  console.log(stakerPubkey);
+  const p2trKey = p2tr(stakerPubkey, undefined, network);
 
   tx.addInput({
     txid: stake_utxo.txid,
@@ -114,8 +115,8 @@ export async function genrate_stake_psbt(staker_address, staker_pubkey, stake_am
   });
 
   tx.addOutput({
-    script: lock_script(lock_time, staker_pubkey),
-    amount: BigInt(stake_amount),
+    script: lock_script(stakePool.ts_value, stakerPubkey),
+    amount: BigInt(stakePool.amount),
   });
 
   // // console.log( tx.inputs )
@@ -125,7 +126,8 @@ export async function genrate_stake_psbt(staker_address, staker_pubkey, stake_am
 
   // return tx;
 
-  const psbtBase64 = bytesTobase64(tx.toPSBT(0));
+  const psbtBase64 = bytesTobase64(tx.toPSBT());
+  console.log('🚀 ~ genrate_stake_psbt ~ psbtBase64:', psbtBase64);
   // const stake_tx = Transaction.fromPSBT(tx.toPSBT(0));
 
   // const stake_input = stake_tx.getInput(0)
@@ -133,8 +135,18 @@ export async function genrate_stake_psbt(staker_address, staker_pubkey, stake_am
 
   // const pool_utxo = await select_pool_utxo()
 
-  console.log(psbtBase64);
   return psbtBase64;
+}
+
+export function txFinalizeIdx(psbtHex: string) {
+  const psbt = hexTobytes(psbtHex);
+
+  const tx = Transaction.fromPSBT(psbt);
+  // debugger;
+
+  // tx.finalizeIdx(0);
+
+  return bytesToHex(tx.toPSBT(0));
 }
 
 // (async () => {

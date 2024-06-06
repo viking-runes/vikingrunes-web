@@ -7,16 +7,20 @@ import cn from 'classnames';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { CurrentSelectedRate } from '@/types';
 
-export const FeeRateSelector = () => {
-  const feeRate = useFeeRate();
+type Props = {
+  polling: boolean;
+};
 
-  const [rate, setRate] = useState<string>(CurrentSelectedRate.hourFee);
+export const FeeRateSelector = ({ polling = true }: Props) => {
+  const feeRate = useFeeRate(polling);
+
+  const [rate, setRate] = useState<CurrentSelectedRate>(CurrentSelectedRate.halfHourFee);
 
   useEffect(() => {
     feeRate.getFee();
 
     return () => {
-      feeRate.setCurrentSelectedRate(CurrentSelectedRate.hourFee);
+      feeRate.setCurrentSelectedRate(CurrentSelectedRate.halfHourFee);
     };
   }, []);
 
@@ -30,10 +34,7 @@ export const FeeRateSelector = () => {
         }}
       >
         <i className={styles.icon}>{<LowSatsIcon />}</i>
-        <p className={cn(styles.des, 'fontSize-10 margin-bottom-3')}>
-          {feeRate.lowFee}
-          Sats/vB
-        </p>
+        <p className={cn(styles.des, 'fontSize-10 margin-bottom-3')}>{feeRate.lowFee} Sats/vB</p>
         <span className={cn(styles.level, 'fontSize-12')}>{'Low'}</span>
       </li>
       <li
@@ -44,10 +45,7 @@ export const FeeRateSelector = () => {
         }}
       >
         <i className={styles.icon}>{<StandardSatsIcon />}</i>
-        <p className={cn(styles.des, 'fontSize-10 margin-bottom-3')}>
-          {feeRate.standardFee}
-          Sats/vB
-        </p>
+        <p className={cn(styles.des, 'fontSize-10 margin-bottom-3')}>{feeRate.standardFee} Sats/vB</p>
         <span className={cn(styles.level, 'fontSize-12')}>{'Standard'}</span>
       </li>
       <li
@@ -58,10 +56,7 @@ export const FeeRateSelector = () => {
         }}
       >
         <i className={styles.icon}>{<HighSatsIcon />}</i>
-        <p className={cn(styles.des, 'fontSize-10 margin-bottom-3')}>
-          {feeRate.highFee}
-          Sats/vB
-        </p>
+        <p className={cn(styles.des, 'fontSize-10 margin-bottom-3')}>{feeRate.highFee} Sats/vB</p>
         <span className={cn(styles.level, 'fontSize-12')}>{'High'}</span>
       </li>
     </ul>

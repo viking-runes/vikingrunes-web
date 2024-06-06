@@ -1,6 +1,6 @@
 import { Stack, StackProps } from '@mui/material';
 
-export default function StakingBox({ children, ...other }: StackProps) {
+export function StakingBox({ children, ...other }: StackProps) {
   return (
     <Stack
       direction={'row'}

@@ -1,4 +1,4 @@
-import StackingBox from '@/pages/staking/components/staking-box';
+import { StackingBox, StakingCard, CommonDialog } from '@/pages/staking/components';
 import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, Stack, Tab, Tabs, Tooltip, Typography } from '@mui/material';
 import lockedImg from '@/assets/images/staking/locking.png';
 import dollarImg from '@/assets/images/staking/dollar.png';
@@ -16,10 +16,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import { CommonTable, TableSkeleton } from '@/components';
 
 import { TProfileColumnItem } from '@/types/table';
-import StakingCard from '@/pages/staking/components/staking-card';
 import services from '@/service';
-import { defaultPagination, defaultResponseList, IResponseStakePools } from '@/types';
+import { defaultPagination, defaultResponseList, IResponseStakeItem, IResponseStakePools } from '@/types';
 import { useWallet } from '@/stores/wallet';
+import { FeeRateSelector } from '@/components/fee-rate';
+import { LoadingButton } from '@mui/lab';
+import { FeeRateInfo } from '@/components/fee-rate';
+import { formatBalance, formatStakeDiffDays } from '@/utils/format';
+import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
+import { useSnackbar } from '@/components/snackbar';
+import { genrate_stake_psbt } from '@/utils/stake';
+import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
+import { useTipDialog } from '@/pages/staking/components';
 
 const columns: TProfileColumnItem = () => [
   // {
@@ -78,45 +86,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const a = {
-  code: 200,
-  message: 'ok',
-  data: {
-    count: 1,
-    rows: [
-      {
-        runes: [
-          {
-            rune: 'INEEDTESTRUNES',
-            runeid: '2584333:39',
-            spacedRune: 'I•NEED•TEST•RUNES',
-            amount: '100000',
-            symbol: 'ᚱ',
-            divisibility: 2,
-          },
-        ],
-        uuid: '3cead45e-21c6-4c91-99a4-9a2bee9f536d',
-        title: 'Test Pool(Reward: 10000Runes)',
-        batch: 'P-20240601-01',
-        stake_type: 'btc',
-        reward_type: 'rune',
-        signer: 'tb1pmjuwvnz77gffv6rxgpn2l82q8wddv9k5a25nsxn4qp860eeu6yfqeq3ssp',
-        total: 10,
-        amount: '1000',
-        staked: '0',
-        staked_count: 0,
-        status: 'active',
-        ts_value: 86400,
-        begin_date: '2024-06-01T00:00:00.000Z',
-        end_date: '2024-06-30T00:00:00.000Z',
-        createdAt: '2024-06-03T08:04:22.074Z',
-        updatedAt: '2024-06-03T08:04:22.074Z',
-        version: 0,
-      },
-    ],
-  },
-};
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -127,7 +96,7 @@ function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} {...other}>
       {value === index && (
         <Box sx={{ p: 3 }}>
           <Typography>{children}</Typography>
@@ -157,14 +126,34 @@ function ResponsiveBox({ children }: any) {
 
 export default function StakingView() {
   const [currentTab, setCurrentTab] = useState(0);
+  const [stakeLoading, setStakeLoading] = useState(false);
+
+  const tipDialog = useTipDialog();
+  const feeRate = useFeeRate();
 
   const [dataSource, setDataSource] = useState<IResponseStakePools>(defaultResponseList);
   const [loading, setLoading] = useState(false);
-  const [params, setParams] = useState({ tab: 'all', holder: true, all_in_search: '' });
+  // const [params, setParams] = useState({ tab: 'all', holder: true, all_in_search: '' });
+
+  const { signPsbtWthoutBroadcast } = useSignPsbt();
+
+  const { wallet, getSignedPublicKey } = useWallet();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [pagination, setPagination] = useState(defaultPagination);
 
-  const { wallet } = useWallet();
+  const [currentSelectedPool, setCurrentSelectedPool] = useState<IResponseStakeItem>();
+
+  const [stakeDialogOpen, setStakeDialogOpen] = useState(false);
+
+  const handleStakeDialogOpen = () => {
+    setStakeDialogOpen(true);
+  };
+
+  const handleStakeDialogClose = () => {
+    setStakeDialogOpen(false);
+  };
 
   const fetchPools = async () => {
     const body = {
@@ -208,6 +197,10 @@ export default function StakingView() {
     }
   }, [pagination?.offset, wallet.address]);
 
+  useEffect(() => {
+    feeRate.getFee(true);
+  }, []);
+
   const responsiveFontSize = {
     md: 14,
     xs: 10,
@@ -215,6 +208,38 @@ export default function StakingView() {
   const responsiveTextFontSize = {
     md: 16,
     xs: 12,
+  };
+
+  const handleStakeConfirm = async () => {
+    setStakeLoading(true);
+    try {
+      const networkFee = feeRate.getNetworkFee(currentSelectedPool?.network_vsize);
+      const stakePsbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), currentSelectedPool, networkFee);
+      const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
+      // const psbt = txFinalizeIdx(signedStakePsbt);
+
+      console.log('🚀 ~ handleStakeConfirm ~ signedStakePsbt:', signedStakePsbt);
+
+      const body = {
+        pubkey: wallet.publicKey,
+        psbt: signedStakePsbt,
+        pool_id: currentSelectedPool.uuid,
+        network_fee: networkFee,
+      };
+
+      const response = await services.stake.txStake(body);
+      console.log('🚀 ~ handleStakeConfirm ~ response:', response);
+
+      enqueueSnackbar('Stake success', { variant: 'success' });
+      handleStakeDialogClose();
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+      });
+    } finally {
+      setStakeLoading(false);
+    }
   };
 
   return (
@@ -292,7 +317,10 @@ export default function StakingView() {
             <Stack spacing={2} height={'100%'} width={'100%'}>
               <Stack direction={'row'} alignItems={'center'} spacing={1.25}>
                 <img src={lockedImg} width={16} height={16} />
-                <Typography color={'#EBB94C'}>My staking</Typography>
+                <Stack direction={'row'} alignItems={'center'} spacing={1} onClick={tipDialog.handleOpen}>
+                  <Typography color={'#EBB94C'}>My staking</Typography>
+                  <img src={faqImg} width={16} height={16} />
+                </Stack>
               </Stack>
               <Stack px={3.25}>
                 <Grid container spacing={{ md: 2.5, xs: 1 }}>
@@ -377,12 +405,24 @@ export default function StakingView() {
       <CustomTabPanel value={currentTab} index={1}>
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <img src={infoImg} width={12} height={12} />
-          <Typography variant="body2">Basic rate of $VIKING release: 2,000 $VIKING/1 BTC/1 Day</Typography>
+          <Typography variant="body2">Basic rate of $VIKING release: 3,000 $VIKING/1 BTC/1 Day</Typography>
         </Stack>
       </CustomTabPanel>
 
       <Grid container spacing={3} mb={3}>
-        <StakingCard data={dataSource.rows[0]} />
+        {dataSource.rows.map((item, index) => {
+          return (
+            <StakingCard
+              data={item}
+              key={index}
+              onClick={(item) => {
+                setCurrentSelectedPool(item);
+                handleStakeDialogOpen();
+              }}
+            />
+          );
+        })}
+
         {/* {Array.from({ length: 10 }).map((_, index) => {
           return (
             <Grid item md={4} xs={12} key={index}>
@@ -518,6 +558,64 @@ export default function StakingView() {
           </Button>
         </DialogActions> */}
       </BootstrapDialog>
+
+      <tipDialog.TipDialog></tipDialog.TipDialog>
+
+      {/* dialog */}
+      <CommonDialog open={stakeDialogOpen} handleClose={handleStakeDialogClose}>
+        <DialogTitle sx={{ m: 0, p: 2 }}>Stake</DialogTitle>
+        <IconButton
+          onClick={handleStakeDialogClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: '#EBB94C',
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent dividers>
+          <Stack spacing={3} px={2}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+              <Typography color="#777E91">Locked BTC</Typography>
+
+              <Typography>{formatBalance(currentSelectedPool?.amount)} BTC</Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+              <Typography color="#777E91">Locked Time</Typography>
+
+              <Typography>{formatStakeDiffDays(currentSelectedPool)} Days</Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+              <Typography color="#777E91">Reward once</Typography>
+
+              <Typography>{currentSelectedPool && currentSelectedPool?.runes[0].amount} $VIKING</Typography>
+            </Stack>
+            {/* <SatsSelect sats={props?.sats} selectType={inputProps?.select} onChange={onChange} value={value} /> */}
+            <FeeRateSelector polling={stakeDialogOpen} />
+            <FeeRateInfo networkFee={feeRate.getNetworkFee(currentSelectedPool?.network_vsize)} serviceFee={currentSelectedPool?.service_fee} />
+          </Stack>
+          <LoadingButton
+            size="large"
+            fullWidth
+            loading={stakeLoading}
+            onClick={handleStakeConfirm}
+            variant="contained"
+            sx={{
+              borderRadius: 1.25,
+              mt: 3,
+              mb: 2,
+              backgroundColor: '#EBB94C',
+              '&:hover': {
+                backgroundColor: '#EBB94C',
+              },
+            }}
+          >
+            Confirm
+          </LoadingButton>
+        </DialogContent>
+      </CommonDialog>
 
       {/* <Card sx={{ my: 3, p: 3 }}>
         <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
