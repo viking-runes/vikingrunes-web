@@ -23,7 +23,7 @@ const columns: TProfileColumnItem = (fn) => [
     render: (row: IRuneData) => {
       return (
         <AlignCell width={'8rem'}>
-          <EllipsisText text={onFormatNumber(row['supply']?.toString(), row?.divisibility)} />
+          {row['viking_format']?.current_supply_abb}
         </AlignCell>
       );
     },

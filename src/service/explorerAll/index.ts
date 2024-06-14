@@ -39,6 +39,20 @@ export async function fetchExplorerAllData<R>({ page, tab, all_in_search }: { pa
         supply
         symbol
         holders
+        viking_format {
+          mints
+          current_supply
+          current_supply_abb
+          amount
+          total_supply
+          premine
+          transactions
+          holders
+          start_block
+          end_before_block
+          premine_percentage
+          fairmint_percentage
+        }
       }
       pagination {
         page_no

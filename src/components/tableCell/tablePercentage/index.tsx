@@ -17,12 +17,18 @@ const TablePercentage: FC<IRuneData> = (props) => {
     const cap = new Decimal(props?.terms.amount).mul(new Decimal(props?.progress?.cap_times));
     const premine = new Decimal(onFormatNumber(props?.premine, props.divisibility)).dividedBy(cap).mul(100);
     const fairmint = new Decimal(props?.mints).dividedBy(cap).mul(100);
-    const isOver = premine.add(fairmint).comparedTo(100) > 0;
+    const preminePercentage = props?.viking_format.premine_percentage 
+    const fairMintPercentage = props?.viking_format.fairmint_percentage
+    const isOver = (preminePercentage+fairMintPercentage)>=100
     return {
       cap: cap.toFixed(),
       premine: isOver ? 100 : fixedNumber(premine.toFixed(2), 2),
       all: isOver ? 100 : fixedNumber(premine.add(fairmint).toFixed(2), 2),
       fairmint: isOver ? 0 : fixedNumber(fairmint.toFixed(2), 2),
+      preminePercentage:preminePercentage>0?(preminePercentage/100).toFixed(2):0,
+      fairMintPercentage:(fairMintPercentage/100).toFixed(2),
+      allPercentage: ((preminePercentage+fairMintPercentage)/100).toFixed(2),
+      blockLeft:props?.viking_format.block_left, 
     };
   }, [props]);
   return (
@@ -31,31 +37,31 @@ const TablePercentage: FC<IRuneData> = (props) => {
       classes={{ popper: styles['tooltip'] }}
       title={
         <div className={cn('d-flex flex-column gap-7 fontSize-12', styles['percentage-tooltip'])}>
-          {percentage.all === 100 ? (
+          {percentage.blockLeft > 0 ? (
             <p className={'d-flex flex-column gap-3'}>
               <a>{onFormat(props?.progress?.blocks_left)}</a>
               <span>Blocks left</span>
             </p>
           ) : (
             <p className={'d-flex flex-column gap-3'}>
-              <span>Cap supply</span>
-              <a>{onFormat(percentage.cap)}</a>
+              <span>Total supply</span>
+              <a>{props?.viking_format.total_supply}</a>
             </p>
           )}
           <p className={'d-flex flex-column gap-3'}>
             <span>Current supply</span>
-            <a>{onFormat(props.supply)}</a>
+            <a>{props?.viking_format.current_supply}</a>
           </p>
           <p className={'d-flex flex-column gap-3'}>
             <span>Premine</span>
-            <a>{percentage.premine}%</a>
+            <a>{percentage.preminePercentage}%</a>
           </p>
         </div>
       }
     >
-      <p style={{ ['--percentage-all']: `${percentage.all}%`, ['--percentage-fairmint']: `${percentage.fairmint}%` }} className={cn(styles['percentage-bg'], 'd-flex align-items-center gap-5')}>
+      <p style={{ ['--percentage-all']: `${percentage.allPercentage}%`, ['--percentage-fairmint']: `${percentage.fairMintPercentage}%` }} className={cn(styles['percentage-bg'], 'd-flex align-items-center gap-5')}>
         <span className={cn(styles['percentage-bar'])} />
-        <a className={styles['percentage-value']}>{percentage.all}%</a>
+        <a className={styles['percentage-value']}>{percentage.allPercentage}%</a>
       </p>
     </Tooltip>
   );
