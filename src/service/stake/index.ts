@@ -19,3 +19,15 @@ export async function txStake(body) {
   if (data.code !== 200) throw Error(data.message);
   return data.data;
 }
+
+export async function fetchOrders(body) {
+  const { data } = await axios.post(`/api/v1/orders`, body);
+  if (data.code !== 200) throw Error(data.message);
+  return data.data;
+}
+
+export async function fetchOrder(uuid) {
+  const { data } = await axios.post(`/api/v1/order/${uuid}`, {});
+  if (data.code !== 200) throw Error(data.message);
+  return data.data;
+}

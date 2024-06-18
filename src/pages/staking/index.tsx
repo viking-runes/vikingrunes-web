@@ -70,7 +70,9 @@ export default function StakingView() {
   const [currentTab, setCurrentTab] = useState(0);
   const [stakeLoading, setStakeLoading] = useState(false);
 
-  const { TipDialog, ...tipDialog } = useTipDialog();
+  const { TipDialog, ...tipDialog } = useTipDialog(
+    `Don't worry, the assets are still in your address. But because the wallet has not yet adapted to the UTXO-Staking Protocol, the staked and rewarded assets are not visible in the wallet. You need to claim after the countdown ends, and the assets will be released and visible.`
+  );
   const feeRate = useFeeRate();
 
   const [stakePoolData, setStakePoolData] = useState<IResponseStakePools>(defaultResponseList);

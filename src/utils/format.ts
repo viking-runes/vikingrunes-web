@@ -1,5 +1,7 @@
 import { IResponseStakeItem } from '@/types';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import duration from 'dayjs/plugin/duration';
 
 export const formatAddress = (address: string) => {
   if (!address) return '';
@@ -32,4 +34,25 @@ export const formatStakeDiffDays = (data: IResponseStakeItem) => {
   const beginDate = dayjs(data.begin_date);
   const diffInDays = endDate.diff(beginDate, 'day');
   return diffInDays;
+};
+
+export const formatStakeLockedTime = (time: string) => {
+  if (!time) return '';
+
+  dayjs.extend(utc);
+  return dayjs.utc(time).format('YYYY-MM-DD HH:mm:ss');
+};
+
+export const formatStakeCountDown = (time: number) => {
+  if (!time) return '';
+
+  dayjs.extend(duration);
+
+  const diff = time * 1000 - Date.now();
+  if (diff < 0) return '00:00:00';
+
+  const durationFromNow = dayjs.duration(diff);
+  const days = durationFromNow.days();
+
+  return `${days} Day ${durationFromNow.hours()}:${durationFromNow.minutes()}:${durationFromNow.seconds()}`;
 };

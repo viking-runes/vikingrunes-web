@@ -1,46 +1,87 @@
 import { Pagination, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { defaultPagination, defaultResponseList, IResponseStakePools } from '@/types';
+import { defaultPagination, defaultResponseList, IResponseStakeOrderDetail, IResponseStakeOrders } from '@/types';
 import { useWallet } from '@/stores/wallet';
 import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { SimpleTableHeadCustom } from '@/components/simple-table';
 import { LoadingButton } from '@mui/lab';
-
-const MOCKDATA = {
-  count: 3,
-  rows: [
-    {
-      currentLocked: 0.1,
-      lockedTime: 1,
-      countdown: 1,
-      status: 'active',
-    },
-    {
-      currentLocked: 0.2,
-      lockedTime: 2,
-      countdown: 2,
-      status: 'claimed',
-    },
-  ],
-};
+import services from '@/service';
+import { formatStakeCountDown, formatStakeLockedTime } from '@/utils/format';
 
 export default function BTCLockedTable() {
   const feeRate = useFeeRate();
 
-  const [mineBtcData, setMineBtcData] = useState<IResponseStakePools>(defaultResponseList);
-
   const [loading, setLoading] = useState(false);
 
-  const { signPsbtWthoutBroadcast } = useSignPsbt();
+  const [claimLoading, setClaimLoading] = useState('');
 
   const { wallet, getSignedPublicKey } = useWallet();
+
+  const { signPsbtWthoutBroadcast } = useSignPsbt();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const [pagination, setPagination] = useState(defaultPagination);
+
+  const [stakeOreders, setStakeOreders] = useState<IResponseStakeOrders>(defaultResponseList);
+
+  const fetchOrders = async () => {
+    const body = {
+      pag: {
+        offset: 0,
+        limit: 10,
+      },
+      filter: {
+        staker_address: wallet.address,
+      },
+      sort: {},
+    };
+
+    const data = await services.stake.fetchOrders(body);
+
+    if (pagination.offset === 0) {
+      setStakeOreders(data);
+    } else {
+      setStakeOreders((pre) => ({ ...pre, rows: [...pre.rows, ...data.rows] }));
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, [pagination]);
+
+  const handleClaimConfirm = async (uuid) => {
+    setClaimLoading(uuid);
+    try {
+      const order: IResponseStakeOrderDetail = await services.stake.fetchOrder(uuid);
+      console.log(order);
+      // const networkFee = feeRate.getNetworkFee(currentSelectedPool?.network_vsize);
+      // const stakePsbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), currentSelectedPool, networkFee);
+      // const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
+      // // const psbt = txFinalizeIdx(signedStakePsbt);
+      // console.log('🚀 ~ handleStakeConfirm ~ signedStakePsbt:', signedStakePsbt);
+      // const body = {
+      //   pubkey: wallet.publicKey,
+      //   psbt: signedStakePsbt,
+      //   pool_id: currentSelectedPool.uuid,
+      //   network_fee: networkFee,
+      // };
+      // const response = await services.stake.txStake(body);
+      // console.log('🚀 ~ handleStakeConfirm ~ response:', response);
+      // enqueueSnackbar('Stake success', { variant: 'success' });
+      // stakeDialog.handleClose();
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+      });
+    } finally {
+      setClaimLoading('');
+    }
+  };
 
   return (
     <TableContainer>
@@ -54,21 +95,24 @@ export default function BTCLockedTable() {
           ]}
         />
         <TableBody>
-          {MOCKDATA.rows.map((row, index) => (
+          {stakeOreders.rows.map((row, index) => (
             <TableRow key={index}>
               <TableCell align="center">
-                <Typography>{row.currentLocked}</Typography>
+                {/* TODO: USE CORRECT FILED */}
+                <Typography>{row.network_fee}</Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography>{row.lockedTime}</Typography>
+                <Typography>{formatStakeLockedTime(row.createdAt)}</Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography>{row.countdown}</Typography>
+                <Typography>{formatStakeCountDown(row.ts_value)}</Typography>
               </TableCell>
               <TableCell align="center">
                 <LoadingButton
-                  loading={false}
-                  // onClick={handleStakeConfirm}
+                  loading={row.uuid === claimLoading}
+                  onClick={() => {
+                    handleClaimConfirm(row.uuid);
+                  }}
                   variant="contained"
                   sx={{
                     borderRadius: 5,
@@ -89,10 +133,10 @@ export default function BTCLockedTable() {
       </Table>
       <Stack direction="row" alignItems="center" justifyContent="end" mt={2}>
         <Pagination
-          count={MOCKDATA.count}
+          count={stakeOreders.count}
           page={1}
           onChange={(event: React.ChangeEvent, page: number) => {
-            console.log(page);
+            setPagination((pre) => ({ ...pre, offset: (page - 1) * pre.limit }));
           }}
         />
       </Stack>

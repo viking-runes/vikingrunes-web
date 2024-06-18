@@ -23,6 +23,8 @@ export function StakingCard({ data, onClick }: Props) {
 
   const diffInDays = formatStakeDiffDays(data);
 
+  const timesLeft = data.total - data.staked_count > 0 ? data.total - data.staked_count : 0;
+
   return (
     <Grid item md={4} xs={12}>
       <Stack border={'1px solid #1A1C28'} borderRadius={2} direction={'column'}>
@@ -56,7 +58,7 @@ export function StakingCard({ data, onClick }: Props) {
               <Stack direction="row" alignItems="center">
                 <Typography color="#777E91">Times left</Typography>
               </Stack>
-              <Typography color={textColor}>{data.ts_value}</Typography>
+              <Typography color={textColor}>{timesLeft}</Typography>
             </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>

@@ -10,6 +10,7 @@ export default ({ mode }: any) => {
   const env = loadEnv(mode, process.cwd());
 
   const stakeUrl = env.VITE_STAKE_URL;
+  console.log('🚀 ~ stakeUrl:', stakeUrl);
 
   return defineConfig({
     plugins: [
