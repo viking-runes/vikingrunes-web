@@ -5,7 +5,7 @@ const detailData: Array<Array<IInfoCardDataItem>> = [
   [
     { title: 'Rune ID', field: 'rune_id' },
     { title: 'Current Supply', field: 'format_supply', type: 'comma' },
-    { title: 'Cap supply', field: 'cap_supply', type: 'comma' },
+    { title: 'Cap supply', field: 'cap_supply', type: 'div' },
     { title: 'Transactions', field: 'format_transactions', type: 'comma' },
     { title: 'Amount', field: ['terms', 'amount'], type: 'comma' },
   ],

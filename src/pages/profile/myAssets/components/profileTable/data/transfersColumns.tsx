@@ -21,14 +21,14 @@ export const transfersColumns: Array<GridColDef & IDataRow> = [
     render: (record) => {
       const typeText = (get(record, 'action') || '')?.toLowerCase();
       return (
-        <div className={'d-inline-flex width-4rem text-align-left align-items-center'}>
+        <div className={'d-inline-flex width-3rem text-align-left align-items-center'}>
           <CommonButton type={get(BUTTON_MAP, [typeText])} text={typeText} />
         </div>
       );
     },
   },
   { headerName: 'Amount', field: 'format_amount' },
-  { headerName: 'From', field: 'from_address', type: 'copy' },
-  { headerName: 'To', field: 'to_address', type: 'copy' },
-  { headerName: 'Date', field: 'block_time', type: 'timestamp' },
+  { headerName: 'From', field: 'from_address', type: 'copy', hideable: true },
+  { headerName: 'To', field: 'to_address', type: 'copy', hideable: true },
+  { headerName: 'Date', field: 'block_time', type: 'timestamp', hideable: true },
 ];

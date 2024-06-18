@@ -7,13 +7,13 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { get } from 'lodash';
 import TransactionsCode from '@/components/transactionsCode';
 import { Skeleton } from '@mui/material';
-import { onFormat } from '@/utils';
+import { onFormat, onFormatNumber } from '@/utils';
 dayjs.extend(relativeTime);
 export interface IInfoCardDataItem {
   render?: (data: IRuneDetailItem) => React.ReactNode;
   title: string;
   field?: Array<string> | string;
-  type?: 'timestamp' | 'code' | 'date' | 'txs-code' | 'comma';
+  type?: 'timestamp' | 'code' | 'date' | 'txs-code' | 'comma' | 'div';
 }
 interface IProps {
   item: Array<Array<IInfoCardDataItem>>;
@@ -45,6 +45,7 @@ const InfoCard: FC<IProps> = ({ item, mobileIndex, lg, dataSource }) => {
                                 text.render(dataSource)
                               ) : (
                                 <>
+                                  {text.type === 'div' && onFormat(onFormatNumber(value, dataSource.divisibility))}
                                   {text.type === 'comma' && onFormat(value)}
                                   {text.type === 'date' && `${date}`}
                                   {text.type === 'txs-code' && <TransactionsCode type={text.type} code={value} />}

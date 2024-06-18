@@ -1,7 +1,7 @@
 import { AlignCell, AvatarContent, PrimaryButton } from '@/components';
 import { TProfileColumnItem } from '@/types/table';
 export const assetsColumns: TProfileColumnItem = (fn) => [
-  { headerName: '#', field: 'index' },
+  { headerName: '#', field: 'index', hideable: true },
   {
     headerName: 'Rune',
     field: 'rune',
@@ -14,7 +14,7 @@ export const assetsColumns: TProfileColumnItem = (fn) => [
       );
     },
   },
-  { headerName: 'Balance', field: 'balance', type: 'comma' },
+  { headerName: 'Balance', field: 'balance', type: 'comma', hideable: true },
   {
     headerName: 'Action',
     field: 'action',

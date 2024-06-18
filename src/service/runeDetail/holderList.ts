@@ -18,6 +18,8 @@ export async function fetchHolderList<R>(page: number, rune_id: string) {
         index
         address
         percentage
+        balance
+        divisibility
       }
       pagination {
         page_no

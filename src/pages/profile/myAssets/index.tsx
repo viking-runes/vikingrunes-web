@@ -11,7 +11,7 @@ const MyAssets: FC = () => {
       <AssetsHeader address={wallet?.address} />
       <p className={styles.divider} />
       <div className={styles.card}>
-        <ProfileTable address={wallet?.address} />
+        <ProfileTable address={'bc1p50n9sksy5gwe6fgrxxsqfcp6ndsfjhykjqef64m8067hfadd9efqrhpp9k' || wallet?.address} />
       </div>
     </div>
   );
