@@ -26,7 +26,7 @@ jobs:
           node-version: 21.x
           cache: 'npm'
 
-      - run: cp .env_test .env
+      - run: cp .env.testnet .env
 
       - name: Run Install
         uses: borales/actions-yarn@v4
