@@ -6,6 +6,7 @@ import { Provider } from 'jotai';
 import WalletAuth from '@/components/wallets/wallets-auth.tsx';
 import SnackbarProvider from '@/components/snackbar/snackbar-provider.tsx';
 import { ProfileProvider } from '@/context';
+import { CoinPricePolling } from '@/components/coin-price';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider>
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <SnackbarProvider>
           <App />
           <WalletAuth />
+          <CoinPricePolling />
         </SnackbarProvider>
       </ThemeProvider>
     </ProfileProvider>

@@ -2,6 +2,7 @@ import { BitcoinNetworkType } from 'sats-connect';
 
 const networkName = import.meta.env.VITE_NETWORK_TYPE as string;
 const isMainnet = networkName === 'mainnet';
+const mempoolUrl = isMainnet ? 'https://mempool.space' : 'https://mempool.space/testnet';
 
 const config = {
   networkName,
@@ -19,8 +20,17 @@ const config = {
     okx: 'okx',
   },
 
-  mempoolUrl: isMainnet ? 'https://mempool.space' : 'https://mempool.space/testnet',
+  mempoolUrl,
   openDaoHost: `${import.meta.env.VITE_OPEN_DAO_URL}`,
+
+  unisatUrl: `${import.meta.env.VITE_UNISAT_URL}`,
+  stakeServiceFee: 5000,
+
+  stakeUrl: `${import.meta.env.VITE_STAKE_URL}`,
+
+  links: {
+    tx: (txid: string) => `${mempoolUrl}/tx/${txid}`,
+  },
 };
 
 export default config;

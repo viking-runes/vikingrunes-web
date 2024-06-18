@@ -24,7 +24,7 @@ const useSignPsbt = () => {
   const okxHook = useOkx();
   const unisatHook = useUnisat();
 
-  const signPsbt = async (psbtBase64: string, signIndexes: string[]) => {
+  const signPsbt = async (psbtBase64: string, signIndexes: string[] = []) => {
     const signingIndexes = signIndexes.map((index) => +index);
 
     if (wallet.walletName === config.walletName.xverse) {
@@ -129,8 +129,72 @@ const useSignPsbt = () => {
     }
   };
 
+  const signPsbtWthoutBroadcast = async (psbtBase64: string, signIndexes: string[] = []) => {
+    const signingIndexes = signIndexes.map((index) => +index);
+
+    if (wallet.walletName === config.walletName.xverse) {
+      return new Promise((resolve, reject) => {
+        signTransaction({
+          payload: {
+            network: {
+              type: config.network.xverse,
+            },
+            message: 'Sign Transaction',
+            psbtBase64: psbtBase64,
+            broadcast: false,
+            inputsToSign: [
+              {
+                address: wallet.address,
+                signingIndexes: signingIndexes,
+                sigHash: btc.SignatureHash.SINGLE | btc.SignatureHash.ANYONECANPAY,
+              },
+            ],
+          },
+          onFinish: async (response) => {
+            debugger;
+            // const tx = Transaction.fromPSBT(bitcoin.Psbt.fromBase64(response.psbtBase64).toBuffer());
+            // tx.extract();
+            // const rawtx = tx.hex;
+            // // const signedPsbt = base64ToHex(response.psbtBase64);
+            // // console.log(base64ToHex(psbtBase64));
+            // // console.log(signedPsbt);
+            // // const rawtx = extractTransaction(signedPsbt);
+            // const txid = await services.mempool.pushTx(rawtx);
+            // resolve(txid);
+            resolve(response.psbtBase64);
+          },
+          onCancel: () => {
+            reject();
+            console.info('Canceled');
+          },
+        });
+      });
+    }
+
+    const psbtHex = base64ToHex(psbtBase64);
+    if (wallet.walletName === config.walletName.unisat) {
+      const signedPsbt = await unisatHook.injectedProvider?.signPsbt(psbtHex, {
+        autoFinalized: true,
+        // toSignInputs,
+      });
+
+      return signedPsbt;
+
+      // const rawtx = extractTransaction(signedPsbt);
+    }
+
+    if (wallet.walletName === config.walletName.okx) {
+      const signedPsbt = await okxHook.injectedProvider?.signPsbt(psbtHex, {
+        autoFinalized: true,
+      });
+
+      return signedPsbt;
+    }
+  };
+
   return {
     signPsbt,
+    signPsbtWthoutBroadcast,
   };
 };
 

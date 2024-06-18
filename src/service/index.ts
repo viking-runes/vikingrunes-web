@@ -1,5 +1,6 @@
 import * as rune from './rune';
 import * as mempool from './mempool';
+import * as stake from './stake';
 
 export async function request<R>(query: string) {
   return new Promise<R>((resolve) => {
@@ -15,6 +16,7 @@ export async function request<R>(query: string) {
 const services = {
   rune,
   mempool,
+  stake,
 };
 
 export default services;
