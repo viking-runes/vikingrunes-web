@@ -4,25 +4,10 @@ import { Stack, Typography } from '@mui/material';
 type Props = {
   networkFee: number;
   serviceFee: number;
+  discount?: boolean;
 };
 
-type TypographyProps = {
-  children: React.ReactNode;
-};
-
-function PrimaryTypography({ children }: TypographyProps) {
-  return <Typography fontSize={12}>{children}</Typography>;
-}
-
-function SecondaryTypography({ children }: TypographyProps) {
-  return (
-    <Typography color="#777E91" fontSize={12}>
-      {children}
-    </Typography>
-  );
-}
-
-export const FeeRateInfo = ({ networkFee, serviceFee }: Props) => {
+export const FeeRateInfo = ({ networkFee, serviceFee, discount = false }: Props) => {
   const priceHook = useBtcPrice();
 
   const networkFeePrice = priceHook.satToPrice(networkFee);
@@ -34,30 +19,38 @@ export const FeeRateInfo = ({ networkFee, serviceFee }: Props) => {
   return (
     <Stack spacing={3}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <PrimaryTypography>Estimate Network Fee:</PrimaryTypography>
+        <Typography fontSize={12}>Estimate Network Fee:</Typography>
 
         <Stack direction="row" spacing={2}>
-          <PrimaryTypography>~{networkFee} Sats</PrimaryTypography>
+          <Typography fontSize={12}>~{networkFee} Sats</Typography>
 
-          <SecondaryTypography>~${networkFeePrice}</SecondaryTypography>
+          <Typography color="#777E91" fontSize={12}>
+            ~${networkFeePrice}
+          </Typography>
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <PrimaryTypography>Service Fee:</PrimaryTypography>
+        <Typography fontSize={12}>Service Fee:</Typography>
 
         <Stack direction="row" spacing={2}>
-          <PrimaryTypography>~{serviceFee} Sats</PrimaryTypography>
+          <Typography fontSize={12} sx={{ textDecoration: discount ? 'line-through' : 'auto', textDecorationColor: '#EBB94C' }}>
+            ~{serviceFee} Sats
+          </Typography>
 
-          <SecondaryTypography>~${serviceFeePrice} </SecondaryTypography>
+          <Typography color="#777E91" fontSize={12} sx={{ textDecoration: discount ? 'line-through' : 'auto', textDecorationColor: '#EBB94C' }}>
+            ~${serviceFeePrice}
+          </Typography>
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <PrimaryTypography>Total:</PrimaryTypography>
+        <Typography fontSize={12}>Total:</Typography>
 
         <Stack direction="row" spacing={2}>
           <Typography fontSize={12}>~{total} Sats</Typography>
 
-          <SecondaryTypography>~${totalPrice} </SecondaryTypography>
+          <Typography color="#777E91" fontSize={12}>
+            ~${totalPrice}
+          </Typography>
         </Stack>
       </Stack>
     </Stack>
