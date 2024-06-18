@@ -27,6 +27,7 @@ const navs: NavItem[] = [
   { name: 'ᛖXᛈᛚᛟᚱᛖᚱ', icon: <ExplorerIcon />, tooltip: 'Explorer', path: '/', includes: ['/', '/rune'], type: 'slice', needConnect: false, normalNav: false },
   { name: 'ᚠᚨᛁᚱ ᛗᛁᚾᛏ', icon: <FairMintIcon />, mobile: 'FairMint', tooltip: 'Fair Mint', path: '/fairMint', includes: ['/fairMint'], needConnect: true, normalNav: false },
   // { name: 'ᛗᚨᚱᚲᛖᛏ', icon: <MarketIcon />, tooltip: 'Market', path: '/market', includes: ['/market'], needConnect: true, normalNav: false },
+  { name: 'Freemint', icon: <MarketIcon />, mobile: 'Freemint', tooltip: 'Freemint', path: '/freemint', includes: ['/freemint'], needConnect: true, normalNav: true },
   { name: 'Staking', icon: <RunesPumpIcon />, tooltip: 'Staking', path: '/staking', includes: ['/staking'], type: 'slice', needConnect: true, normalNav: true },
 ];
 
