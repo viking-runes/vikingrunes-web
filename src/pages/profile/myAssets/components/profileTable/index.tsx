@@ -9,6 +9,7 @@ import { TableSkeleton } from '@/components';
 import EmptyPlaceholder from '@/components/layouts/emptyPlaceholder';
 import styles from './index.module.less';
 import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
+import ClaimTable from '@/pages/staking/components/claim-table';
 const ProfileTable: FC<{ address: string }> = ({ address }) => {
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -32,7 +33,7 @@ const ProfileTable: FC<{ address: string }> = ({ address }) => {
         <Fragment>
           <TableSkeleton loading={loading}>
             {activeTab === 'Claim' ? (
-              <BTCLockedTable />
+              <ClaimTable />
             ) : (
               <CommonTable
                 columns={columns?.(onTableAction, activeTab) || []}
