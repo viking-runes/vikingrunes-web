@@ -8,6 +8,7 @@ import useAddressList from '@/hooks/address/useAddressList.tsx';
 import { TableSkeleton } from '@/components';
 import EmptyPlaceholder from '@/components/layouts/emptyPlaceholder';
 import styles from './index.module.less';
+import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
 const ProfileTable: FC<{ address: string }> = ({ address }) => {
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -30,17 +31,21 @@ const ProfileTable: FC<{ address: string }> = ({ address }) => {
       <EmptyPlaceholder text={'Market '} isEmpty={false}>
         <Fragment>
           <TableSkeleton loading={loading}>
-            <CommonTable
-              columns={columns?.(onTableAction, activeTab) || []}
-              pagination={{
-                count: dataSource.count,
-                page: params.page,
-                onChange: (_: React.ChangeEvent, page: number) => {
-                  setParams((pre) => ({ ...pre, page }));
-                },
-              }}
-              dataSource={dataSource.data}
-            />
+            {activeTab === 'Claim' ? (
+              <BTCLockedTable />
+            ) : (
+              <CommonTable
+                columns={columns?.(onTableAction, activeTab) || []}
+                pagination={{
+                  count: dataSource.count,
+                  page: params.page,
+                  onChange: (_: React.ChangeEvent, page: number) => {
+                    setParams((pre) => ({ ...pre, page }));
+                  },
+                }}
+                dataSource={dataSource.data}
+              />
+            )}
           </TableSkeleton>
         </Fragment>
       </EmptyPlaceholder>

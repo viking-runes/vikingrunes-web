@@ -27,6 +27,7 @@ import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { useTipDialog } from '@/pages/staking/components';
 import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
 import { useDialog } from '@/hooks/use-dialog';
+import { useNavigate } from 'react-router-dom';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -67,6 +68,7 @@ function ResponsiveBox({ children }: any) {
 }
 
 export default function StakingView() {
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState(0);
   const [stakeLoading, setStakeLoading] = useState(false);
 
@@ -273,7 +275,8 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          btcCurrentLockedDialog.handleOpen();
+                          // btcCurrentLockedDialog.handleOpen();
+                          navigate('/profile/MyAssets?tab=Claim');
                         }}
                         fontSize={responsiveTextFontSize}
                       >
@@ -301,7 +304,8 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          btcCurrentLockedDialog.handleOpen();
+                          // btcCurrentLockedDialog.handleOpen();
+                          navigate('/profile/MyAssets?tab=Claim');
                         }}
                         fontSize={responsiveTextFontSize}
                       >

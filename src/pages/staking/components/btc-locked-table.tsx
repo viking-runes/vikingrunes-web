@@ -10,6 +10,8 @@ import { SimpleTableHeadCustom } from '@/components/simple-table';
 import { LoadingButton } from '@mui/lab';
 import services from '@/service';
 import { formatStakeCountDown, formatStakeLockedTime } from '@/utils/format';
+import { PrimaryButton } from '@/components';
+import config from '@/config';
 
 export default function BTCLockedTable() {
   const feeRate = useFeeRate();
@@ -91,6 +93,7 @@ export default function BTCLockedTable() {
             { id: 'id', label: 'Current Locked', align: 'center' },
             { id: 'address', label: 'Locked time', align: 'center' },
             { id: 'status', label: 'Countdown', align: 'center' },
+            { id: 'tx', label: 'Tx', align: 'center' },
             { id: 'links', label: 'Action', align: 'center' },
           ]}
         />
@@ -106,6 +109,15 @@ export default function BTCLockedTable() {
               </TableCell>
               <TableCell align="center">
                 <Typography>{formatStakeCountDown(row.ts_value)}</Typography>
+              </TableCell>
+              <TableCell align="center">
+                <PrimaryButton
+                  type={'default'}
+                  onClick={() => {
+                    window.open(config.links.tx(row.txid));
+                  }}
+                  text={'Click'}
+                />
               </TableCell>
               <TableCell align="center">
                 <LoadingButton
