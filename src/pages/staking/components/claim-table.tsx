@@ -13,7 +13,7 @@ import { formatStakeCountDown, formatStakeLockedTime } from '@/utils/format';
 import { PrimaryButton } from '@/components';
 import config from '@/config';
 
-export default function BTCLockedTable() {
+export default function ClaimTable() {
   const feeRate = useFeeRate();
 
   const [loading, setLoading] = useState(false);

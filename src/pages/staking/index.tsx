@@ -27,6 +27,7 @@ import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { useTipDialog } from '@/pages/staking/components';
 import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
 import { useDialog } from '@/hooks/use-dialog';
+import { useNavigate } from 'react-router-dom';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -67,6 +68,7 @@ function ResponsiveBox({ children }: any) {
 }
 
 export default function StakingView() {
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState(0);
   const [stakeLoading, setStakeLoading] = useState(false);
 
@@ -273,7 +275,8 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          btcCurrentLockedDialog.handleOpen();
+                          // btcCurrentLockedDialog.handleOpen();
+                          navigate('/profile/MyAssets?tab=Claim');
                         }}
                         fontSize={responsiveTextFontSize}
                       >
@@ -301,7 +304,8 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          btcCurrentLockedDialog.handleOpen();
+                          // btcCurrentLockedDialog.handleOpen();
+                          navigate('/profile/MyAssets?tab=Claim');
                         }}
                         fontSize={responsiveTextFontSize}
                       >
@@ -324,15 +328,15 @@ export default function StakingView() {
           Your pool{' '}
         </Typography> */}
         <Tabs centered value={currentTab} onChange={handleTabChange}>
-          <Tab disableRipple label="Your pool" />
+          {/* <Tab disableRipple label="Your pool" /> */}
           <Tab disableRipple label="BTC Staking Season 1" />
         </Tabs>
       </Stack>
 
       <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.10)' }} />
 
-      <CustomTabPanel value={currentTab} index={0}></CustomTabPanel>
-      <CustomTabPanel value={currentTab} index={1}>
+      {/* <CustomTabPanel value={currentTab} index={0}></CustomTabPanel> */}
+      <CustomTabPanel value={currentTab} index={0}>
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <img src={infoImg} width={12} height={12} />
           <Typography variant="body2">Basic rate of $VIKING release: 3,000 $VIKING/1 BTC/1 Day</Typography>
