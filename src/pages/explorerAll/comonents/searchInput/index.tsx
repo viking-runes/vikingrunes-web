@@ -6,6 +6,8 @@ import { fetchAllSearch } from '@/service/explorerAll/search.ts';
 import cn from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { TransactionsCode } from '@/components';
+import ClearIcon from '@mui/icons-material/Clear';
+
 interface IOption {
   keyword: string;
   scene: string;
@@ -34,6 +36,16 @@ const SearchInput: FC = () => {
       <Autocomplete
         loading={loading}
         freeSolo={true}
+        clearIcon={
+          <div
+            className={styles['clear-icon']}
+            onClick={() => {
+              setSearchValue('');
+            }}
+          >
+            <ClearIcon />
+          </div>
+        }
         filterOptions={(options) => options}
         renderOption={(optionProps, option) => {
           const isRune = option.scene === 'rune';
@@ -51,6 +63,7 @@ const SearchInput: FC = () => {
         }}
         getOptionLabel={(option: IOption) => option.keyword}
         renderInput={(params) => {
+          console.log(params);
           return (
             <TextField
               {...params}
@@ -60,6 +73,7 @@ const SearchInput: FC = () => {
               }}
               fullWidth={true}
               onChange={(event) => {
+                console.log(event);
                 setSearchValue(event.target.value as string);
               }}
               value={searchValue}
