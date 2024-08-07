@@ -5,6 +5,8 @@ import path from 'path';
 
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
+import wasm from 'vite-plugin-wasm';
+
 // https://vitejs.dev/config/
 export default ({ mode }: any) => {
   const env = loadEnv(mode, process.cwd());
@@ -14,6 +16,7 @@ export default ({ mode }: any) => {
 
   return defineConfig({
     plugins: [
+      wasm(),
       react(),
       svgr(),
       nodePolyfills({
