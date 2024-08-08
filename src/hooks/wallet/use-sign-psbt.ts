@@ -2,7 +2,7 @@ import config from '@/config';
 import useOkx from '@/hooks/wallet/use-okx';
 import useUnisat from '@/hooks/wallet/use-unisat';
 import { useWallet } from '@/stores/wallet';
-import { base64ToHex } from '@/utils/format';
+import { base64ToHex, hexToBase64 } from '@/utils/format';
 import { signTransaction } from 'sats-connect';
 
 import * as btc from '@scure/btc-signer';
@@ -129,7 +129,7 @@ const useSignPsbt = () => {
     }
   };
 
-  const signPsbtWthoutBroadcast = async (psbtBase64: string, signIndexes: string[] = []) => {
+  const signPsbtWthoutBroadcast = async (psbtHex: string, signIndexes: string[] = []) => {
     const signingIndexes = signIndexes.map((index) => +index);
 
     if (wallet.walletName === config.walletName.xverse) {
@@ -140,7 +140,7 @@ const useSignPsbt = () => {
               type: config.network.xverse,
             },
             message: 'Sign Transaction',
-            psbtBase64: psbtBase64,
+            psbtBase64: hexToBase64(psbtHex),
             broadcast: false,
             inputsToSign: [
               {
@@ -171,10 +171,10 @@ const useSignPsbt = () => {
       });
     }
 
-    const psbtHex = base64ToHex(psbtBase64);
     if (wallet.walletName === config.walletName.unisat) {
       const signedPsbt = await unisatHook.injectedProvider?.signPsbt(psbtHex, {
         autoFinalized: true,
+        disableTweakSigner: true,
         // toSignInputs,
       });
 

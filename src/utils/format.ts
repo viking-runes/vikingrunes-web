@@ -28,6 +28,10 @@ export const bytesToHex = (bytes) => Buffer.from(bytes).toString('hex');
 
 export const hexTobytes = (hex) => Buffer.from(hex, 'hex');
 
+export const hexToBase64 = (hex: string) => {
+  return bytesTobase64(hexTobytes(hex));
+};
+
 export const formatStakeDiffDays = (data: IResponseStakeItem) => {
   if (!data) return 0;
   const endDate = dayjs(data.end_date);

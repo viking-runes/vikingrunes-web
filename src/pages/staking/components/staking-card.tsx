@@ -39,7 +39,8 @@ export function StakingCard({ data, onClick }: Props) {
         >
           <Stack direction="row" alignItems="center" spacing={1}>
             <img src={isDisabled ? poolGrayImg : poolImg} width={16} height={16} />
-            <Typography color={titleColor}>{amount} BTC Staking Pool</Typography>
+            {/* <Typography color={titleColor}>{amount} BTC Staking Pool</Typography> */}
+            <Typography color={titleColor}>{data.title}</Typography>
           </Stack>
 
           <Typography color={titleColor}>{diffInDays} Day</Typography>
@@ -114,7 +115,7 @@ export function StakingCard({ data, onClick }: Props) {
                     cursor: 'not-allowed',
                   },
                 }}
-                onClick={async () => {
+                onClick={() => {
                   onClick(data);
                 }}
                 // disabled={isDisabled}
