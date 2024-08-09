@@ -1,6 +1,6 @@
 import config from '@/config';
-import { IResponseStakeItem } from '@/types';
-import { bytesTobase64, bytesToHex, hexTobytes } from '@/utils/format';
+import { IResponseStakeItem, IResponseStakeOrderDetail } from '@/types';
+import { bytesToHex, hexTobytes } from '@/utils/format';
 import UniSat from '@/utils/unisat';
 // import { Script, ScriptNum, SigHash, Transaction, TEST_NETWORK, NETWORK, p2tr } from '@scure/btc-signer';
 import * as bitcoinjs from 'bitcoinjs-lib';
@@ -43,34 +43,32 @@ export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee)
   }
 
   if (!selected_utxo) {
-    throw new Error(`No enough utxo, need to megre.`);
+    throw new Error(`No enough utxo`);
   }
 
   return selected_utxo;
 }
 
-export async function select_pool_utxo(pool_p2tr_address) {
-  const runes_list_result = await unisat_fetch.runes_list(pool_p2tr_address);
-  const runes = runes_list_result.data.data.list;
-  // console.log( runes )
+// export async function select_pool_utxo(pool_p2tr_address) {
+//   const runes_list_result = await unisat_fetch.runes_list(pool_p2tr_address);
+//   const runes = runes_list_result.data.data.list;
+//   // console.log( runes )
 
-  const runes_utxos_result = await unisat_fetch.runes_utxos(pool_p2tr_address, runes[0].runeid);
-  // console.log( runes_utxos.data.data )
-  const runes_utxos = runes_utxos_result.data.data;
-  // for( const ru of runes_utxos ) {
-  //     console.log( ru )
-  // }
-  const selected_utxo = runes_utxos[0];
+//   const runes_utxos_result = await unisat_fetch.runes_utxos(pool_p2tr_address, runes[0].runeid);
+//   // console.log( runes_utxos.data.data )
+//   const runes_utxos = runes_utxos_result.data.data;
+//   // for( const ru of runes_utxos ) {
+//   //     console.log( ru )
+//   // }
+//   const selected_utxo = runes_utxos[0];
 
-  return selected_utxo;
-}
+//   return selected_utxo;
+// }
 
-function lock_script(time, pubkey) {
-  console.log(`Lock script params:`, time, bytesToHex(pubkey));
+function lock_script(time: number, pubkey: string) {
+  console.log(`Lock script params:`, time, hexTobytes(pubkey));
 
-  // pubkey -> hash160(pubkey)
-
-  return script.compile([script.number.encode(time), opcodes.OP_CHECKLOCKTIMEVERIFY, opcodes.OP_DROP, pubkey, opcodes.OP_CHECKSIG]);
+  return script.compile([script.number.encode(time), opcodes.OP_CHECKLOCKTIMEVERIFY, opcodes.OP_DROP, hexTobytes(pubkey), opcodes.OP_CHECKSIG]);
 }
 
 // const stake_amount = 10000;
@@ -78,16 +76,21 @@ function lock_script(time, pubkey) {
 // const network_fee = 26000;
 // const vsize = 252;
 
-export async function generate_stake_psbt(stakerAddress, stakerPubkey: string, stakePool: IResponseStakeItem, networkFee: number) {
+export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerAddress: string, stakerPubkey: string, networkFee: number) {
   const tx = new Psbt({
     network: network,
   });
 
   const locked_script = lock_script(stakePool.ts_value, stakerPubkey);
 
+  // console.log('🚀 ~ generate_stake_psbt ~ stakerPubkey:', stakerPubkey);
+  // console.log('🚀 ~ generate_stake_psbt ~ ts_value:', stakePool.ts_value);
+  // console.log('🚀 ~ generate_stake_psbt ~ locked_script:', locked_script);
+
   const staker_utxo = await select_staker_utxo(stakerAddress, stakePool.amount, stakePool.service_fee + networkFee);
 
   const commit_p2tr = locked_p2tr(stakerPubkey, locked_script);
+  // console.log('🚀 ~ generate_stake_psbt ~ commit_p2tr:', commit_p2tr);
 
   // console.log( Transaction.SIGHASH_SINGLE, Transaction.SIGHASH_ANYONECANPAY, Transaction.SIGHASH_ANYONECANPAY | Transaction.SIGHASH_SINGLE  )
   // console.log( staker_utxo.scriptPk )
@@ -166,21 +169,29 @@ function locked_p2tr(pubkey: string, script) {
   });
 }
 
-export async function claim(stakerAddress, stakePool: IResponseStakeItem, stakerPubkey: string, networkFee, txid) {
-  const unlock_time = 1722498171;
+export async function claim(order: IResponseStakeOrderDetail, stakerAddress: string, stakerPubkey: string) {
+  const unlock_time = order.ts_value;
 
-  const fee = networkFee;
+  // const fee = order.network_fee;
+  const fee = 180;
+
   const locked_script = lock_script(unlock_time, stakerPubkey);
 
   const commit_p2tr = locked_p2tr(stakerPubkey, locked_script);
 
+  const amount = 10000;
+
+  // console.log(bytesToHex(commit_p2tr.internalPubkey));
+  // console.log('🚀 ~ claim ~ commit_p2tr.internalPubkey:', bytesToHex(commit_p2tr.internalPubkey));
+
   const unlock_tx = {
-    hash: txid,
+    hash: order.txid,
     index: 0,
     witnessUtxo: {
       script: commit_p2tr.output,
-      value: +stakePool.amount,
+      value: amount,
     },
+    publicKey: stakerPubkey,
     sighashType: Transaction.SIGHASH_ALL,
     tapInternalKey: commit_p2tr.internalPubkey,
     sequence: 0xfffffffe,
@@ -193,6 +204,7 @@ export async function claim(stakerAddress, stakePool: IResponseStakeItem, staker
     ],
   };
 
+  // debugger;
   const claim_tx = new Psbt({
     network: network,
   });
@@ -203,24 +215,40 @@ export async function claim(stakerAddress, stakePool: IResponseStakeItem, staker
 
   claim_tx.addOutput({
     address: stakerAddress,
-    value: +stakePool.amount - fee,
+    value: 546,
   });
 
-  // use plugin
-  claim_tx.signInput(0, staker.keyPair, [Transaction.SIGHASH_ALL]);
-
-  claim_tx.finalizeInput(0);
-
-  const tx_hex = claim_tx.extractTransaction(true).toHex();
-
-  console.log(tx_hex);
-
-  const broadcast_result = await unisat_fetch.broadcast(tx_hex).catch((e) => {
-    console.log(e.code, e.message);
-    return e.response;
+  claim_tx.addOutput({
+    address: stakerAddress,
+    value: amount - fee - 546,
+    // value: amount - fee,
   });
 
-  console.log(`claim hash: `, broadcast_result.data);
+  // claim_tx.extractTransaction(true);
+  // const tx_hex = claim_tx.extractTransaction(true).toHex();
+  // console.log('🚀 ~ claim ~ tx_hex:', tx_hex);
+  // return tx_hex;
+
+  const psbt = claim_tx.toHex();
+  console.log('🚀 ~ claim ~ psbt:', psbt);
+
+  return psbt;
+
+  // // use plugin
+  // claim_tx.signInput(0, staker.keyPair, [Transaction.SIGHASH_ALL]);
+
+  // claim_tx.finalizeInput(0);
+
+  // const tx_hex = claim_tx.extractTransaction(true).toHex();
+
+  // console.log(tx_hex);
+
+  // const broadcast_result = await unisat_fetch.broadcast(tx_hex).catch((e) => {
+  //   console.log(e.code, e.message);
+  //   return e.response;
+  // });
+
+  // console.log(`claim hash: `, broadcast_result.data);
 }
 
 // (async () => {

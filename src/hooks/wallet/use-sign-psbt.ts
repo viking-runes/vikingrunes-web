@@ -13,9 +13,9 @@ import * as bitcoin from 'bitcoinjs-lib';
 
 // import XverseConnector from 'sats-connect';
 
-const extractTransaction = (psbtHex: string) => {
+export const extractTransaction = (psbtHex: string) => {
   const psbt = bitcoin.Psbt.fromHex(psbtHex);
-  const transaction = psbt.extractTransaction();
+  const transaction = psbt.extractTransaction(true);
   return transaction.toHex();
 };
 
@@ -24,7 +24,7 @@ const useSignPsbt = () => {
   const okxHook = useOkx();
   const unisatHook = useUnisat();
 
-  const signPsbt = async (psbtBase64: string, signIndexes: string[] = []) => {
+  const signPsbt = async (psbtBase64: string, signIndexes: string[] = [], signParams: any = {}) => {
     const signingIndexes = signIndexes.map((index) => +index);
 
     if (wallet.walletName === config.walletName.xverse) {
@@ -107,6 +107,7 @@ const useSignPsbt = () => {
       const signedPsbt = await unisatHook.injectedProvider?.signPsbt(psbtHex, {
         autoFinalized: true,
         // toSignInputs,
+        ...signParams,
       });
 
       const rawtx = extractTransaction(signedPsbt);
@@ -129,7 +130,7 @@ const useSignPsbt = () => {
     }
   };
 
-  const signPsbtWthoutBroadcast = async (psbtHex: string, signIndexes: string[] = []) => {
+  const signPsbtWthoutBroadcast = async (psbtHex: string, signIndexes: string[] = [], signParams: any = {}) => {
     const signingIndexes = signIndexes.map((index) => +index);
 
     if (wallet.walletName === config.walletName.xverse) {
@@ -151,7 +152,6 @@ const useSignPsbt = () => {
             ],
           },
           onFinish: async (response) => {
-            debugger;
             // const tx = Transaction.fromPSBT(bitcoin.Psbt.fromBase64(response.psbtBase64).toBuffer());
             // tx.extract();
             // const rawtx = tx.hex;
@@ -175,7 +175,7 @@ const useSignPsbt = () => {
       const signedPsbt = await unisatHook.injectedProvider?.signPsbt(psbtHex, {
         autoFinalized: true,
         disableTweakSigner: true,
-        // toSignInputs,
+        ...signParams,
       });
 
       return signedPsbt;
