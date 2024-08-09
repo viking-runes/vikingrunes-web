@@ -13,6 +13,7 @@ import { useWallet } from '@/stores/wallet';
 import { formatAddress } from '@/utils/format';
 import ProfileContext from '@/context';
 import { fixedNumber, onFormat } from '@/utils';
+import { ProfileTab } from '@/types';
 interface IMenuItems {
   [K: string]: {
     icon: ReactNode;
@@ -30,7 +31,7 @@ const ProfileAction: FC<{ onDisconnect: () => void }> = ({ onDisconnect }) => {
   const menuItems: IMenuItems = {
     assets: { icon: <AssetsIcon />, text: 'Viking Points:', profile: onFormat(point) },
     runes: { icon: <MyRunes />, text: 'My Runes', path: '/profile/MyAssets' },
-    order: { icon: <MyOrder />, text: 'My Orders', path: '/profile/MyAssets?tab=Orders' },
+    order: { icon: <MyOrder />, text: 'My Orders', path: `/profile/MyAssets?tab=${ProfileTab.Stakes}` },
     balance: { icon: <BTCIcon />, text: 'BTC Balance:', profile: ` ${fixedNumber(wallet.balance.total)}` },
     disconnect: { icon: <Disconnect />, text: 'Disconnect', onClick: onDisconnect },
   };

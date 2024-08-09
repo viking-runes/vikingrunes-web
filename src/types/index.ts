@@ -5,3 +5,10 @@ export enum CurrentSelectedRate {
   halfHourFee = 'halfHourFee',
   fastestFee = 'fastestFee',
 }
+
+export enum ProfileTab {
+  Assets = 'Assets',
+  Stakes = 'Stakes',
+  Mints = 'Mints',
+  Transfers = 'Transfers',
+}

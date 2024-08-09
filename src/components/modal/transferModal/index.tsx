@@ -10,6 +10,7 @@ import { useWallet } from '@/stores/wallet.ts';
 import { enqueueSnackbar } from 'notistack';
 import { useRune } from '@/hooks/rune/useRune.tsx';
 import commaNumber from 'comma-number';
+import { ProfileTab } from '@/types/index.ts';
 interface IProps {
   open: boolean;
   onClose: () => void;
@@ -85,16 +86,16 @@ const TransferModal: FC<IProps> = ({ open, text, onClose, modalType, data, title
           }}
           sats={runeDetail?.fees_recommended}
           ref={formInstance}
-          formItems={isTransfer ? transferFormItems : modalType === 'Claim' ? [{ type: 'sats-select', name: 'fee_rate' }] : listingFormItems}
+          formItems={isTransfer ? transferFormItems : modalType === ProfileTab.Stakes ? [{ type: 'sats-select', name: 'fee_rate' }] : listingFormItems}
         />
         <div className={'padding-top-10'}>
-          {!(isTransfer || modalType === 'Claim') && (
+          {!(isTransfer || modalType === ProfileTab.Stakes) && (
             <div className={'padding-bottom-8 margin-bottom-12 border-bottom'}>
               <ProfileBTCInfo size={'lg'} dataSource={orderMock} columns={orderColumns} />
             </div>
           )}
           <ProfileBTCInfo
-            columns={isTransfer || modalType === 'Claim' ? btcColumns : listColumns}
+            columns={isTransfer || modalType === ProfileTab.Stakes ? btcColumns : listColumns}
             dataSource={
               runeDetail?.fees || {
                 estimate_network_fee_sats: '~12173 Sats',

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { defaultPagination, defaultResponseList, IResponseStakeOrderDetail, IResponseStakeOrders } from '@/types';
 import { useWallet } from '@/stores/wallet';
-import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
+import useSignPsbt, { extractTransaction } from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { SimpleTableHeadCustom } from '@/components/simple-table';
@@ -57,25 +57,6 @@ export default function ClaimTable() {
   const handleClaimConfirm = async (uuid) => {
     setClaimLoading(uuid);
     try {
-      //   {
-      //     "uuid": "3866b7a4-1937-4a5e-a1bc-f2ac6fddc9d8",
-      //     "pool_id": "f0823278-a78c-4f13-821e-a1445c8220d2",
-      //     "batch": "P-20240601-03",
-      //     "ts_value": 1723129200,
-      //     "status": "locked",
-      //     "message": "",
-      //     "psbt": "70736274ff01005e02000000012c927289d684d9c54cb6092aec26bf1d655f0d756c2ae34926e1290cd7ba29410000000000ffffffff0110270000000000002251204b076cde03c8636c0bf0d3f761fcc558edba9f77ae316cecf46b52a8d8a297ce70ddb4660001012b80969800000000002251207ccbe12f60f803324be373312b304578ec47d392561a4bbd1284cd96bc55b8f601084301417dbce9713ebe0bae00630f41be2d8840bef802d44146e0552af559dea6e707cc937abc07ee1fbc8b8fa0674de375718836c852f726dc5ac13a44414ac378269e830000",
-      //     "network_fee": 200,
-      //     "staker_pubkey": "0316163d20115c917833f68e02bb6a16329368f90c36cbc74e868834b13a57f2a2",
-      //     "staker_address": "tb1p0n97ztmqlqpnyjlrwvcjkvz90rky05uj2cdyh0gjsnxed0z4hrmqwalgsf",
-      //     "bind_txid": null,
-      //     "bind_vout": 0,
-      //     "txid": null,
-      //     "createdAt": "2024-08-08T01:09:17.743Z",
-      //     "updatedAt": "2024-08-08T01:25:42.720Z",
-      //     "version": 0
-      // }
-
       // const stakePsbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), currentSelectedPool, networkFee);
       // const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
       // // const psbt = txFinalizeIdx(signedStakePsbt);
@@ -95,9 +76,24 @@ export default function ClaimTable() {
 
       console.log(order);
 
+      // console.log('🚀 ~ handleClaimConfirm ~ getSignedPublicKey:', getSignedPublicKey());
+
       const stakePsbt = await claim(order, wallet.address, getSignedPublicKey());
-      const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
-      await services.mempool.pushTx(signedStakePsbt);
+      const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt, [], {
+        toSignInputs: [
+          {
+            index: 0,
+            sighashTypes: [1],
+            // publicKey: getSignedPublicKey(),
+            publicKey: wallet.publicKey,
+            disableTweakSigner: true,
+          },
+        ],
+      });
+
+      const rawtx = extractTransaction(signedStakePsbt);
+
+      await services.mempool.pushTx(rawtx);
 
       enqueueSnackbar('Claim success', { variant: 'success' });
     } catch (error) {

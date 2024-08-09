@@ -8,12 +8,13 @@ import useAddressList from '@/hooks/address/useAddressList.tsx';
 import { TableSkeleton } from '@/components';
 import EmptyPlaceholder from '@/components/layouts/emptyPlaceholder';
 import styles from './index.module.less';
-import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
+// import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
 import ClaimTable from '@/pages/staking/components/claim-table';
+import { ProfileTab } from '@/types';
 const ProfileTable: FC<{ address: string }> = ({ address }) => {
   const [searchParams] = useSearchParams();
   useEffect(() => {
-    setActiveTab((searchParams.get('tab') as TProfileTabs) || 'Claim');
+    setActiveTab((searchParams.get('tab') as TProfileTabs) || ProfileTab.Stakes);
   }, [searchParams]);
   const [activeTab, setActiveTab] = useState<TProfileTabs>();
   const [actionData, setActionData] = useState({ type: undefined, data: {} });
@@ -32,7 +33,7 @@ const ProfileTable: FC<{ address: string }> = ({ address }) => {
       <EmptyPlaceholder text={'Market '} isEmpty={false}>
         <Fragment>
           <TableSkeleton loading={loading}>
-            {activeTab === 'Claim' ? (
+            {activeTab === ProfileTab.Stakes ? (
               <ClaimTable />
             ) : (
               <CommonTable
