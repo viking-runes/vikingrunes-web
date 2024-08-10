@@ -12,3 +12,5 @@ export enum ProfileTab {
   Mints = 'Mints',
   Transfers = 'Transfers',
 }
+
+export * from './claim';
