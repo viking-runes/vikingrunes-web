@@ -31,3 +31,5 @@ export async function fetchOrder(uuid) {
   if (data.code !== 200) throw Error(data.message);
   return data.data;
 }
+
+export * from './claim';
