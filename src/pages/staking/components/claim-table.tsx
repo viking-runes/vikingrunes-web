@@ -32,6 +32,7 @@ export default function ClaimTable() {
 
   // const [stakeOreders, setStakeOreders] = useState<IResponseStakeOrders>(defaultResponseList);
   const [claimTable, setClaimTable] = useState<IGraphQLClaimTable>();
+  const publicKey = getSignedPublicKey();
 
   // const fetchOrders = async () => {
   //   const body = {
@@ -54,7 +55,7 @@ export default function ClaimTable() {
 
   const fetchOrders = async () => {
     try {
-      const publicKey = getSignedPublicKey();
+      // debugger;
       console.log('🚀 ~ fetchOrders ~ publicKey:', publicKey);
       if (!publicKey) return;
       setLoading(true);
@@ -74,7 +75,7 @@ export default function ClaimTable() {
     if (wallet.address) {
       fetchOrders();
     }
-  }, [page, wallet.address]);
+  }, [page, publicKey]);
 
   const handleClaimConfirm = async (uuid) => {
     setSelectedClaimItem(uuid);
@@ -165,7 +166,7 @@ export default function ClaimTable() {
               </TableCell>
 
               <TableCell align="center">
-                <Typography>{formatStakeLockedTime(`${row.locked_time}`)}</Typography>
+                <Typography>{formatStakeLockedTime(row.locked_time * 1000)}</Typography>
               </TableCell>
               {/* <TableCell align="center">
                 <Typography>{row.locked_time}</Typography>
@@ -183,8 +184,8 @@ export default function ClaimTable() {
               </TableCell>
               <TableCell align="center">
                 <LoadingButton
-                  loading={!!setSelectedClaimItem}
-                  disabled={isLockedTimeExpired(row.locked_time)}
+                  loading={!setSelectedClaimItem}
+                  disabled={!isLockedTimeExpired(row.locked_time) || !!row.claim_txid}
                   onClick={() => {
                     handleClaimConfirm(row);
                   }}
