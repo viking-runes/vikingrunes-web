@@ -40,7 +40,7 @@ export const formatStakeDiffDays = (data: IResponseStakeItem) => {
   return diffInDays;
 };
 
-export const formatStakeLockedTime = (time: string) => {
+export const formatStakeLockedTime = (time: any) => {
   if (!time) return '';
 
   dayjs.extend(utc);
@@ -59,4 +59,9 @@ export const formatStakeCountDown = (time: number) => {
   const days = durationFromNow.days();
 
   return `${days} Day ${durationFromNow.hours()}:${durationFromNow.minutes()}:${durationFromNow.seconds()}`;
+};
+
+export const isLockedTimeExpired = (time: any) => {
+  const diff = time * 1000 - Date.now();
+  return diff < 0;
 };

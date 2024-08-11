@@ -1,7 +1,7 @@
 import { Pagination, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { IGraphQLClaimTable, IResponseStakeOrderDetail } from '@/types';
+import { IGraphQLClaimItem, IGraphQLClaimTable, IResponseStakeOrderDetail } from '@/types';
 import { useWallet } from '@/stores/wallet';
 import useSignPsbt, { extractTransaction } from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
@@ -9,7 +9,7 @@ import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { SimpleTableHeadCustom } from '@/components/simple-table';
 import { LoadingButton } from '@mui/lab';
 import services from '@/service';
-import { formatBalance, formatStakeCountDown, formatStakeLockedTime } from '@/utils/format';
+import { formatBalance, formatStakeCountDown, formatStakeLockedTime, isLockedTimeExpired } from '@/utils/format';
 import { PrimaryButton } from '@/components';
 import config from '@/config';
 import { claim } from '@/utils/stake';
@@ -20,7 +20,7 @@ export default function ClaimTable() {
 
   const [loading, setLoading] = useState(false);
 
-  const [claimLoading, setClaimLoading] = useState(undefined);
+  const [selectedClaimItem, setSelectedClaimItem] = useState<IGraphQLClaimItem>(undefined);
 
   const { wallet, getSignedPublicKey } = useWallet();
 
@@ -53,10 +53,12 @@ export default function ClaimTable() {
   // };
 
   const fetchOrders = async () => {
-    setLoading(true);
     try {
-      // const data = await fetchClaimTable(page, wallet.address);
-      const res = await fetchClaimTable<IGraphQLClaimTable>(page, 'tb1p0n97ztmqlqpnyjlrwvcjkvz90rky05uj2cdyh0gjsnxed0z4hrmqwalgsf');
+      const publicKey = getSignedPublicKey();
+      console.log('🚀 ~ fetchOrders ~ publicKey:', publicKey);
+      if (!publicKey) return;
+      setLoading(true);
+      const res = await fetchClaimTable<IGraphQLClaimTable>(page, publicKey);
       setClaimTable(res);
     } catch (error) {
       console.log(error);
@@ -75,7 +77,7 @@ export default function ClaimTable() {
   }, [page, wallet.address]);
 
   const handleClaimConfirm = async (uuid) => {
-    setClaimLoading(uuid);
+    setSelectedClaimItem(uuid);
     try {
       // const stakePsbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), currentSelectedPool, networkFee);
       // const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
@@ -92,13 +94,14 @@ export default function ClaimTable() {
 
       // stakeDialog.handleClose();
 
-      const order: IResponseStakeOrderDetail = await services.stake.fetchOrder(uuid);
+      // const order: IResponseStakeOrderDetail = await services.stake.fetchOrder(uuid);
 
-      console.log(order);
+      // console.log(order);
 
       // console.log('🚀 ~ handleClaimConfirm ~ getSignedPublicKey:', getSignedPublicKey());
 
-      const stakePsbt = await claim(order, wallet.address, getSignedPublicKey());
+      // const stakePsbt = await claim(order, wallet.address, getSignedPublicKey());
+      const stakePsbt = await claim(selectedClaimItem, wallet.address, getSignedPublicKey());
       const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt, [], {
         toSignInputs: [
           {
@@ -122,7 +125,7 @@ export default function ClaimTable() {
         variant: 'error',
       });
     } finally {
-      setClaimLoading('');
+      setSelectedClaimItem(undefined);
     }
   };
 
@@ -134,10 +137,8 @@ export default function ClaimTable() {
             { id: 'id', label: 'Locked assets', align: 'center' },
             { id: 'address', label: 'Amount', align: 'center' },
             { id: 'status', label: 'Locked time', align: 'center' },
-
-            { id: 'tx', label: 'Reward', align: 'center' },
-            { id: 'links', label: 'Countdown', align: 'center' },
-
+            { id: 'reward_data.amount', label: 'Reward', align: 'center' },
+            { id: 'locked_time', label: 'Countdown', align: 'center' },
             { id: 'tx', label: 'Tx', align: 'center' },
             { id: 'links', label: 'Action', align: 'center' },
           ]}
@@ -163,12 +164,12 @@ export default function ClaimTable() {
                 </Stack>
               </TableCell>
 
-              {/* <TableCell align="center">
-                <Typography>{formatStakeLockedTime(row.createdAt)}</Typography>
-              </TableCell> */}
               <TableCell align="center">
-                <Typography>{row.locked_time}</Typography>
+                <Typography>{formatStakeLockedTime(`${row.locked_time}`)}</Typography>
               </TableCell>
+              {/* <TableCell align="center">
+                <Typography>{row.locked_time}</Typography>
+              </TableCell> */}
 
               <TableCell align="center">
                 <PrimaryButton
@@ -182,9 +183,10 @@ export default function ClaimTable() {
               </TableCell>
               <TableCell align="center">
                 <LoadingButton
-                  loading={row.claim_txid === claimLoading}
+                  loading={!!setSelectedClaimItem}
+                  disabled={isLockedTimeExpired(row.locked_time)}
                   onClick={() => {
-                    handleClaimConfirm(row.claim_txid);
+                    handleClaimConfirm(row);
                   }}
                   variant="contained"
                   sx={{

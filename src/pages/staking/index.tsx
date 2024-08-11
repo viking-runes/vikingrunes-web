@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { CommonTable, TableSkeleton } from '@/components';
 
 import services from '@/service';
-import { defaultPagination, defaultResponseList, IResponseStakeItem, IResponseStakePools } from '@/types';
+import { defaultPagination, defaultResponseList, IResponseStakeItem, IResponseStakePools, ProfileTab } from '@/types';
 import { useWallet } from '@/stores/wallet';
 import { FeeRateSelector } from '@/components/fee-rate';
 import { LoadingButton } from '@mui/lab';
@@ -78,42 +78,7 @@ export default function StakingView() {
   const feeRate = useFeeRate();
 
   const [stakePoolData, setStakePoolData] = useState<IResponseStakePools>(defaultResponseList);
-  // const [stakePoolData, setStakePoolData] = useState<IResponseStakePools>({
-  //   count: 1,
-  //   rows: [
-  //     {
-  //       runes: [
-  //         {
-  //           rune: 'INEEDTESTRUNES',
-  //           runeid: '2584333:39',
-  //           spacedRune: 'I•NEED•TEST•RUNES',
-  //           amount: '100000',
-  //           symbol: 'ᚱ',
-  //           divisibility: 2,
-  //         },
-  //       ],
-  //       uuid: 'f0823278-a78c-4f13-821e-a1445c8220d2',
-  //       title: 'Test Pool(Reward: 10000Runes)',
-  //       batch: 'P-20240601-03',
-  //       stake_type: 'btc',
-  //       reward_type: 'rune',
-  //       signer: '03ac6d5bda18a62e940ee7e2c332da70968945a453329551001d5c8c6fe281669d',
-  //       total: 5,
-  //       amount: '10000',
-  //       staked: '0',
-  //       staked_count: 0,
-  //       status: 'active',
-  //       ts_value: 1723129200,
-  //       service_fee: 3000,
-  //       network_vsize: 200,
-  //       begin_date: '2024-08-01T00:00:00.000Z',
-  //       end_date: '2024-08-30T00:00:00.000Z',
-  //       createdAt: '2024-08-07T08:29:59.886Z',
-  //       updatedAt: '2024-08-07T08:29:59.886Z',
-  //       version: 0,
-  //     },
-  //   ],
-  // });
+
   const [mineBtcData, setMineBtcData] = useState<IResponseStakePools>(defaultResponseList);
   const [mineVikingData, setMineVikingData] = useState<IResponseStakePools>(defaultResponseList);
 
@@ -311,8 +276,7 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          // btcCurrentLockedDialog.handleOpen();
-                          navigate('/profile/MyAssets?tab=Claim');
+                          navigate(`/profile/MyAssets?tab=${ProfileTab.Stakes}`);
                         }}
                         fontSize={responsiveTextFontSize}
                       >
@@ -340,8 +304,7 @@ export default function StakingView() {
                         direction={'row'}
                         alignItems={'center'}
                         onClick={() => {
-                          // btcCurrentLockedDialog.handleOpen();
-                          navigate('/profile/MyAssets?tab=Claim');
+                          navigate(`/profile/MyAssets?tab=${ProfileTab.Stakes}`);
                         }}
                         fontSize={responsiveTextFontSize}
                       >

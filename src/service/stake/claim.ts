@@ -1,6 +1,6 @@
 import { requestV2 } from '@/service';
 
-export async function fetchClaimTable<R>(page: number, address: string) {
+export async function fetchClaimTable<R>(page: number, pk: string) {
   return await requestV2<R>(`
     {
   claim(
@@ -9,11 +9,14 @@ export async function fetchClaimTable<R>(page: number, address: string) {
       page_size:10
     }
     where:{
-      address:"${address}"
+      internal_pubkey:"${pk}"
     }
   )
   {
     items {
+      address
+      stake_txid
+      stake_vout
       stake_data
       {
         asset_name
@@ -30,12 +33,15 @@ export async function fetchClaimTable<R>(page: number, address: string) {
         amount
         divisibility
       }
+      script_pubkey
+      internal_pubkey
     }
     pagination {
       page_no
       page_total
     }
   }
-}
+  }
+
   `);
 }

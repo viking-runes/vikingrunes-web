@@ -15,9 +15,14 @@ export interface IGraphQLClaimItemsTable {
 export interface IGraphQLClaimItem {
   amount: string;
   claim_txid: string;
-  locked_time: string;
+  locked_time: number;
   reward_data: IGraphQLClaimItemRewarddata;
   stake_data: IGraphQLClaimItemStakedata;
+  stake_txid: string;
+  stake_vout: number;
+  script_pubkey: string;
+  address: string;
+  internal_pubkey: string;
 }
 
 interface IGraphQLClaimItemStakedata {
