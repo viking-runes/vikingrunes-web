@@ -58,7 +58,7 @@ export function useWallet() {
   };
 
   const getSignedPublicKey = () => {
-    console.log(wallet.publicKey);
+    // console.log(wallet.publicKey);
     if (wallet.publicKey.length === 66) {
       return wallet.publicKey.slice(2);
     }
