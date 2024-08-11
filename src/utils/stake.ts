@@ -1,5 +1,5 @@
 import config from '@/config';
-import { IResponseStakeItem, IResponseStakeOrderDetail } from '@/types';
+import { IGraphQLClaimItem, IResponseStakeItem, IResponseStakeOrderDetail } from '@/types';
 import { bytesToHex, hexTobytes } from '@/utils/format';
 import UniSat from '@/utils/unisat';
 // import { Script, ScriptNum, SigHash, Transaction, TEST_NETWORK, NETWORK, p2tr } from '@scure/btc-signer';
@@ -169,8 +169,8 @@ function locked_p2tr(pubkey: string, script) {
   });
 }
 
-export async function claim(order: IResponseStakeOrderDetail, stakerAddress: string, stakerPubkey: string) {
-  const unlock_time = order.ts_value;
+export async function claim(claimItem: IGraphQLClaimItem, stakerAddress: string, stakerPubkey: string) {
+  const unlock_time = claimItem.locked_time;
 
   // const fee = order.network_fee;
   const fee = 180;
@@ -185,7 +185,7 @@ export async function claim(order: IResponseStakeOrderDetail, stakerAddress: str
   // console.log('🚀 ~ claim ~ commit_p2tr.internalPubkey:', bytesToHex(commit_p2tr.internalPubkey));
 
   const unlock_tx = {
-    hash: order.txid,
+    hash: claimItem.stake_txid,
     index: 0,
     witnessUtxo: {
       script: commit_p2tr.output,
@@ -250,6 +250,88 @@ export async function claim(order: IResponseStakeOrderDetail, stakerAddress: str
 
   // console.log(`claim hash: `, broadcast_result.data);
 }
+
+// export async function claim(order: IResponseStakeOrderDetail, stakerAddress: string, stakerPubkey: string) {
+//   const unlock_time = order.ts_value;
+
+//   // const fee = order.network_fee;
+//   const fee = 180;
+
+//   const locked_script = lock_script(unlock_time, stakerPubkey);
+
+//   const commit_p2tr = locked_p2tr(stakerPubkey, locked_script);
+
+//   const amount = 10000;
+
+//   // console.log(bytesToHex(commit_p2tr.internalPubkey));
+//   // console.log('🚀 ~ claim ~ commit_p2tr.internalPubkey:', bytesToHex(commit_p2tr.internalPubkey));
+
+//   const unlock_tx = {
+//     hash: order.txid,
+//     index: 0,
+//     witnessUtxo: {
+//       script: commit_p2tr.output,
+//       value: amount,
+//     },
+//     publicKey: stakerPubkey,
+//     sighashType: Transaction.SIGHASH_ALL,
+//     tapInternalKey: commit_p2tr.internalPubkey,
+//     sequence: 0xfffffffe,
+//     tapLeafScript: [
+//       {
+//         leafVersion: 192,
+//         script: locked_script,
+//         controlBlock: commit_p2tr.witness[commit_p2tr.witness.length - 1],
+//       },
+//     ],
+//   };
+
+//   // debugger;
+//   const claim_tx = new Psbt({
+//     network: network,
+//   });
+
+//   claim_tx.setLocktime(unlock_time);
+
+//   claim_tx.addInput(unlock_tx);
+
+//   claim_tx.addOutput({
+//     address: stakerAddress,
+//     value: 546,
+//   });
+
+//   claim_tx.addOutput({
+//     address: stakerAddress,
+//     value: amount - fee - 546,
+//     // value: amount - fee,
+//   });
+
+//   // claim_tx.extractTransaction(true);
+//   // const tx_hex = claim_tx.extractTransaction(true).toHex();
+//   // console.log('🚀 ~ claim ~ tx_hex:', tx_hex);
+//   // return tx_hex;
+
+//   const psbt = claim_tx.toHex();
+//   console.log('🚀 ~ claim ~ psbt:', psbt);
+
+//   return psbt;
+
+//   // // use plugin
+//   // claim_tx.signInput(0, staker.keyPair, [Transaction.SIGHASH_ALL]);
+
+//   // claim_tx.finalizeInput(0);
+
+//   // const tx_hex = claim_tx.extractTransaction(true).toHex();
+
+//   // console.log(tx_hex);
+
+//   // const broadcast_result = await unisat_fetch.broadcast(tx_hex).catch((e) => {
+//   //   console.log(e.code, e.message);
+//   //   return e.response;
+//   // });
+
+//   // console.log(`claim hash: `, broadcast_result.data);
+// }
 
 // (async () => {
 //   const stake_psbt = await genrate_stake_psbt();
