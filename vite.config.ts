@@ -41,11 +41,20 @@ export default ({ mode }: any) => {
 
     server: {
       port: 5173,
+      // proxy: {
+      //   '/api': {
+      //     target: stakeUrl,
+      //     secure: false,
+      //     changeOrigin: true,
+      //   },
+      // },
+
       proxy: {
-        '/api': {
+        '/stake': {
           target: stakeUrl,
-          secure: false,
+          // secure: false,
           changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/stake/, ''),
         },
       },
     },
