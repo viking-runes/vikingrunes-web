@@ -15,6 +15,14 @@ export default ({ mode }: any) => {
   console.log('🚀 ~ stakeUrl:', stakeUrl);
 
   return defineConfig({
+    build: {
+      rollupOptions: {
+        external: [
+          'react', // ignore react stuff
+          'react-dom',
+        ],
+      },
+    },
     esbuild: {
       supported: {
         'top-level-await': true, //browsers can handle top-level-await features
