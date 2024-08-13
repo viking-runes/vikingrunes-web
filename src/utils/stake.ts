@@ -119,6 +119,10 @@ export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerA
 
   tx.setLocktime(stakePool.ts_value);
 
+  console.log(`Input Txid: ${tx.txInputs[0].hash.toString('hex')}`);
+
+  console.log(tx);
+
   // const psbt = tx.toBase64();
   const psbt = tx.toHex();
   console.log('🚀 ~ generate_stake_psbt ~ psbt:', psbt);

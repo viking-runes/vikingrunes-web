@@ -20,13 +20,13 @@ export default function FreeMintView() {
   }, []);
 
   const clickSearch = () => {
-    // todo 点击search
+    // todo  click search
     console.log('==clickSearch==', searchQuery);
   };
 
   const { TipDialog, ...tipDialog } = useTipDialog(`The address does not have permissions！`);
   const onSubmitMint = () => {
-    // TODO 地址允许freemint
+    // TODO address should freemint
     if (searchQuery) {
       tipDialog.handleOpen();
     }

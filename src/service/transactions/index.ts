@@ -40,6 +40,57 @@ export async function fetchTransaction<R>(id: string) {
             div_amount
           }
         }
+                stake_data
+      {
+        stake
+        {
+          detail
+          {
+            version
+            stake
+            {
+              value
+              type
+              {
+                text
+                value
+              }
+            }
+            reward
+            {
+              value
+              type
+              {
+                text
+                value
+              }
+            }
+            index
+          }
+          pubkey
+          network
+          {
+            bech32
+            bip32
+            {
+              public
+              private
+            }
+            pubKeyHash
+            scriptHash
+            wif
+          }
+          lock_time
+        }
+        script
+        address
+      }
+      claim_data
+      {
+        is_claim
+        stake_tx_id
+        stake_vout
+      }
       }
     }
   }
