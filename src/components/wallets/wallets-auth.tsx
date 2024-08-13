@@ -1,4 +1,3 @@
-'use client';
 import config from '@/config';
 import useOkx from '@/hooks/wallet/use-okx';
 import useUnisat from '@/hooks/wallet/use-unisat';

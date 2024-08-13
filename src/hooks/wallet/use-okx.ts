@@ -1,5 +1,3 @@
-'use client';
-
 import { useSnackbar } from '@/components/snackbar';
 import config from '@/config';
 // import { checkIsBTCAddress } from '@/utils';

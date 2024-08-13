@@ -15,6 +15,11 @@ export default ({ mode }: any) => {
   console.log('🚀 ~ stakeUrl:', stakeUrl);
 
   return defineConfig({
+    esbuild: {
+      supported: {
+        'top-level-await': true, //browsers can handle top-level-await features
+      },
+    },
     plugins: [
       wasm(),
       react(),
