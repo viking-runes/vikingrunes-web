@@ -34,11 +34,6 @@ jobs:
 
       - run: cp .env.testnet .env
 
-      - name: Run Install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
-
       - name: Build project
         uses: borales/actions-yarn@v4
         with:
