@@ -1,4 +1,3 @@
-'use client';
 import config from '@/config';
 // import { checkIsBTCAddress } from '@/utils';
 
