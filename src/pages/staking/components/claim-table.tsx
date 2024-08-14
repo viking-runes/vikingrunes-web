@@ -135,7 +135,7 @@ export default function ClaimTable() {
       <Table>
         <SimpleTableHeadCustom
           headLabel={[
-            { id: 'id', label: 'Locked assets', align: 'center' },
+            { id: 'id', label: 'Staking', align: 'center' },
             { id: 'address', label: 'Amount', align: 'center' },
             { id: 'status', label: 'Locked time', align: 'center' },
             { id: 'reward_data.amount', label: 'Reward', align: 'center' },
@@ -160,7 +160,7 @@ export default function ClaimTable() {
 
               <TableCell align="center">
                 <Stack direction="column" alignItems="center">
-                  <Typography>{row.reward_data.asset_name}</Typography>
+                  <Typography>{row.reward_data.rune_name}</Typography>
                   <Typography>{row.reward_data.amount}</Typography>
                 </Stack>
               </TableCell>
@@ -177,7 +177,7 @@ export default function ClaimTable() {
                   size="md"
                   type={'default'}
                   onClick={() => {
-                    window.open(config.links.tx(row.claim_txid));
+                    window.open(config.links.tx(row.stake_txid));
                   }}
                   text={'Click'}
                 />
