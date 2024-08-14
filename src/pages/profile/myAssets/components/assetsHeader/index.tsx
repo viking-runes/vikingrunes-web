@@ -22,10 +22,10 @@ const AssetsHeader: FC<{ address: string }> = ({ address }) => {
           {/* <li className={styles.label}>BTC Balance: {onFormat(point)}</li> */}
           <li className={styles.label}>BTC Balance: </li>
         </ul>
-        <ul className={cn(styles.info, 'd-flex flex-column gap-16')}>
+        {/* <ul className={cn(styles.info, 'd-flex flex-column gap-16')}>
           <li className={styles.text}>$----</li>
           <li className={styles.label}>Total Value</li>
-        </ul>
+        </ul> */}
       </div>
     </div>
   );
