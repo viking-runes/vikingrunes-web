@@ -22,6 +22,11 @@ const WalletAuth = () => {
       if (currentWallet.address && currentWallet.publicKey) {
         unisatHook.handleAccountsChanged(currentWallet.address);
       }
+
+      window.unisat?.on('accountsChanged', (accounts) => {
+        console.log('🚀 ~ window.unisat?.on ~ accounts:', accounts);
+        unisatHook.handleAccountsChanged(accounts[0]);
+      });
     }
   }, []);
 
