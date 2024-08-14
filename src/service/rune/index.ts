@@ -3,7 +3,7 @@ import axiosInstance from '@/utils/axios';
 
 export async function getBalance(address: string): Promise<any> {
   try {
-    throw new Error('Not implemented');
+    // throw new Error('Not implemented');
 
     const { data } = await axiosInstance.get(`${config.openDaoHost}/v1/address/${address}/balance`);
     const balance = data.data;

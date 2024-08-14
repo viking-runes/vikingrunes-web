@@ -10,6 +10,7 @@ import ExplorerIcon from '@/assets/images/icon/layouts/explorer.svg?react';
 import FairMintIcon from '@/assets/images/icon/layouts/fairmint.svg?react';
 import MarketIcon from '@/assets/images/icon/layouts/market.svg?react';
 import RunesPumpIcon from '@/assets/images/icon/layouts/runespump.svg?react';
+import config from '@/config';
 
 type NavItem = {
   name: string | ReactNode;
@@ -32,7 +33,7 @@ const navs: NavItem[] = [
   { name: 'Profile', icon: <ProfileIcon className={styles['profile']} />, includes: ['/profile'], path: '/profile', type: 'mobile' },
   {
     name: 'UTXO-Staking Protocol',
-    path: 'https://doc.vikingrunes.io/utxo-staking-protocol/introduce',
+    path: config.protocol,
   },
   // {
   //   name: '$Viking',

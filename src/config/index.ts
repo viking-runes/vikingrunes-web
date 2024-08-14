@@ -31,6 +31,10 @@ const config = {
   links: {
     tx: (txid: string) => `${mempoolUrl}/tx/${txid}`,
   },
+
+  protocol: `https://doc.vikingrunes.io/utxo-staking-protocol/introduce`,
+  tokenEconomics: 'https://doc.vikingrunes.io/vikingrunes.io/tokenomics',
+  roadmap: 'https://doc.vikingrunes.io/vikingrunes.io/roadmap',
 };
 
 export default config;

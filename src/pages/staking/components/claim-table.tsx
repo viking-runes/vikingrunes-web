@@ -148,7 +148,7 @@ export default function ClaimTable() {
           {claimTable?.claim?.items?.map((row, index) => (
             <TableRow key={index}>
               <TableCell align="center">
-                <Typography>{row.stake_data.asset_name}</Typography>
+                <Typography>{row.stake_data.asset_name.toUpperCase()}</Typography>
               </TableCell>
               <TableCell align="center">
                 <Typography>{formatBalance(row.stake_data.amount)}</Typography>
