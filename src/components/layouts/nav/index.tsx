@@ -30,6 +30,10 @@ const navs: NavItem[] = [
   // { name: 'Freemint', icon: <MarketIcon />, mobile: 'Freemint', tooltip: 'Freemint', path: '/freemint', includes: ['/freemint'], needConnect: true, normalNav: true },
   { name: 'Staking', icon: <RunesPumpIcon />, tooltip: 'Staking', path: '/staking', includes: ['/staking'], type: 'slice', needConnect: true, normalNav: true },
   { name: 'Profile', icon: <ProfileIcon className={styles['profile']} />, includes: ['/profile'], path: '/profile', type: 'mobile' },
+  {
+    name: 'UTXO-Staking Protocol',
+    path: 'https://doc.vikingrunes.io/utxo-staking-protocol/introduce',
+  },
   // {
   //   name: '$Viking',
   //   path: '/viking',
@@ -53,6 +57,11 @@ const Nav: FC<{ type?: 'mobile' }> = ({ type }) => {
             <p
               className={cn({ [styles.active]: nav.includes?.includes(path) }, 'd-flex align-items-center')}
               onClick={() => {
+                if (nav.path.startsWith('http')) {
+                  window.open(nav.path);
+                  return;
+                }
+
                 if (nav.needConnect && !wallet.address) {
                   enqueueSnackbar('Please link wallet first!', {
                     variant: 'info',
