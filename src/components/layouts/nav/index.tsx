@@ -25,16 +25,16 @@ type NavItem = {
 
 const navs: NavItem[] = [
   { name: 'Explorer', icon: <ExplorerIcon />, path: '/explorer', includes: ['/explorer', '/rune'], needConnect: false },
-  { name: 'Fair mint', icon: <FairMintIcon />, mobile: 'FairMint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
-  { name: 'Market', path: '/market', includes: ['/market'], needConnect: true },
-  { name: 'Freemint', icon: <MarketIcon />, mobile: 'Freemint', tooltip: 'Freemint', path: '/freemint', includes: ['/freemint'], needConnect: true, normalNav: true },
+  // { name: 'Fair mint', icon: <FairMintIcon />, mobile: 'FairMint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
+  // { name: 'Market', path: '/market', includes: ['/market'], needConnect: true },
+  // { name: 'Freemint', icon: <MarketIcon />, mobile: 'Freemint', tooltip: 'Freemint', path: '/freemint', includes: ['/freemint'], needConnect: true, normalNav: true },
   { name: 'Staking', icon: <RunesPumpIcon />, tooltip: 'Staking', path: '/staking', includes: ['/staking'], type: 'slice', needConnect: true, normalNav: true },
   { name: 'Profile', icon: <ProfileIcon className={styles['profile']} />, includes: ['/profile'], path: '/profile', type: 'mobile' },
-  {
-    name: '$Viking',
-    path: '/viking',
-    includes: ['/viking'],
-  },
+  // {
+  //   name: '$Viking',
+  //   path: '/viking',
+  //   includes: ['/viking'],
+  // },
 ];
 
 const Nav: FC<{ type?: 'mobile' }> = ({ type }) => {
