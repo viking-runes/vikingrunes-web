@@ -163,7 +163,7 @@ export default function StakingView() {
       const response = await services.stake.txStake(body);
       console.log('🚀 ~ handleStakeConfirm ~ response:', response);
 
-      enqueueSnackbar('Stake success', { variant: 'success' });
+      enqueueSnackbar('Stake success, tx will be received in a few minutes.', { variant: 'success' });
       stakeDialog.handleClose();
     } catch (error) {
       console.log(error);

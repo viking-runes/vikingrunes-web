@@ -1,7 +1,7 @@
 import { Pagination, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { IGraphQLClaimItem, IGraphQLClaimTable, IResponseStakeOrderDetail } from '@/types';
+import { IGraphQLClaimItem, IGraphQLClaimTable } from '@/types';
 import { useWallet } from '@/stores/wallet';
 import useSignPsbt, { extractTransaction } from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
@@ -155,7 +155,7 @@ export default function ClaimTable() {
               </TableCell>
 
               <TableCell align="center">
-                <Typography>{row.locked_time}</Typography>
+                <Typography>{formatStakeLockedTime(row.locked_time)}</Typography>
               </TableCell>
 
               <TableCell align="center">
@@ -166,7 +166,7 @@ export default function ClaimTable() {
               </TableCell>
 
               <TableCell align="center">
-                <Typography>{formatStakeLockedTime(row.locked_time * 1000)}</Typography>
+                <Typography>{formatStakeCountDown(row.locked_time)}</Typography>
               </TableCell>
               {/* <TableCell align="center">
                 <Typography>{row.locked_time}</Typography>
@@ -200,7 +200,7 @@ export default function ClaimTable() {
                     },
                   }}
                 >
-                  Claim
+                  {row.claim_txid ? 'Claimed' : 'Claim'}
                 </LoadingButton>
               </TableCell>
             </TableRow>

@@ -54,21 +54,21 @@ export interface IResponseStakeOrder {
 
 export interface IResponseStakeOrders extends IResponseCommonList<IResponseStakeOrder[]> {}
 
-export interface IResponseStakeOrderDetail {
-  uuid: string;
-  pool_id: string;
-  batch: string;
-  ts_value: number;
-  status: string;
-  message: string;
-  psbt: string;
-  network_fee: number;
-  staker_pubkey: string;
-  staker_address: string;
-  bind_txid: string;
-  bind_vout: number;
-  txid: string;
-  createdAt: string;
-  updatedAt: string;
-  version: number;
-}
+// export interface IResponseStakeOrderDetail {
+//   uuid: string;
+//   pool_id: string;
+//   batch: string;
+//   ts_value: number;
+//   status: string;
+//   message: string;
+//   psbt: string;
+//   network_fee: number;
+//   staker_pubkey: string;
+//   staker_address: string;
+//   bind_txid: string;
+//   bind_vout: number;
+//   txid: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   version: number;
+// }
