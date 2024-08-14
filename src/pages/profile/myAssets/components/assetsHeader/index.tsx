@@ -7,7 +7,7 @@ import { formatAddress } from '@/utils/format.ts';
 import ProfileContext from '@/context';
 import { onFormat } from '@/utils';
 const AssetsHeader: FC<{ address: string }> = ({ address }) => {
-  const { point } = useContext<{ point?: string }>(ProfileContext);
+  // const { point } = useContext<{ point?: string }>(ProfileContext);
   return (
     <div className={cn(styles.header, 'd-flex gap-25 align-items-center')}>
       <i className={styles.avatar}>
@@ -19,7 +19,8 @@ const AssetsHeader: FC<{ address: string }> = ({ address }) => {
             <span>{formatAddress(address)}</span>
             <CopyIcon fontSize={'1.1875rem'} code={address} />
           </li>
-          <li className={styles.label}>Viking Points: {onFormat(point)}</li>
+          {/* <li className={styles.label}>BTC Balance: {onFormat(point)}</li> */}
+          <li className={styles.label}>BTC Balance: </li>
         </ul>
         <ul className={cn(styles.info, 'd-flex flex-column gap-16')}>
           <li className={styles.text}>$----</li>

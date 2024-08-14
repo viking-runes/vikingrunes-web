@@ -44,7 +44,7 @@ export const formatStakeLockedTime = (time: any) => {
   if (!time) return '';
 
   dayjs.extend(utc);
-  return dayjs.utc(time).format('YYYY-MM-DD HH:mm:ss');
+  return dayjs.utc(time * 1000).format('YYYY-MM-DD HH:mm:ss');
 };
 
 export const formatStakeCountDown = (time: number) => {
