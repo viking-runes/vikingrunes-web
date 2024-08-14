@@ -2,7 +2,8 @@ import axios from 'axios';
 
 export async function fetchPools(body) {
   // const { data } = await axios.post(`${config.stakeUrl}/api/v1/pools`, body);
-  const { data } = await axios.post(`/stake/api/v1/pools`, body);
+  // const { data } = await axios.post(`/stake/api/v1/pools`, body);
+  const { data } = await axios.post(`https://apit.vikingrunes.io/stake/api/v1/pools`, body);
   if (data.code !== 200) throw Error(data.message);
   return data.data;
 }
