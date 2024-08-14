@@ -91,7 +91,7 @@ const VikingWarrior = () => {
       <Container>
         <Box pt={7} pb={18.875}>
           <Stack direction={'row'} justifyContent={'space-between'}>
-            <Stack spacing={4} maxWidth={549}>
+            <Stack spacing={4} maxWidth={580}>
               <Typography fontSize={40} fontWeight={400} color={'#EBB94C'}>
                 <span style={{ color: '#fff' }}>#</span> Viking Warrior
               </Typography>
@@ -108,7 +108,7 @@ const VikingWarrior = () => {
                 Quantity: 40,000 &nbsp; Price: Freemint
               </Typography>
             </Stack>
-            <Stack spacing={2.5} alignItems={'center'} justifyContent={'flex-end'}>
+            <Stack spacing={2.75} alignItems={'center'} mt={'130px'}>
               <Box width={330} height={330} bgcolor={'rgba(151, 151, 151, .5)'} borderRadius={1}>
                 <video controls={false} width="100%" height="auto" autoPlay={true} muted>
                   <source src="/assets/video-60k.mp4" type="video/mp4" />
