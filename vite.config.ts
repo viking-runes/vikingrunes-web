@@ -16,12 +16,12 @@ export default ({ mode }: any) => {
 
   return defineConfig({
     build: {
-      rollupOptions: {
-        external: [
-          'react', // ignore react stuff
-          'react-dom',
-        ],
-      },
+      // rollupOptions: {
+      //   external: [
+      //     'react', // ignore react stuff
+      //     'react-dom',
+      //   ],
+      // },
     },
     esbuild: {
       supported: {
