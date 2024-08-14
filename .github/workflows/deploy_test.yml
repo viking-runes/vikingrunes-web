@@ -17,26 +17,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 21.x
-          cache: 'npm'
+          node-version: 20
+          cache: 'pnpm'
 
       - run: cp .env.testnet .env
 
-      - name: Run Install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
-
       - name: Build project
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
+        run: |
+          pnpm install && pnpm build
+
 
       - run: cp dist/index.html dist/404.html
 
