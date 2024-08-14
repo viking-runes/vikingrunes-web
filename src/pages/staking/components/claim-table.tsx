@@ -14,8 +14,11 @@ import { PrimaryButton } from '@/components';
 import config from '@/config';
 import { claim } from '@/utils/stake';
 import { fetchClaimTable } from '@/service/stake';
+import { useNavigate } from 'react-router-dom';
 
 export default function ClaimTable() {
+  const navigate = useNavigate();
+
   const feeRate = useFeeRate();
 
   const [loading, setLoading] = useState(false);
@@ -177,7 +180,8 @@ export default function ClaimTable() {
                   size="md"
                   type={'default'}
                   onClick={() => {
-                    window.open(config.links.tx(row.stake_txid));
+                    navigate(config.routes.tx(row.stake_txid));
+                    // window.open(config.links.tx(row.stake_txid));
                   }}
                   text={'Click'}
                 />
