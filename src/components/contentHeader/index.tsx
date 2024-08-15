@@ -4,17 +4,23 @@ import { CopyIcon } from '@/components';
 import cn from 'classnames';
 interface IProps {
   headArr: Array<string>;
+  additionalHeader?: React.ReactNode;
   copyText?: Array<string>;
   textArr?: Array<string>;
   onHeadPrimaryClick?: () => void;
   isSmHead?: boolean;
 }
 const ContentHeader: FC<IProps> = (props) => {
-  const { headArr, isSmHead, textArr, copyText, onHeadPrimaryClick } = props;
+  const { headArr, isSmHead, textArr, copyText, additionalHeader, onHeadPrimaryClick } = props;
 
   return (
     <div className={cn(styles['content-head-title'], ' d-flex flex-column')}>
-      <h1 className={cn(styles['head-title'], 'd-flex  flex-wrap', { ['small-size-head']: isSmHead })}>
+      <h1
+        className={cn(styles['head-title'], 'd-flex  flex-wrap', { ['small-size-head']: isSmHead })}
+        style={{
+          alignItems: 'center',
+        }}
+      >
         {headArr.map((text, index) => {
           return text?.includes('zoroday') || text?.includes('zorosmall') ? (
             <a key={text + index} className={cn({ [styles['head-small']]: text?.includes('zorosmall') })} onClick={onHeadPrimaryClick}>
@@ -24,6 +30,7 @@ const ContentHeader: FC<IProps> = (props) => {
             <span key={text + index}>{text}</span>
           );
         })}
+        {additionalHeader}
       </h1>
       <p className={cn(styles['small-head'], 'd-flex align-items-center')}>{textArr?.map((t) => <span key={t}>{t}</span>)}</p>
       <p className={cn(styles['small-head'])}>

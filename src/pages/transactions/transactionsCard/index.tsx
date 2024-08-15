@@ -34,7 +34,7 @@ const TransactionsCard: FC<IProps> = ({ inputItems, outputItems }) => {
                             {!isEmpty(item.address) ? <TransactionsCode type={'address'} code={item.address} /> : 'OP_RETURN'}
                             {!isEmpty(item.address) && <p>{item.btc}</p>}
                           </div>
-                          <div className={cn(styles['cash-wrapper'], 'd-flex flex-wrap')}>{item?.balances?.map((blance) => <CashCard key={blance.div_amount} value={blance.div_amount} />)}</div>
+                          <div className={cn(styles['cash-wrapper'], 'd-flex flex-wrap')}>{item?.balances?.map((blance) => <CashCard key={blance.div_amount} value={`${blance.rune} ${blance.div_amount}`} />)}</div>
                         </div>
                       </div>
                     );

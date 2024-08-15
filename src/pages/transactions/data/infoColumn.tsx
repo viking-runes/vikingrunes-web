@@ -1,4 +1,5 @@
 import { IInfoCardDataItem } from '@/components/InfoCard';
+import { formatStakeCountDown } from '@/utils/format';
 import { Fragment } from 'react';
 
 export const infoColumn: Array<Array<IInfoCardDataItem>> = [
@@ -23,6 +24,14 @@ export const infoColumn: Array<Array<IInfoCardDataItem>> = [
       field: 'fee_rate',
       render: (record) => {
         return `${record['fee_rate']} sats/vB`;
+      },
+    },
+    {
+      title: 'Countdown',
+      field: 'stake_data',
+      render: (rowData: any) => {
+        const ts = rowData?.stake_data?.stake?.lock_time;
+        return formatStakeCountDown(ts);
       },
     },
   ],
