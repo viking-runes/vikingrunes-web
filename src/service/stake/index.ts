@@ -37,6 +37,8 @@ export async function fetchOrder(uuid) {
 
 export * from './claim';
 
+export * from './stakingOverView';
+
 // import axios from 'axios';
 
 // export async function fetchPools(body) {
