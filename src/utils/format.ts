@@ -34,10 +34,11 @@ export const hexToBase64 = (hex: string) => {
 
 export const formatStakeDiffDays = (data: IResponseStakeItem) => {
   if (!data) return 0;
-  const endDate = dayjs(data.end_date);
-  const beginDate = dayjs(data.begin_date);
+
+  const endDate = dayjs(data.ts_value * 1000);
+  const beginDate = dayjs(Date.now());
   const diffInDays = endDate.diff(beginDate, 'day');
-  return diffInDays;
+  return diffInDays > 0 ? diffInDays : 0;
 };
 
 export const formatStakeLockedTime = (time: any) => {
