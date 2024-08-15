@@ -36,7 +36,7 @@ const ProfileAction: FC<{ onDisconnect: () => void }> = ({ onDisconnect }) => {
       path: `/profile/MyAssets?tab=${ProfileTab.Assets}`,
     },
     order: { icon: <MyOrder />, text: 'My Stakes', path: `/profile/MyAssets?tab=${ProfileTab.Stakes}` },
-    balance: { icon: <BTCIcon />, text: 'BTC Balance:', profile: ` ${fixedNumber(wallet.balance.total)}` },
+    // balance: { icon: <BTCIcon />, text: 'BTC Balance:', profile: ` ${fixedNumber(wallet.balance.total)}` },
     disconnect: { icon: <Disconnect />, text: 'Disconnect', onClick: onDisconnect },
   };
 
