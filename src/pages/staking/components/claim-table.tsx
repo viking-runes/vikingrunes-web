@@ -180,7 +180,7 @@ export default function ClaimTable() {
                   size="md"
                   type={'default'}
                   onClick={() => {
-                    navigate(config.routes.tx(row.stake_txid));
+                    navigate(config.routes.tx(row.claim_txid ? row.claim_txid : row.stake_txid));
                     // window.open(config.links.tx(row.stake_txid));
                   }}
                   text={'Click'}
