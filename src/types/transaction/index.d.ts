@@ -1,5 +1,10 @@
 interface IBalanceDetails {
+  amount: string;
   div_amount: string;
+  divisibility: number;
+  rune: string;
+  rune_id: string;
+  symbol: string;
 }
 
 interface ITransactionInput {
