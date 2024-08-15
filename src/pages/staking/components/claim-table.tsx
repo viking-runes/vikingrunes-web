@@ -151,25 +151,25 @@ export default function ClaimTable() {
           {claimTable?.claim?.items?.map((row, index) => (
             <TableRow key={index}>
               <TableCell align="center">
-                <Typography>{row.stake_data.asset_name.toUpperCase()}</Typography>
+                <Typography fontSize={14}>{row.stake_data.asset_name.toUpperCase()}</Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography>{formatBalance(row.stake_data.amount)}</Typography>
+                <Typography fontSize={14}>{formatBalance(row.stake_data.amount)}</Typography>
               </TableCell>
 
               <TableCell align="center">
-                <Typography>{formatStakeLockedTime(row.locked_time)}</Typography>
+                <Typography fontSize={14}>{formatStakeLockedTime(row.locked_time)}</Typography>
               </TableCell>
 
               <TableCell align="center">
                 <Stack direction="column" alignItems="center">
-                  <Typography>{row.reward_data.rune_name}</Typography>
-                  <Typography>{row.reward_data.amount}</Typography>
+                  <Typography fontSize={14}>{row.reward_data.rune_name}</Typography>
+                  <Typography fontSize={14}>{row.reward_data.amount}</Typography>
                 </Stack>
               </TableCell>
 
               <TableCell align="center">
-                <Typography>{formatStakeCountDown(row.locked_time)}</Typography>
+                <Typography fontSize={14}>{formatStakeCountDown(row.locked_time)}</Typography>
               </TableCell>
               {/* <TableCell align="center">
                 <Typography>{row.locked_time}</Typography>
@@ -184,6 +184,7 @@ export default function ClaimTable() {
                     // window.open(config.links.tx(row.stake_txid));
                   }}
                   text={'Click'}
+                  width={'92px'}
                 />
               </TableCell>
               <TableCell align="center">
@@ -202,6 +203,8 @@ export default function ClaimTable() {
                     '&:hover': {
                       backgroundColor: '#EBB94C',
                     },
+                    width: 92,
+                    height: 40,
                   }}
                 >
                   {row.claim_txid ? 'Claimed' : 'Claim'}
