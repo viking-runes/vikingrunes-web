@@ -5,9 +5,13 @@ import cn from 'classnames';
 import { CopyIcon } from '@/components';
 import { formatAddress } from '@/utils/format.ts';
 import ProfileContext from '@/context';
-import { onFormat } from '@/utils';
+import { fixedNumber, onFormat } from '@/utils';
+import { useWallet } from '@/stores/wallet';
+
 const AssetsHeader: FC<{ address: string }> = ({ address }) => {
   // const { point } = useContext<{ point?: string }>(ProfileContext);
+  const { wallet } = useWallet();
+
   return (
     <div className={cn(styles.header, 'd-flex gap-25 align-items-center')}>
       <i className={styles.avatar}>
@@ -20,7 +24,7 @@ const AssetsHeader: FC<{ address: string }> = ({ address }) => {
             <CopyIcon fontSize={'1.1875rem'} code={address} />
           </li>
           {/* <li className={styles.label}>BTC Balance: {onFormat(point)}</li> */}
-          <li className={styles.label}>BTC Balance: </li>
+          <li className={styles.label}>BTC Balance: {fixedNumber(wallet.balance.total)} </li>
         </ul>
         {/* <ul className={cn(styles.info, 'd-flex flex-column gap-16')}>
           <li className={styles.text}>$----</li>
