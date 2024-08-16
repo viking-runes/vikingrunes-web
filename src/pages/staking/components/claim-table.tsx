@@ -80,8 +80,8 @@ export default function ClaimTable() {
     }
   }, [page, publicKey]);
 
-  const handleClaimConfirm = async (uuid) => {
-    setSelectedClaimItem(uuid);
+  const handleClaimConfirm = async (row) => {
+    setSelectedClaimItem(row);
     try {
       // const stakePsbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), currentSelectedPool, networkFee);
       // const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
@@ -105,7 +105,8 @@ export default function ClaimTable() {
       // console.log('🚀 ~ handleClaimConfirm ~ getSignedPublicKey:', getSignedPublicKey());
 
       // const stakePsbt = await claim(order, wallet.address, getSignedPublicKey());
-      const stakePsbt = await claim(selectedClaimItem, wallet.address, getSignedPublicKey());
+      debugger;
+      const stakePsbt = await claim(row, wallet.address, getSignedPublicKey());
       const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt, [], {
         toSignInputs: [
           {
@@ -189,7 +190,7 @@ export default function ClaimTable() {
               </TableCell>
               <TableCell align="center">
                 <LoadingButton
-                  loading={!setSelectedClaimItem}
+                  loading={selectedClaimItem?.stake_txid === row.stake_txid}
                   disabled={!isLockedTimeExpired(row.locked_time) || !!row.claim_txid}
                   onClick={() => {
                     handleClaimConfirm(row);
