@@ -147,7 +147,7 @@ export default function StakingView() {
     try {
       // if (!wallet.address) return;
       setLoading(true);
-      const res = await fetcStakingOverView<IOverViewData>(wallet.address ?? '');
+      const res = await fetcStakingOverView<IOverViewData>(wallet.address ?? '0x00');
       // debugger;
       // console.log('🚀 ~ fetchOverView ~ res', res.overview);
       setOverview(res);
@@ -168,8 +168,8 @@ export default function StakingView() {
   useEffect(() => {
     if (wallet.address) {
       fetchPools();
+      fetchOverView();
     }
-    fetchOverView();
   }, [pagination?.offset, wallet.address]);
 
   useEffect(() => {
