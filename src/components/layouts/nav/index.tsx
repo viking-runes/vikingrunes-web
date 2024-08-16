@@ -5,10 +5,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useWallet } from '@/stores/wallet.ts';
 import ProfileIcon from '@/assets/images/icon/layouts/profile.svg?react';
-import StakingIcon from '@/assets/images/icon/layouts/staking.svg?react';
+// import StakingIcon from '@/assets/images/icon/layouts/staking.svg?react';
 import ExplorerIcon from '@/assets/images/icon/layouts/explorer.svg?react';
-import FairMintIcon from '@/assets/images/icon/layouts/fairmint.svg?react';
-import MarketIcon from '@/assets/images/icon/layouts/market.svg?react';
+// import FairMintIcon from '@/assets/images/icon/layouts/fairmint.svg?react';
+// import MarketIcon from '@/assets/images/icon/layouts/market.svg?react';
 import RunesPumpIcon from '@/assets/images/icon/layouts/runespump.svg?react';
 import config from '@/config';
 
@@ -16,7 +16,7 @@ type NavItem = {
   name: string | ReactNode;
   path?: string;
   includes?: string[];
-  type?: 'mobile';
+  type?: 'mobile' | string;
   needConnect?: boolean;
   tooltip?: string;
   mobile?: string;
