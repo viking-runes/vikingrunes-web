@@ -251,7 +251,8 @@ export default function StakingView() {
                   <Typography fontSize={responsiveFontSize} color={'#777E91'}>
                     $VIKING Current Locked
                   </Typography>
-                  <Typography fontSize={responsiveTextFontSize}>{onFormat(overview.overview.global.viking_current_locked)}</Typography>
+                  {/* <Typography fontSize={responsiveTextFontSize}>{onFormat(overview.overview.global.viking_current_locked)}</Typography> */}
+                  <Typography fontSize={responsiveTextFontSize}>{overview.overview.global.viking_current_locked}</Typography>
                 </Stack>
                 <ResponsiveBox>
                   <img src={dollarImg} width={'100%'} height={'100%'} />
@@ -267,7 +268,8 @@ export default function StakingView() {
                   <Typography fontSize={14} color={'#777E91'}>
                     BTC Current Locked
                   </Typography>
-                  <Typography>{+onFormat(formatBalance(overview.overview.global.btc_current_locked))}</Typography>
+                  {/* <Typography>{+onFormat(formatBalance(overview.overview.global.btc_current_locked))}</Typography> */}
+                  <Typography>{overview.overview.global.btc_current_locked}</Typography>
                 </Stack>
                 <img src={btcImg} width={40} height={40} />
               </Stack>
