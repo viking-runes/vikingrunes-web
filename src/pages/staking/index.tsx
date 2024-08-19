@@ -99,7 +99,7 @@ export default function StakingView() {
   const stakeDialog = useDialog();
   const btcCurrentLockedDialog = useDialog();
 
-  const [overview, setOverview] = useState({
+  const [stakingRes, setStakingRes] = useState({
     overview: {
       global: {
         btc_current_locked: '0',
@@ -148,9 +148,10 @@ export default function StakingView() {
       // if (!wallet.address) return;
       setLoading(true);
       const res = await fetcStakingOverView<IOverViewData>(wallet.address ?? '0x00');
+
       // debugger;
       // console.log('🚀 ~ fetchOverView ~ res', res.overview);
-      setOverview(res);
+      setStakingRes(res);
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error?.message, {
@@ -236,7 +237,7 @@ export default function StakingView() {
                   <Typography fontSize={responsiveFontSize} color={'#777E91'}>
                     Total BTC Locked
                   </Typography>
-                  <Typography fontSize={responsiveTextFontSize}>{+onFormat(formatBalance(overview.overview.global.total_btc_locked))}</Typography>
+                  <Typography fontSize={responsiveTextFontSize}>{+onFormat(formatBalance(stakingRes.overview.global.total_btc_locked))}</Typography>
                 </Stack>
 
                 <ResponsiveBox>
@@ -251,8 +252,8 @@ export default function StakingView() {
                   <Typography fontSize={responsiveFontSize} color={'#777E91'}>
                     $VIKING Current Locked
                   </Typography>
-                  {/* <Typography fontSize={responsiveTextFontSize}>{onFormat(overview.overview.global.viking_current_locked)}</Typography> */}
-                  <Typography fontSize={responsiveTextFontSize}>{overview.overview.global.viking_current_locked}</Typography>
+                  <Typography fontSize={responsiveTextFontSize}>{onFormat(stakingRes.overview.global.viking_current_locked)}</Typography>
+                  {/* <Typography fontSize={responsiveTextFontSize}>{stakingRes.overview.global.viking_current_locked}</Typography> */}
                 </Stack>
                 <ResponsiveBox>
                   <img src={dollarImg} width={'100%'} height={'100%'} />
@@ -268,8 +269,8 @@ export default function StakingView() {
                   <Typography fontSize={14} color={'#777E91'}>
                     BTC Current Locked
                   </Typography>
-                  {/* <Typography>{+onFormat(formatBalance(overview.overview.global.btc_current_locked))}</Typography> */}
-                  <Typography>{overview.overview.global.btc_current_locked}</Typography>
+                  <Typography>{+onFormat(formatBalance(stakingRes.overview.global.btc_current_locked))}</Typography>
+                  {/* <Typography>{stakingRes.overview.global.btc_current_locked}</Typography> */}
                 </Stack>
                 <img src={btcImg} width={40} height={40} />
               </Stack>
@@ -281,7 +282,7 @@ export default function StakingView() {
                   <Typography fontSize={14} color={'#777E91'}>
                     $VIKING Reward Amount
                   </Typography>
-                  <Typography>{onFormat(overview.overview.global.viking_reward_amount)}</Typography>
+                  <Typography>{onFormat(stakingRes.overview.global.viking_reward_amount)}</Typography>
                 </Stack>
                 <img src={dollarImg} width={40} height={40} />
               </Stack>
@@ -306,7 +307,8 @@ export default function StakingView() {
                       <Typography fontSize={14} color={'#777E91'}>
                         BTC Balance
                       </Typography>
-                      <Typography>{+onFormat(formatBalance(overview.overview.my.btc_balance))}</Typography>
+                      {/* <Typography>{+onFormat(formatBalance(stakingRes.overview.my.btc_balance))}</Typography> */}
+                      <Typography>{stakingRes.overview.my.btc_balance}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -324,7 +326,8 @@ export default function StakingView() {
                         }}
                         fontSize={responsiveTextFontSize}
                       >
-                        <Typography>{+onFormat(formatBalance(overview.overview.my.btc_current_locked))}</Typography>
+                        {/* <Typography>{+onFormat(formatBalance(stakingRes.overview.my.btc_current_locked))}</Typography> */}
+                        <Typography>{stakingRes.overview.my.btc_current_locked}</Typography>
                         <img src={nextImg} width={12} height={12} />
                       </Stack>
                     </Stack>
@@ -334,7 +337,7 @@ export default function StakingView() {
                       <Typography fontSize={14} color={'#777E91'}>
                         $VIKING Balance
                       </Typography>
-                      <Typography>{onFormat(overview.overview.my.viking_balance)}</Typography>
+                      <Typography>{onFormat(stakingRes.overview.my.viking_balance)}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -352,7 +355,7 @@ export default function StakingView() {
                         }}
                         fontSize={responsiveTextFontSize}
                       >
-                        <Typography>{onFormat(overview.overview.my.viking_current_locked)}</Typography>
+                        <Typography>{onFormat(stakingRes.overview.my.viking_current_locked)}</Typography>
                         <img src={nextImg} width={12} height={12} />
                       </Stack>
                     </Stack>
