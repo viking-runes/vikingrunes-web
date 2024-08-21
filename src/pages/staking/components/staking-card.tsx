@@ -5,7 +5,7 @@ import faqImg from '@/assets/images/staking/faq.png';
 import faqGrayImg from '@/assets/images/staking/faq-gray.png';
 import { LoadingButton } from '@mui/lab';
 import { IResponseStakeItem } from '@/types';
-import { formatBalance, formatStakeDiffDays } from '@/utils/format';
+import { formatBalance, formatStakeDiffDays, isLockedTimeExpired } from '@/utils/format';
 
 type Props = {
   data: IResponseStakeItem;
@@ -15,7 +15,7 @@ type Props = {
 export function StakingCard({ data, onClick }: Props) {
   if (!data) return null;
 
-  const isDisabled = data.status !== 'active';
+  const isDisabled = isLockedTimeExpired(data.ts_value);
   const titleColor = isDisabled ? '#777E91' : '#EBB94C';
   const textColor = isDisabled ? '#777E91' : '#ffffff';
 
@@ -118,10 +118,10 @@ export function StakingCard({ data, onClick }: Props) {
                 onClick={() => {
                   onClick(data);
                 }}
-                // disabled={isDisabled}
-                disabled={false}
+                disabled={isDisabled}
               >
-                {isDisabled ? 'Ending' : 'Start'}
+                {/* {isDisabled ? 'Ending' : 'Start'} */}
+                {'Start'}
               </LoadingButton>
               {/* <LoadingButton
                 loadingPosition="start"
