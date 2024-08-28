@@ -326,8 +326,8 @@ export default function StakingView() {
                         }}
                         fontSize={responsiveTextFontSize}
                       >
-                        {/* <Typography>{+onFormat(formatBalance(stakingRes.overview.my.btc_current_locked))}</Typography> */}
-                        <Typography>{stakingRes.overview.my.btc_current_locked}</Typography>
+                        <Typography>{+onFormat(formatBalance(stakingRes.overview.my.btc_current_locked))}</Typography>
+                        {/* <Typography>{stakingRes.overview.my.btc_current_locked}</Typography> */}
                         <img src={nextImg} width={12} height={12} />
                       </Stack>
                     </Stack>
