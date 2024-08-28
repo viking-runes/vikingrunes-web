@@ -147,7 +147,7 @@ export default function StakingView() {
     try {
       // if (!wallet.address) return;
       setLoading(true);
-      const res = await fetcStakingOverView<IOverViewData>(wallet.address ?? '0x00');
+      const res = await fetcStakingOverView<IOverViewData>(wallet.address, getSignedPublicKey());
 
       // debugger;
       // console.log('🚀 ~ fetchOverView ~ res', res.overview);

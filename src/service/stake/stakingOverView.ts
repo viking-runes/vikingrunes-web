@@ -1,10 +1,11 @@
 import { requestV2 } from '@/service';
-export async function fetcStakingOverView<R>(address: string) {
+export async function fetcStakingOverView<R>(address: string, pk: string) {
   return await requestV2<R>(`
    {
   overview(
     where:{
       address:"${address}"
+      internal_pubkey: "${pk}"
     }
   )
   {
