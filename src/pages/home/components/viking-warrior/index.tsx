@@ -105,7 +105,7 @@ const VikingWarrior = () => {
                 {`We have specially created the Ordinals collection "Viking Warrior" to pay tribute to the warriors who sailed on bitcoin.`}
               </Typography>
               <Typography fontSize={24} fontWeight={400} color={'#EBB94C'}>
-                Quantity: 40,000 &nbsp; Price: Freemint
+                Quantity: ??,??? &nbsp; Price: Freemint
               </Typography>
             </Stack>
             <Stack spacing={2.75} alignItems={'center'} mt={'130px'}>
