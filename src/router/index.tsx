@@ -15,6 +15,7 @@ import Staking from '@/pages/staking';
 import Freemint from '@/pages/freeMint';
 import Home from '@/pages/home';
 import Viking from '@/pages/viking';
+import NftDetail from '@/pages/nft';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       { path: '/runesPump', element: <RunesPump />, errorElement: <ErrorBoundary /> },
       { path: '/staking', element: <Staking />, errorElement: <ErrorBoundary /> },
       { path: '/freemint', element: <Freemint />, errorElement: <ErrorBoundary /> },
+      { path: '/nft', element: <NftDetail />, errorElement: <ErrorBoundary /> },
     ],
   },
 ]);
