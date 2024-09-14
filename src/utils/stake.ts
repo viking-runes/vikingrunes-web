@@ -65,6 +65,10 @@ export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee)
 //   return selected_utxo;
 // }
 
+export function secondFromNow() {
+  return Math.floor(Date.now() / 1000);
+}
+
 function lock_script(time: number, pubkey: string) {
   console.log(`Lock script params:`, time, hexTobytes(pubkey));
 
@@ -76,16 +80,28 @@ function lock_script(time: number, pubkey: string) {
 // const network_fee = 26000;
 // const vsize = 252;
 
-export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerAddress: string, stakerPubkey: string, networkFee: number) {
+const getLockedTime = (stakePool: IResponseStakeItem, startTime: number) => {
+  switch (stakePool.ts_value_type) {
+    case 'incr':
+      return startTime + stakePool.ts_value;
+    default:
+      return stakePool.ts_value;
+  }
+};
+
+export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerAddress: string, stakerPubkey: string, networkFee: number, startTime: number) {
   const tx = new Psbt({
     network: network,
   });
 
-  const locked_script = lock_script(stakePool.ts_value, stakerPubkey);
+  // const lock_time = stakePool.ts_value_type === 'incr' ? startTime + stakePool.ts_value : stakePool.ts_value;
+  const lock_time = getLockedTime(stakePool, startTime);
+  const locked_script = lock_script(lock_time, stakerPubkey);
 
+  console.log('🚀 ~ generate_stake_psbt ~ lock_time:', lock_time);
   // console.log('🚀 ~ generate_stake_psbt ~ stakerPubkey:', stakerPubkey);
   // console.log('🚀 ~ generate_stake_psbt ~ ts_value:', stakePool.ts_value);
-  // console.log('🚀 ~ generate_stake_psbt ~ locked_script:', locked_script);
+  console.log('🚀 ~ generate_stake_psbt ~ locked_script:', locked_script.toString('hex'));
 
   const staker_utxo = await select_staker_utxo(stakerAddress, stakePool.amount, stakePool.service_fee + networkFee);
 

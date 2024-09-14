@@ -5,7 +5,7 @@ import faqImg from '@/assets/images/staking/faq.png';
 import faqGrayImg from '@/assets/images/staking/faq-gray.png';
 import { LoadingButton } from '@mui/lab';
 import { IResponseStakeItem } from '@/types';
-import { formatBalance, formatStakeDiffDays, isLockedTimeExpired } from '@/utils/format';
+import { formatBalance, formatStakeDiffDays, formatStakeDiffHours, isLockedTimeExpired } from '@/utils/format';
 
 type Props = {
   data: IResponseStakeItem;
@@ -15,13 +15,15 @@ type Props = {
 export function StakingCard({ data, onClick }: Props) {
   if (!data) return null;
 
-  const isDisabled = isLockedTimeExpired(data.ts_value);
+  // const isDisabled = isLockedTimeExpired(data.ts_value);
+  const isDisabled = data.status !== 'active';
   const titleColor = isDisabled ? '#777E91' : '#EBB94C';
   const textColor = isDisabled ? '#777E91' : '#ffffff';
 
   const amount = formatBalance(data.amount);
 
-  const diffInDays = formatStakeDiffDays(data);
+  // const diffInDays = formatStakeDiffDays(data);
+  const diffInHours = formatStakeDiffHours(data);
 
   const timesLeft = data.total - data.staked_count > 0 ? data.total - data.staked_count : 0;
 
@@ -43,7 +45,8 @@ export function StakingCard({ data, onClick }: Props) {
             <Typography color={titleColor}>{data.title}</Typography>
           </Stack>
 
-          <Typography color={titleColor}>{diffInDays} Day</Typography>
+          {/* <Typography color={titleColor}>{formatStakeDiffDays(data)} Day</Typography> */}
+          <Typography color={titleColor}>{diffInHours} Hours</Typography>
         </Stack>
 
         <Box p={2}>
