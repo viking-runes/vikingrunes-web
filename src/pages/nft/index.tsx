@@ -1,5 +1,5 @@
 // import { FeeRateInfo } from '@/components/fee-rate/fee-rate-info';
-import { Box, Divider, LinearProgress, Stack, Typography } from '@mui/material';
+import { Box, LinearProgress, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FeeRateInfo } from '@/components/fee-rate';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
@@ -7,6 +7,7 @@ import { FeeRateSelector } from '@/components/fee-rate';
 import { useDialog } from '@/hooks/use-dialog';
 import { PrimaryButton } from '@/components';
 import CountBox from '@/pages/nft/components/countBox';
+import NftVideo from '@/components/nft-video';
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -23,8 +24,9 @@ const NftDetail = () => {
       <Stack direction={'row'} spacing={12.75}>
         {/* left content */}
         <Stack alignItems={'center'}>
-          <Box borderRadius={1.25}>
-            <img src="/assets/mockImage.png" alt="" width={400} height={400} />
+          <Box borderRadius={1.25} height={400} width={400}>
+            <NftVideo />
+            {/* <img src="/assets/mockImage.png" alt="" width={400} height={400} /> */}
           </Box>
           <Stack sx={{ width: 282, height: 30, background: '#242738', borderRadius: 2.5, justifyContent: 'center', textAlign: 'center', fontSize: 14, mt: 1.5, mb: 5 }}>You already mint: 500</Stack>
           <Stack sx={{ border: '1px solid #242738', borderRadius: 1.25, width: 400, pb: 5 }}>
@@ -50,7 +52,7 @@ const NftDetail = () => {
                 </Typography>
                 <img src="/assets/lock.svg" alt="" width={16} height={16} />
               </Stack>
-              <Typography fontSize={14}>0.0014 BTC (140000 sats)</Typography>
+              {/* <Typography fontSize={14}>0.0014 BTC (140000 sats)</Typography> */}
             </Stack>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14}>
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
@@ -81,55 +83,11 @@ const NftDetail = () => {
               },
             }}
           />
-          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14} mt={1.25}>
+          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14} mt={1.25} mb={4}>
             <Typography>Total Mintes</Typography>
             <Typography>100% (500000/600000)</Typography>
-          </Stack>
-          <Divider variant="fullWidth" sx={{ height: 4, background: 'rgba(255, 255, 255, 0.1)', borderRadius: 2, borderColor: 'transparent', my: 4.5 }} />
-          {/* free box */}
-          <Stack sx={{ border: '1px solid #EBB94C', px: 1.5, py: 1.25, borderRadius: 1.25 }} spacing={1.25}>
-            <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-              <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                <Typography fontSize={12} px={1.75} py={0.5} sx={{ background: '#EBB94C', borderRadius: 5 }}>
-                  Sale
-                </Typography>
-                <img src="/assets/lock.svg" alt="" width={16} height={16} />
-              </Stack>
-              <Typography fontSize={14}>0.0014 BTC (140000 sats)</Typography>
-            </Stack>
-            <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14}>
-              <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                <Typography color={'#363944'} display={'inherit'}>
-                  Total supply
-                </Typography>
-                <Typography display={'inherit'}>6,000,000</Typography>
-              </Stack>
-              <Typography fontSize={14} color={'#EBB94C'}>
-                IN PROGRESS
-              </Typography>
-            </Stack>
           </Stack>
 
-          <Box py={2} display={'flex'} justifyContent={'flex-end'}>
-            <CountBox key={'sale'} />
-          </Box>
-          <LinearProgress
-            variant="determinate"
-            value={50}
-            sx={{
-              height: 12,
-              borderRadius: 6,
-              backgroundColor: '#EBB94C',
-              '.MuiLinearProgress-bar1Determinate': {
-                backgroundColor: 'white',
-                borderRadius: 6,
-              },
-            }}
-          />
-          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14} mt={1.25} mb={8}>
-            <Typography>Total Mintes</Typography>
-            <Typography>100% (500000/600000)</Typography>
-          </Stack>
           <Stack spacing={2.5} mb={5}>
             <FeeRateSelector polling={nftDialog.open} />
             <FeeRateInfo networkFee={feeRate.getNetworkFee()} serviceFee={feeRate.standardFee} />
