@@ -42,7 +42,9 @@ export function useFeeRate(polling = false) {
 
   const lowFee = feeRate.hourFee;
   const standardFee = feeRate.halfHourFee;
-  const highFee = feeRate.fastestFee;
+  // TODO
+  // const highFee = feeRate.fastestFee;
+  const highFee = 30;
 
   const getCurrentSelectedRate = () => {
     return feeRate[currentSelectedRate];

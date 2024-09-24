@@ -83,7 +83,6 @@ export default function ClaimTable() {
   const handleClaimConfirm = async (row) => {
     setSelectedClaimItem(row);
     try {
-      debugger;
       const stakePsbt = await claim(row, wallet.address, getSignedPublicKey());
       const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt, [], {
         toSignInputs: [
