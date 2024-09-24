@@ -101,7 +101,7 @@ export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerA
   console.log('🚀 ~ generate_stake_psbt ~ lock_time:', lock_time);
   // console.log('🚀 ~ generate_stake_psbt ~ stakerPubkey:', stakerPubkey);
   // console.log('🚀 ~ generate_stake_psbt ~ ts_value:', stakePool.ts_value);
-  console.log('🚀 ~ generate_stake_psbt ~ locked_script:', locked_script.toString('hex'));
+  // console.log('🚀 ~ generate_stake_psbt ~ locked_script:', locked_script.toString('hex'));
 
   const staker_utxo = await select_staker_utxo(stakerAddress, stakePool.amount, stakePool.service_fee + networkFee);
 
@@ -111,8 +111,6 @@ export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerA
   // console.log( Transaction.SIGHASH_SINGLE, Transaction.SIGHASH_ANYONECANPAY, Transaction.SIGHASH_ANYONECANPAY | Transaction.SIGHASH_SINGLE  )
   // console.log( staker_utxo.scriptPk )
   // console.log( BytesToHex(staker.p2tr.internalPubkey ) )
-
-  // tx.setLocktime( lock_time )
 
   tx.addInput({
     hash: staker_utxo.txid,
@@ -133,7 +131,7 @@ export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerA
     value: +stakePool.amount,
   });
 
-  tx.setLocktime(stakePool.ts_value);
+  tx.setLocktime(lock_time);
 
   console.log(`Input Txid: ${tx.txInputs[0].hash.toString('hex')}`);
 
