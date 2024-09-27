@@ -1,6 +1,7 @@
 // import styles from './index.module.less';
 // import cn from 'classnames';
 // import commonStyles from '../../index.module.less';
+import NftVideo from '@/components/nft-video';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 
 const VikingWarrior = () => {
@@ -105,16 +106,16 @@ const VikingWarrior = () => {
                 {`We have specially created the Ordinals collection "Viking Warrior" to pay tribute to the warriors who sailed on bitcoin.`}
               </Typography>
               <Typography fontSize={24} fontWeight={400} color={'#EBB94C'}>
-                Quantity: 40,000 &nbsp; Price: Freemint
+                Quantity: ??,??? &nbsp; Price: Freemint
               </Typography>
             </Stack>
             <Stack spacing={2.75} alignItems={'center'} mt={'130px'}>
               <Box width={330} height={330} bgcolor={'rgba(151, 151, 151, .5)'} borderRadius={1}>
-                <video controls={false} width="100%" height="auto" autoPlay={true} muted loop={true}>
-                  {/* <video width="100%" height="auto" autoPlay={true} muted controls> */}
+                <NftVideo />
+                {/* <video controls={false} width="100%" height="auto" autoPlay={true} muted loop={true}>
                   <source src="/assets/video-60k.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
-                </video>
+                </video> */}
               </Box>
               <Button
                 variant="contained"

@@ -60,21 +60,6 @@ export default function BTCLockedTable() {
     try {
       const order: IResponseStakeOrderDetail = await services.stake.fetchOrder(uuid);
       console.log(order);
-      // const networkFee = feeRate.getNetworkFee(currentSelectedPool?.network_vsize);
-      // const stakePsbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), currentSelectedPool, networkFee);
-      // const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
-      // // const psbt = txFinalizeIdx(signedStakePsbt);
-      // console.log('🚀 ~ handleStakeConfirm ~ signedStakePsbt:', signedStakePsbt);
-      // const body = {
-      //   pubkey: wallet.publicKey,
-      //   psbt: signedStakePsbt,
-      //   pool_id: currentSelectedPool.uuid,
-      //   network_fee: networkFee,
-      // };
-      // const response = await services.stake.txStake(body);
-      // console.log('🚀 ~ handleStakeConfirm ~ response:', response);
-      // enqueueSnackbar('Stake success', { variant: 'success' });
-      // stakeDialog.handleClose();
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error?.message, {

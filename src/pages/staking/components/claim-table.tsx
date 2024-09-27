@@ -83,29 +83,6 @@ export default function ClaimTable() {
   const handleClaimConfirm = async (row) => {
     setSelectedClaimItem(row);
     try {
-      // const stakePsbt = await genrate_stake_psbt(wallet.address, getSignedPublicKey(), currentSelectedPool, networkFee);
-      // const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
-      // // const psbt = txFinalizeIdx(signedStakePsbt);
-      // console.log('🚀 ~ handleStakeConfirm ~ signedStakePsbt:', signedStakePsbt);
-      // const body = {
-      //   pubkey: wallet.publicKey,
-      //   psbt: signedStakePsbt,
-      //   pool_id: currentSelectedPool.uuid,
-      //   network_fee: networkFee,
-      // };
-      // const response = await services.stake.txStake(body);
-      // console.log('🚀 ~ handleStakeConfirm ~ response:', response);
-
-      // stakeDialog.handleClose();
-
-      // const order: IResponseStakeOrderDetail = await services.stake.fetchOrder(uuid);
-
-      // console.log(order);
-
-      // console.log('🚀 ~ handleClaimConfirm ~ getSignedPublicKey:', getSignedPublicKey());
-
-      // const stakePsbt = await claim(order, wallet.address, getSignedPublicKey());
-      debugger;
       const stakePsbt = await claim(row, wallet.address, getSignedPublicKey());
       const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt, [], {
         toSignInputs: [

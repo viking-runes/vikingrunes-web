@@ -4,6 +4,8 @@ const networkName = import.meta.env.VITE_NETWORK_TYPE as string;
 const isMainnet = networkName === 'mainnet';
 const mempoolUrl = isMainnet ? 'https://mempool.space' : 'https://mempool.space/testnet';
 
+const stakeUrl = (import.meta.env.VITE_STAKE_URL as string).includes('/stake') ? import.meta.env.VITE_STAKE_URL : '';
+
 const config = {
   networkName,
   isMainnet,
@@ -26,7 +28,7 @@ const config = {
   unisatUrl: `${import.meta.env.VITE_UNISAT_URL}`,
   stakeServiceFee: 5000,
 
-  stakeUrl: `${import.meta.env.VITE_STAKE_URL}`,
+  stakeUrl: stakeUrl,
 
   links: {
     tx: (txid: string) => `${mempoolUrl}/tx/${txid}`,

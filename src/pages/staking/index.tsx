@@ -22,7 +22,7 @@ import { FeeRateInfo } from '@/components/fee-rate';
 import { formatBalance, formatStakeDiffDays } from '@/utils/format';
 import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
-import { generate_stake_psbt } from '@/utils/stake';
+import { generate_stake_psbt, secondFromNow } from '@/utils/stake';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { useTipDialog } from '@/pages/staking/components';
 import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
@@ -79,9 +79,6 @@ export default function StakingView() {
   const feeRate = useFeeRate();
 
   const [stakePoolData, setStakePoolData] = useState<IResponseStakePools>(defaultResponseList);
-
-  const [mineBtcData, setMineBtcData] = useState<IResponseStakePools>(defaultResponseList);
-  const [mineVikingData, setMineVikingData] = useState<IResponseStakePools>(defaultResponseList);
 
   const [loading, setLoading] = useState(false);
   // const [params, setParams] = useState({ tab: 'all', holder: true, all_in_search: '' });
@@ -190,7 +187,11 @@ export default function StakingView() {
     setStakeLoading(true);
     try {
       const networkFee = feeRate.getNetworkFee(currentSelectedPool?.network_vsize);
-      const stakePsbt = await generate_stake_psbt(currentSelectedPool, wallet.address, getSignedPublicKey(), networkFee);
+
+      const nowSecond = secondFromNow();
+      const startTime = nowSecond + 10 * 60;
+
+      const stakePsbt = await generate_stake_psbt(currentSelectedPool, wallet.address, getSignedPublicKey(), networkFee, startTime);
       const signedStakePsbt = await signPsbtWthoutBroadcast(stakePsbt);
       // const psbt = txFinalizeIdx(signedStakePsbt);
 
@@ -201,6 +202,7 @@ export default function StakingView() {
         psbt: signedStakePsbt,
         pool_id: currentSelectedPool.uuid,
         network_fee: networkFee,
+        start_time: startTime,
       };
 
       const response = await services.stake.txStake(body);

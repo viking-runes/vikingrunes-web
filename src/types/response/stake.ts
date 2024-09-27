@@ -14,6 +14,7 @@ export interface IResponseStakeItem {
   staked_count: number;
   status: string;
   ts_value: number;
+  ts_value_type: 'incr' | 'fixed';
   service_fee: number;
   network_vsize: number;
   begin_date: string;

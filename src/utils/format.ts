@@ -2,6 +2,7 @@ import { IResponseStakeItem } from '@/types';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import duration from 'dayjs/plugin/duration';
+import { secondFromNow } from '@/utils/stake';
 
 export const formatAddress = (address: string) => {
   if (!address) return '';
@@ -39,6 +40,27 @@ export const formatStakeDiffDays = (data: IResponseStakeItem) => {
   const beginDate = dayjs(Date.now());
   const diffInDays = endDate.diff(beginDate, 'day');
   return diffInDays > 0 ? diffInDays : 0;
+};
+
+const getEndDate = (data: IResponseStakeItem) => {
+  if (!data) return dayjs(0);
+
+  switch (data.ts_value_type) {
+    case 'incr':
+      return dayjs((secondFromNow() + data.ts_value) * 1000);
+
+    default:
+      return dayjs(data.ts_value);
+  }
+};
+
+export const formatStakeDiffHours = (data: IResponseStakeItem) => {
+  if (!data) return 0;
+
+  const endDate = getEndDate(data);
+  const beginDate = dayjs(Date.now());
+  const diffInHours = endDate.diff(beginDate, 'hour');
+  return diffInHours > 0 ? diffInHours : 0;
 };
 
 export const formatStakeLockedTime = (time: any) => {

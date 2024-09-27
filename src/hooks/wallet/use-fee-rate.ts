@@ -43,12 +43,16 @@ export function useFeeRate(polling = false) {
   const lowFee = feeRate.hourFee;
   const standardFee = feeRate.halfHourFee;
   const highFee = feeRate.fastestFee;
+  // const highFee = 30;
 
   const getCurrentSelectedRate = () => {
+    // TODO
+    if (currentSelectedRate === CurrentSelectedRate.hourFee) return 20;
     return feeRate[currentSelectedRate];
   };
 
   const getNetworkFee = (vsize: number = 0) => {
+    console.log(getCurrentSelectedRate());
     return vsize * getCurrentSelectedRate();
   };
 

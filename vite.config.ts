@@ -54,15 +54,13 @@ export default ({ mode }: any) => {
 
     server: {
       port: 5173,
-      // proxy: {
-      //   '/api': {
-      //     target: stakeUrl,
-      //     secure: false,
-      //     changeOrigin: true,
-      //   },
-      // },
-
       proxy: {
+        '/api': {
+          target: stakeUrl,
+          secure: false,
+          changeOrigin: true,
+        },
+
         '/stake': {
           target: stakeUrl,
           // secure: false,
@@ -70,6 +68,15 @@ export default ({ mode }: any) => {
           rewrite: (path) => path.replace(/^\/stake/, ''),
         },
       },
+
+      // proxy: {
+      //   '/stake': {
+      //     target: stakeUrl,
+      //     // secure: false,
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/stake/, ''),
+      //   },
+      // },
     },
   });
 };

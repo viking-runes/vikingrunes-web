@@ -2,8 +2,6 @@ import config from '@/config';
 import axios from 'axios';
 
 export async function fetchPools(body) {
-  // const { data } = await axios.post(`${config.stakeUrl}/api/v1/pools`, body);
-  // const { data } = await axios.post(`/stake/api/v1/pools`, body);
   const { data } = await axios.post(`${config.stakeUrl}/api/v1/pools`, body);
 
   if (data.code !== 200) throw Error(data.message);
@@ -11,7 +9,6 @@ export async function fetchPools(body) {
 }
 
 export async function fetchPoolDetail(id) {
-  // const { data } = await axios.post(`${config.stakeUrl}/stake/api/v1/pool/${id}`);
   const { data } = await axios.post(`${config.stakeUrl}/api/v1/pool/${id}`);
   if (data.code !== 200) throw Error(data.message);
   return data.data;
@@ -35,21 +32,15 @@ export async function fetchOrder(uuid) {
   return data.data;
 }
 
-export * from './claim';
-
-export * from './stakingOverView';
-
-// import axios from 'axios';
-
 // export async function fetchPools(body) {
-//   // const { data } = await axios.post(`${config.stakeUrl}/api/v1/pools`, body);
+//   // const { data } = await axios.post(`/api/v1/pools`, body);
 //   const { data } = await axios.post(`/api/v1/pools`, body);
 //   if (data.code !== 200) throw Error(data.message);
 //   return data.data;
 // }
 
 // export async function fetchPoolDetail(id) {
-//   // const { data } = await axios.post(`${config.stakeUrl}/api/v1/pool/${id}`);
+//   // const { data } = await axios.post(`/api/v1/pool/${id}`);
 //   const { data } = await axios.post(`/api/v1/pool/${id}`);
 //   if (data.code !== 200) throw Error(data.message);
 //   return data.data;
@@ -73,4 +64,6 @@ export * from './stakingOverView';
 //   return data.data;
 // }
 
-// export * from './claim';
+export * from './claim';
+
+export * from './stakingOverView';
