@@ -23,6 +23,7 @@ export async function fetchClaimTable<R>(page: number, pk: string) {
         amount
       }
       claim_txid
+      stake_tx_block_time
       locked_time
       amount
       reward_data

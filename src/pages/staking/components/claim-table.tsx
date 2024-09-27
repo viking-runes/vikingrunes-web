@@ -136,7 +136,7 @@ export default function ClaimTable() {
               </TableCell>
 
               <TableCell align="center">
-                <Typography fontSize={14}>{formatStakeLockedTime(row.locked_time)}</Typography>
+                <Typography fontSize={14}>{formatStakeLockedTime(row.stake_tx_block_time)}</Typography>
               </TableCell>
 
               <TableCell align="center">
