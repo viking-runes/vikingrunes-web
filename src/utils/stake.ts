@@ -269,6 +269,45 @@ export async function claim(claimItem: IGraphQLClaimItem, stakerAddress: string,
   // console.log(`claim hash: `, broadcast_result.data);
 }
 
+export const sendBitcoinToMint = async ({ fromAddress, toAddress, mintCount, feeRate, pubkey }: { fromAddress: string; toAddress: string; mintCount: number; feeRate: number; pubkey: string }) => {
+  const outputAmount = 546 + 300 * feeRate;
+  const totalAmount = mintCount * outputAmount;
+
+  const utxos = await select_staker_utxo(fromAddress, totalAmount, 0);
+
+  const tx = new Psbt({
+    network: network,
+  });
+
+  tx.addInput({
+    hash: utxos.txid,
+    index: utxos.vout,
+    witnessUtxo: {
+      script: Buffer.from(utxos.scriptPk, 'hex'),
+      value: utxos.satoshis,
+    },
+    sighashType: Transaction.SIGHASH_ANYONECANPAY | Transaction.SIGHASH_SINGLE,
+    tapInternalKey: Buffer.from(pubkey, 'hex'),
+  });
+
+  for (let i = 0; i < mintCount; i++) {
+    tx.addOutput({
+      address: toAddress,
+      value: outputAmount,
+    });
+  }
+
+  tx.addOutput({
+    address: fromAddress,
+    value: utxos.satoshis - totalAmount,
+  });
+
+  const psbt = tx.toHex();
+  console.log('🚀 ~ sendBitcoinToMint ~ psbt:', psbt);
+
+  return psbt;
+};
+
 // export async function claim(order: IResponseStakeOrderDetail, stakerAddress: string, stakerPubkey: string) {
 //   const unlock_time = order.ts_value;
 

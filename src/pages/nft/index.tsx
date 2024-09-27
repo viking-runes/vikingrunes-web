@@ -1,31 +1,89 @@
 // import { FeeRateInfo } from '@/components/fee-rate/fee-rate-info';
 import { Box, LinearProgress, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FeeRateInfo } from '@/components/fee-rate';
 import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { FeeRateSelector } from '@/components/fee-rate';
-import { useDialog } from '@/hooks/use-dialog';
 import { PrimaryButton } from '@/components';
 import CountBox from '@/pages/nft/components/countBox';
 import NftVideo from '@/components/nft-video';
+import { fetchMintEnv } from '@/service/stake';
+import { useWallet } from '@/stores/wallet';
+import { useSnackbar } from '@/components/snackbar';
+import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
+import { sendBitcoinToMint } from '@/utils/stake';
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 
 const NftDetail = () => {
   const feeRate = useFeeRate();
-  const nftDialog = useDialog();
-  const [mintDisabled, setMintDisabled] = useState(false);
 
-  const onSubmitMint = () => {
-    nftDialog.handleOpen();
+  const { wallet, getSignedPublicKey } = useWallet();
+  const { enqueueSnackbar } = useSnackbar();
+  const { signPsbt } = useSignPsbt();
+  const mintCount = useRef(1);
+
+  const [mintLoading, setMintLoading] = useState(false);
+
+  const [mintEnv, setMintEnv] = useState<{
+    address: string;
+    pubkey: string;
+    ordinal_id: string;
+    supply: number;
+    minted: number;
+  }>(null);
+
+  const mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
+
+  useEffect(() => {
+    fetchMintEnv().then((res) => {
+      setMintEnv(res);
+    });
+  }, []);
+
+  const onSubmitMint = async () => {
+    if (mintLoading) return;
+
+    if (!wallet.address) {
+      enqueueSnackbar('Please connect wallet first', {
+        variant: 'warning',
+      });
+      return;
+    }
+
+    try {
+      console.log('🚀 ~ onSubmitMint ~ mintCount.current:', mintCount.current);
+
+      setMintLoading(true);
+      const psbt = await sendBitcoinToMint({
+        fromAddress: wallet.address,
+        toAddress: mintEnv?.address,
+        mintCount: mintCount.current,
+        feeRate: feeRate.getCurrentSelectedRate(),
+        pubkey: getSignedPublicKey(),
+      });
+
+      const txid = await signPsbt(psbt);
+      console.log('🚀 ~ onSubmitMint ~ txid:', txid);
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+      });
+    } finally {
+      setMintLoading(false);
+    }
   };
+
   return (
     <Box pt={6.25} pb={14.25}>
       <Stack direction={'row'} spacing={12.75}>
         {/* left content */}
         <Stack alignItems={'center'}>
           <Box borderRadius={1.25} height={400} width={400}>
-            <NftVideo />
+            {false && <NftVideo />}
+
+            {/* <iframe sandbox="allow-scripts" loading="lazy" src="https://ord.opendao.dev/preview/7f9f456016ca5c500c683efa2572718a43e35a91184d1d28b09feb898199d941i0" height={400} width={400}></iframe> */}
             {/* <img src="/assets/mockImage.png" alt="" width={400} height={400} /> */}
           </Box>
           <Stack sx={{ width: 282, height: 30, background: '#242738', borderRadius: 2.5, justifyContent: 'center', textAlign: 'center', fontSize: 14, mt: 1.5, mb: 5 }}>You already mint: 500</Stack>
@@ -39,9 +97,11 @@ const NftDetail = () => {
           </Stack>
         </Stack>
         {/* right content */}
+
+        {/* {mintEnv && ( */}
         <Stack width={'100%'}>
           <Typography sx={{ fontSize: 18, color: '#EBB94C', pb: 2 }}>Viking Warrior</Typography>
-          <Typography sx={{ fontSize: 14, pb: 3.75 }}>Quantity: 40,000 &nbsp;&nbsp; Price: Freemint</Typography>
+          <Typography sx={{ fontSize: 14, pb: 3.75 }}>Quantity: {mintEnv?.supply - mintEnv?.minted} &nbsp;&nbsp; Price: Freemint</Typography>
 
           {/* free box */}
           <Stack sx={{ border: '1px solid #363944', px: 1.5, py: 1.25, borderRadius: 1.25 }} spacing={1.25}>
@@ -59,7 +119,7 @@ const NftDetail = () => {
                 <Typography color={'#363944'} display={'inherit'}>
                   Total supply
                 </Typography>
-                <Typography display={'inherit'}>6,000,000</Typography>
+                <Typography display={'inherit'}>{mintEnv?.supply}</Typography>
               </Stack>
               <Typography fontSize={14} color={'#363944'}>
                 ENDED
@@ -68,11 +128,17 @@ const NftDetail = () => {
           </Stack>
 
           <Box py={2} display={'flex'} justifyContent={'flex-end'}>
-            <CountBox key={'free'} />
+            <CountBox
+              key={'free'}
+              maxValue={mintEnv?.supply - mintEnv?.minted}
+              onChange={(value) => {
+                mintCount.current = value;
+              }}
+            />
           </Box>
           <LinearProgress
             variant="determinate"
-            value={50}
+            value={(mintEnv?.minted / mintEnv?.supply) * 100}
             sx={{
               height: 12,
               borderRadius: 6,
@@ -85,15 +151,18 @@ const NftDetail = () => {
           />
           <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14} mt={1.25} mb={4}>
             <Typography>Total Mintes</Typography>
-            <Typography>100% (500000/600000)</Typography>
+            <Typography>
+              {((mintEnv?.minted / mintEnv?.supply) * 100).toFixed(2)}% {mintEnv?.minted}/{mintEnv?.supply}
+            </Typography>
           </Stack>
 
           <Stack spacing={2.5} mb={5}>
-            <FeeRateSelector polling={nftDialog.open} />
-            <FeeRateInfo networkFee={feeRate.getNetworkFee()} serviceFee={feeRate.standardFee} />
+            <FeeRateSelector polling={true} />
+            <FeeRateInfo networkFee={feeRate.getCurrentSelectedRate()} serviceFee={0} discount={true} />
           </Stack>
-          <PrimaryButton disabled={mintDisabled} size={'lg'} text={mintDisabled ? 'ending' : 'Mint'} type={mintDisabled ? 'disabled' : 'primary'} onClick={onSubmitMint} />
+          <PrimaryButton disabled={mintDisabled} size={'lg'} text={'Mint'} type={mintDisabled ? 'disabled' : 'primary'} onClick={onSubmitMint} />
         </Stack>
+        {/* )} */}
       </Stack>
     </Box>
   );

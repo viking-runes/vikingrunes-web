@@ -3,23 +3,39 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useState } from 'react';
 
-const CountBox = () => {
-  const [value, setValue] = useState(0);
+type CountBoxProps = {
+  maxValue?: number;
+  onChange?: (value: number) => void;
+};
+
+const CountBox = ({ maxValue = 600000, onChange }: CountBoxProps) => {
+  const [value, setValue] = useState(1);
 
   const handleValueChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(+event.target.value);
+    const newValue = +event.target.value;
+    setValue(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
   };
-
-  const maxValue = 600000;
 
   const reduceFunction = () => {
     if (value > 0) {
-      setValue(value - 1);
+      const newValue = value - 1;
+      setValue(newValue);
+      if (onChange) {
+        onChange(newValue);
+      }
     }
   };
+
   const addFunction = () => {
     if (value < maxValue) {
-      setValue(value + 1);
+      const newValue = value + 1;
+      setValue(newValue);
+      if (onChange) {
+        onChange(newValue);
+      }
     }
   };
 
@@ -37,6 +53,7 @@ const CountBox = () => {
           <AddIcon sx={{ color: '#777E91', fontSize: 20 }} />
         </Box>
       }
+      inputProps={{ min: 1, max: maxValue }}
       value={value}
       onChange={handleValueChange}
       sx={{

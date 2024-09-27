@@ -24,6 +24,7 @@ export interface IGraphQLClaimItem {
   script_pubkey: string;
   address: string;
   internal_pubkey: string;
+  stake_tx_block_time: number;
 }
 
 interface IGraphQLClaimItemStakedata {

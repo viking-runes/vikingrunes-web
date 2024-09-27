@@ -5,7 +5,6 @@ import { IGraphQLClaimItem, IGraphQLClaimTable } from '@/types';
 import { useWallet } from '@/stores/wallet';
 import useSignPsbt, { extractTransaction } from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
-import { useFeeRate } from '@/hooks/wallet/use-fee-rate';
 import { SimpleTableHeadCustom } from '@/components/simple-table';
 import { LoadingButton } from '@mui/lab';
 import services from '@/service';
@@ -19,9 +18,8 @@ import { useNavigate } from 'react-router-dom';
 export default function ClaimTable() {
   const navigate = useNavigate();
 
-  const feeRate = useFeeRate();
-
   const [loading, setLoading] = useState(false);
+  console.log('🚀 ~ ClaimTable ~ loading:', loading);
 
   const [selectedClaimItem, setSelectedClaimItem] = useState<IGraphQLClaimItem>(undefined);
 
@@ -147,7 +145,7 @@ export default function ClaimTable() {
               </TableCell>
 
               <TableCell align="center">
-                <Typography fontSize={14}>{formatStakeCountDown(row.locked_time)}</Typography>
+                <Typography fontSize={14}>{formatStakeCountDown(row.stake_tx_block_time)}</Typography>
               </TableCell>
               {/* <TableCell align="center">
                 <Typography>{row.locked_time}</Typography>

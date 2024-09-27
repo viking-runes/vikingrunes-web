@@ -29,15 +29,13 @@ export const FeeRateInfo = ({ networkFee, serviceFee, discount = false }: Props)
           </Typography>
         </Stack>
       </Stack>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} sx={{ textDecoration: discount ? 'line-through' : 'auto', textDecorationColor: discount ? '#EBB94C' : 'auto' }}>
         <Typography fontSize={12}>Service Fee:</Typography>
 
         <Stack direction="row" spacing={2}>
-          <Typography fontSize={12} sx={{ textDecoration: discount ? 'line-through' : 'auto', textDecorationColor: '#EBB94C' }}>
-            ~{serviceFee} Sats
-          </Typography>
+          <Typography fontSize={12}>~{serviceFee} Sats</Typography>
 
-          <Typography color="#777E91" fontSize={12} sx={{ textDecoration: discount ? 'line-through' : 'auto', textDecorationColor: '#EBB94C' }}>
+          <Typography color="#777E91" fontSize={12}>
             ~${serviceFeePrice}
           </Typography>
         </Stack>

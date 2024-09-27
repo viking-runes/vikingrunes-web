@@ -42,20 +42,20 @@ const ConnectModal: FC<IProps> = (props) => {
         }
       },
     },
-    {
-      text: 'Xverse',
-      icon: xverseIcon,
-      onClick: async () => {
-        if (xverseHook.isWalletInstalled) {
-          await xverseHook.connect();
-          handleCancel();
-        } else {
-          enqueueSnackbar('Please install Xverse wallet', {
-            variant: 'error',
-          });
-        }
-      },
-    },
+    // {
+    //   text: 'Xverse',
+    //   icon: xverseIcon,
+    //   onClick: async () => {
+    //     if (xverseHook.isWalletInstalled) {
+    //       await xverseHook.connect();
+    //       handleCancel();
+    //     } else {
+    //       enqueueSnackbar('Please install Xverse wallet', {
+    //         variant: 'error',
+    //       });
+    //     }
+    //   },
+    // },
     // { text: 'Leather', icon: LeatherIcon },
     {
       text: 'OKX',

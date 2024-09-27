@@ -32,6 +32,12 @@ export async function fetchOrder(uuid) {
   return data.data;
 }
 
+export async function fetchMintEnv() {
+  const { data } = await axios.get(`${config.stakeUrl}/api/freemint/env`);
+  if (data.code !== 200) throw Error(data.message);
+  return data.data;
+}
+
 // export async function fetchPools(body) {
 //   // const { data } = await axios.post(`/api/v1/pools`, body);
 //   const { data } = await axios.post(`/api/v1/pools`, body);
