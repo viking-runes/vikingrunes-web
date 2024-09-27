@@ -1,6 +1,6 @@
 import config from '@/config';
-import { IGraphQLClaimItem, IResponseStakeItem, IResponseStakeOrderDetail } from '@/types';
-import { bytesToHex, hexTobytes } from '@/utils/format';
+import { IGraphQLClaimItem, IResponseStakeItem } from '@/types';
+import { hexTobytes } from '@/utils/format';
 import UniSat from '@/utils/unisat';
 // import { Script, ScriptNum, SigHash, Transaction, TEST_NETWORK, NETWORK, p2tr } from '@scure/btc-signer';
 import * as bitcoinjs from 'bitcoinjs-lib';
@@ -11,6 +11,10 @@ bitcoinjs.initEccLib(ecc);
 const { payments, networks, script, opcodes, Psbt, Transaction } = bitcoinjs;
 
 const unisat_fetch = new UniSat();
+
+const baseTxSize = 10;
+const inSize = 180;
+const outSize = 34;
 
 // const staker = WIF(Testnet).decode(WALLET_1)
 // const pool = WIF(Testnet).decode(WALLET_2)
@@ -270,10 +274,11 @@ export async function claim(claimItem: IGraphQLClaimItem, stakerAddress: string,
 }
 
 export const sendBitcoinToMint = async ({ fromAddress, toAddress, mintCount, feeRate, pubkey }: { fromAddress: string; toAddress: string; mintCount: number; feeRate: number; pubkey: string }) => {
-  const outputAmount = 546 + 300 * feeRate;
+  const outputAmount = 546 + 400 * feeRate;
   const totalAmount = mintCount * outputAmount;
 
   const utxos = await select_staker_utxo(fromAddress, totalAmount, 0);
+  console.log('🚀 ~ sendBitcoinToMint ~ utxos:', utxos);
 
   const tx = new Psbt({
     network: network,
@@ -286,7 +291,7 @@ export const sendBitcoinToMint = async ({ fromAddress, toAddress, mintCount, fee
       script: Buffer.from(utxos.scriptPk, 'hex'),
       value: utxos.satoshis,
     },
-    sighashType: Transaction.SIGHASH_ANYONECANPAY | Transaction.SIGHASH_SINGLE,
+    sighashType: Transaction.SIGHASH_ALL,
     tapInternalKey: Buffer.from(pubkey, 'hex'),
   });
 
@@ -297,9 +302,12 @@ export const sendBitcoinToMint = async ({ fromAddress, toAddress, mintCount, fee
     });
   }
 
+  const minerFee = tx.txInputs.length * inSize + tx.txOutputs.length * outSize + baseTxSize;
+
   tx.addOutput({
     address: fromAddress,
-    value: utxos.satoshis - totalAmount,
+    // value: utxos.satoshis - totalAmount - minerFee * feeRate,
+    value: utxos.satoshis - totalAmount - 1000,
   });
 
   const psbt = tx.toHex();

@@ -12,6 +12,8 @@ import { useWallet } from '@/stores/wallet';
 import { useSnackbar } from '@/components/snackbar';
 import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
 import { sendBitcoinToMint } from '@/utils/stake';
+import services from '@/service';
+import useSendBitcoin from '@/hooks/wallet/use-send-bitcoin';
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -20,7 +22,8 @@ const NftDetail = () => {
 
   const { wallet, getSignedPublicKey } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
-  const { signPsbt } = useSignPsbt();
+  const { sendBitcoin } = useSendBitcoin();
+  const { signPsbt, signPsbtWthoutBroadcast } = useSignPsbt();
   const mintCount = useRef(1);
 
   const [mintLoading, setMintLoading] = useState(false);
@@ -55,16 +58,26 @@ const NftDetail = () => {
       console.log('🚀 ~ onSubmitMint ~ mintCount.current:', mintCount.current);
 
       setMintLoading(true);
-      const psbt = await sendBitcoinToMint({
-        fromAddress: wallet.address,
-        toAddress: mintEnv?.address,
-        mintCount: mintCount.current,
+      const txid = await sendBitcoin(mintEnv?.address, 546 + 400 * feeRate.getCurrentSelectedRate(), {
         feeRate: feeRate.getCurrentSelectedRate(),
-        pubkey: getSignedPublicKey(),
       });
+      console.log('🚀 ~ txid ~ txid:', txid);
 
-      const txid = await signPsbt(psbt);
-      console.log('🚀 ~ onSubmitMint ~ txid:', txid);
+      // const psbt = await sendBitcoinToMint({
+      //   fromAddress: wallet.address,
+      //   toAddress: mintEnv?.address,
+      //   mintCount: mintCount.current,
+      //   feeRate: feeRate.getCurrentSelectedRate(),
+      //   pubkey: getSignedPublicKey(),
+      // });
+
+      // const rawtx = await signPsbtWthoutBroadcast(psbt);
+
+      // console.log('🚀 ~ onSubmitMint ~ txid:', rawtx);
+      // await services.mempool.pushTx(rawtx);
+      enqueueSnackbar('Mint success', {
+        variant: 'success',
+      });
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error?.message, {
@@ -81,7 +94,7 @@ const NftDetail = () => {
         {/* left content */}
         <Stack alignItems={'center'}>
           <Box borderRadius={1.25} height={400} width={400}>
-            {false && <NftVideo />}
+            <NftVideo />
 
             {/* <iframe sandbox="allow-scripts" loading="lazy" src="https://ord.opendao.dev/preview/7f9f456016ca5c500c683efa2572718a43e35a91184d1d28b09feb898199d941i0" height={400} width={400}></iframe> */}
             {/* <img src="/assets/mockImage.png" alt="" width={400} height={400} /> */}
