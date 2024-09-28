@@ -20,6 +20,7 @@ const CountBox = ({ maxValue = 600000, onChange }: CountBoxProps) => {
   };
 
   const reduceFunction = () => {
+    return;
     if (value > 0) {
       const newValue = value - 1;
       setValue(newValue);
@@ -30,6 +31,7 @@ const CountBox = ({ maxValue = 600000, onChange }: CountBoxProps) => {
   };
 
   const addFunction = () => {
+    return;
     if (value < maxValue) {
       const newValue = value + 1;
       setValue(newValue);
