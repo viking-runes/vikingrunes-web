@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { fetchBalanceList } from '@/service/addressDetail';
 import { fetchTransferList } from '@/service/common/transferList.ts';
 import { get } from 'lodash';
-import { mockTableData } from '@/pages/profile/myAssets/components/profileTable/data/claimColumns.tsx';
 import { ProfileTab } from '@/types';
 export const mapTabActive = (tab: string) => {
   const map = { Assets: 'balances' };
@@ -15,7 +14,7 @@ const useAddressList = (address: string, tab: string) => {
   const isBalance = mapTabActive(tab) === 'balances';
   const requestAddressData = async () => {
     if (tab === ProfileTab.Stakes) {
-      setDataSource({ data: mockTableData, count: 1 });
+      setDataSource({ data: [], count: 0 });
     } else {
       setLoading(true);
       const res = isBalance ? await fetchBalanceList(params.page, address) : await fetchTransferList(params.page, { tab: mapTabActive(tab), from_or_to_address: address });
