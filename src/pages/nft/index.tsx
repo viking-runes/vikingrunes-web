@@ -63,8 +63,12 @@ const NftDetail = () => {
     try {
       console.log('🚀 ~ onSubmitMint ~ mintCount.current:', mintCount.current);
 
+      const mintMinSendValue = 546 + 600;
+      const estimatedSendValue = 546 + 300 * feeRate.getCurrentSelectedRate();
+      const actualSendValue = estimatedSendValue <= mintMinSendValue ? mintMinSendValue : estimatedSendValue;
+
       setMintLoading(true);
-      const txid = await sendBitcoin(mintEnv?.address, 546 + 400 * feeRate.getCurrentSelectedRate(), {
+      const txid = await sendBitcoin(mintEnv?.address, actualSendValue, {
         feeRate: feeRate.getCurrentSelectedRate(),
       });
       console.log('🚀 ~ txid ~ txid:', txid);
@@ -93,6 +97,8 @@ const NftDetail = () => {
       setMintLoading(false);
     }
   };
+
+  const isEnded = mintEnv?.minted >= mintEnv?.supply;
 
   return (
     <Box pt={6.25} pb={14.25}>
@@ -142,8 +148,8 @@ const NftDetail = () => {
 
                 <Typography sx={{ fontSize: 14 }}> &nbsp;&nbsp; Price: Freemint</Typography>
               </Stack>
-              <Typography fontSize={20} color={'#363944'}>
-                {mintEnv?.minted >= mintEnv?.supply ? 'ENDED' : 'START'}
+              <Typography fontSize={20} color={isEnded ? '#363944' : '#EBB94C'}>
+                {isEnded ? 'ENDED' : 'START'}
               </Typography>
             </Stack>
           </Stack>
