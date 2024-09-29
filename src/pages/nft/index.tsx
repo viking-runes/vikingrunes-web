@@ -60,6 +60,15 @@ const NftDetail = () => {
       return;
     }
 
+    const hasMinted = localStorage.getItem(`${wallet.address}`);
+
+    if (hasMinted) {
+      enqueueSnackbar('You have already minted', {
+        variant: 'warning',
+      });
+      return;
+    }
+
     try {
       console.log('🚀 ~ onSubmitMint ~ mintCount.current:', mintCount.current);
 
@@ -72,6 +81,7 @@ const NftDetail = () => {
         feeRate: feeRate.getCurrentSelectedRate(),
       });
       console.log('🚀 ~ txid ~ txid:', txid);
+      localStorage.setItem(`${wallet.address}`, txid);
 
       // const psbt = await sendBitcoinToMint({
       //   fromAddress: wallet.address,
