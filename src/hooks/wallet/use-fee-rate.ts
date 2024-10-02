@@ -47,7 +47,7 @@ export function useFeeRate(polling = false) {
 
   const getCurrentSelectedRate = () => {
     // TODO
-    if (currentSelectedRate === CurrentSelectedRate.hourFee) return 20;
+    // if (currentSelectedRate === CurrentSelectedRate.hourFee) return 20;
     return feeRate[currentSelectedRate];
   };
 

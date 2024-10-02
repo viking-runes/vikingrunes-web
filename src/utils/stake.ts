@@ -303,6 +303,7 @@ export const sendBitcoinToMint = async ({ fromAddress, toAddress, mintCount, fee
   }
 
   const minerFee = tx.txInputs.length * inSize + tx.txOutputs.length * outSize + baseTxSize;
+  console.log('🚀 ~ sendBitcoinToMint ~ minerFee:', minerFee);
 
   tx.addOutput({
     address: fromAddress,
