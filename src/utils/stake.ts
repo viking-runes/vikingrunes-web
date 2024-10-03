@@ -67,7 +67,7 @@ export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee)
   }
 
   if (!selected_utxo) {
-    throw new Error(`No enough utxo`);
+    throw new Error(`No enough UTXO, please transfer or split.`);
   }
 
   return selected_utxo;

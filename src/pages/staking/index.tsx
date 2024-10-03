@@ -341,7 +341,7 @@ export default function StakingView() {
                       <Typography fontSize={14} color={'#777E91'}>
                         $VIKING Balance
                       </Typography>
-                      <Typography>{onFormat(stakingRes.overview.my.viking_balance)}</Typography>
+                      <Typography>{+stakingRes.overview.my.viking_balance ? onFormat(stakingRes.overview.my.viking_balance) : 0}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={6}>
