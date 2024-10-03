@@ -28,13 +28,33 @@ const outSize = 34;
 // const network = config.isMainnet ? NETWORK : TEST_NETWORK;
 const network = config.isMainnet ? networks.bitcoin : networks.testnet;
 
+// {
+//   "txid": "582eb8aaac4e8713ffd7746eff5c94404fa5f2b1c5ea6215b6c0661f7d86aa2e",
+//   "vout": 1,
+//   "satoshis": 59829856,
+//   "scriptPk": "5120ab88cd81a1723bea6e461823dbae2937e45616121447c9f494b7a9b30eb5d14c",
+//   "addressType": 2,
+//   "inscriptions": [],
+//   "atomicals": [],
+//   "runes": [],
+//   "pubkey": "",
+//   "height": 3008175
+// }
+
 export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee) {
   const utxos_result = await unisat_fetch.address_utxo(p2tr_ddress);
   const utxos = utxos_result.data.data;
 
+  const locked_txids = getLocalStorageArray('locked_txids');
+  console.log('🚀 ~ select_staker_utxo ~ locked_txids:', locked_txids);
+
   // console.log( utxos )
   let selected_utxo;
   for (const u of utxos) {
+    if (locked_txids.includes(u.txid)) {
+      continue;
+    }
+
     if (u.satoshis >= +stake_amount + service_fee) {
       if (selected_utxo) {
         if (selected_utxo.satoshis > u.satoshis) {
@@ -91,6 +111,25 @@ const getLockedTime = (stakePool: IResponseStakeItem, startTime: number) => {
     default:
       return stakePool.ts_value;
   }
+};
+
+export const setLocalStorageArray = (key: string, value: any) => {
+  const array = localStorage.getItem(key);
+  if (array) {
+    const arr = JSON.parse(array);
+    arr.push(value);
+    localStorage.setItem(key, JSON.stringify(arr));
+  } else {
+    localStorage.setItem(key, JSON.stringify([value]));
+  }
+};
+
+export const getLocalStorageArray = (key: string) => {
+  const array = localStorage.getItem(key);
+  if (array) {
+    return JSON.parse(array);
+  }
+  return [];
 };
 
 export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerAddress: string, stakerPubkey: string, networkFee: number, startTime: number) {
@@ -150,7 +189,7 @@ export async function generate_stake_psbt(stakePool: IResponseStakeItem, stakerA
   // tx.finalizeInput(0);
 
   // return tx;
-  return psbt;
+  return { psbt, staker_utxo };
 }
 
 export function op_return_script(stake, reward, index, time, pubkey) {
