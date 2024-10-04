@@ -16,7 +16,7 @@ export function StakingCard({ data, onClick }: Props) {
   if (!data) return null;
 
   // const isDisabled = isLockedTimeExpired(data.ts_value);
-  const isDisabled = data.status !== 'active';
+  const isDisabled = data.status !== 'active' || data.total === data.staked_count;
   const titleColor = isDisabled ? '#777E91' : '#EBB94C';
   const textColor = isDisabled ? '#777E91' : '#ffffff';
 

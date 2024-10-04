@@ -6,7 +6,6 @@ import btcImg from '@/assets/images/staking/btc.png';
 import dashboardImg from '@/assets/images/staking/dashboard.png';
 import appImg from '@/assets/images/staking/application.png';
 import infoImg from '@/assets/images/staking/info.png';
-import poolImg from '@/assets/images/staking/pool.png';
 import faqImg from '@/assets/images/staking/faq.png';
 import nextImg from '@/assets/images/staking/next.png';
 import { onFormat } from '@/utils';
