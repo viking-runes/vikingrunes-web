@@ -4,7 +4,7 @@ import Logo from '@/assets/images/home/bg/logo.png';
 import cn from 'classnames';
 import { Link } from 'react-router-dom';
 import LinkIcon from '@/assets/images/home/bg/arrow.svg?react';
-import { Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 const Banner: FC = () => {
   const linkItems = [
     {
@@ -18,7 +18,7 @@ const Banner: FC = () => {
   ];
   return (
     <div className={styles.bg}>
-      <div className={styles.content}>
+      <Container className={styles.content}>
         <i className={cn(styles.logo, 'd-flex justify-content-center')}>
           <img alt={'logo'} src={Logo} />
         </i>
@@ -43,7 +43,7 @@ const Banner: FC = () => {
             </Link>
           ))}
         </ul>
-      </div>
+      </Container>
     </div>
   );
 };
