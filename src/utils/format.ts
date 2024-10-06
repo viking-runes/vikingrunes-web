@@ -11,7 +11,7 @@ export const formatAddress = (address: string) => {
 
 export const formatBalance = (balance: number | string) => {
   if (!balance) return '';
-  return (+balance / 1e8).toFixed(8);
+  return +(+balance / 1e8).toFixed(8);
 };
 
 export function base64ToHex(str: string) {
