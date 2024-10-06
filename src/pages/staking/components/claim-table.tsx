@@ -87,7 +87,9 @@ export default function ClaimTable() {
           {
             index: 0,
             sighashTypes: [1],
+            // address: wallet.address,
             // publicKey: getSignedPublicKey(),
+            // publicKey: wallet.publicKey,
             publicKey: wallet.publicKey,
             disableTweakSigner: true,
           },
@@ -95,6 +97,7 @@ export default function ClaimTable() {
       });
 
       const rawtx = extractTransaction(signedStakePsbt);
+      console.log('🚀 ~ handleClaimConfirm ~ rawtx:', rawtx);
 
       await services.mempool.pushTx(rawtx);
 

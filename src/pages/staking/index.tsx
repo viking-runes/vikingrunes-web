@@ -378,19 +378,21 @@ export default function StakingView() {
         </Typography> */}
         <Tabs centered value={currentTab} onChange={handleTabChange}>
           {/* <Tab disableRipple label="Your pool" /> */}
-          <Tab disableRipple label="BTC Staking Season 1" />
+          <Tab disableRipple label="BTC Test Season 1" />
         </Tabs>
       </Stack>
 
       <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.10)' }} />
 
       {/* <CustomTabPanel value={currentTab} index={0}></CustomTabPanel> */}
-      <CustomTabPanel value={currentTab} index={0}>
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          <img src={infoImg} width={12} height={12} />
-          <Typography variant="body2">Basic rate of $VIKING release: 3,000 $VIKING/1 BTC/1 Day</Typography>
-        </Stack>
-      </CustomTabPanel>
+      {false && (
+        <CustomTabPanel value={currentTab} index={0}>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <img src={infoImg} width={12} height={12} />
+            <Typography variant="body2">Basic rate of $VIKING release: 3,000 $VIKING/1 BTC/1 Day</Typography>
+          </Stack>
+        </CustomTabPanel>
+      )}
 
       <Grid container spacing={3} mb={3}>
         {stakePoolData.rows.map((item, index) => {

@@ -53,9 +53,11 @@ export function StakingCard({ data, onClick }: Props) {
           <Stack direction="column" spacing={3}>
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
               <Stack direction="row" alignItems="center">
-                <Typography color="#777E91">{amount} BTC Staking Pool</Typography>
+                {/* <Typography color="#777E91">{amount} BTC Staking Pool</Typography> */}
+                <Typography color="#777E91">Stake once</Typography>
               </Stack>
-              <Typography color={textColor}>3*Basic</Typography>
+              {/* <Typography color={textColor}>3*Basic</Typography> */}
+              <Typography color={textColor}>{amount} BTC</Typography>
             </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>

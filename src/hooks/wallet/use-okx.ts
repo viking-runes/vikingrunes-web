@@ -97,6 +97,10 @@ const useOkx = () => {
 
   const connect = async () => {
     try {
+      // {"address":"tb1p4wyvmqdpwga75mjxrq3aht3fxlj9v9sjz3runay5k75mxr4469xqp3q3l4",
+      // "publicKey":"739684f76f06107881a55c0ebdef22288bfe0d6a8270fb368930b1989378c4df",
+      // "compressedPublicKey":"02739684f76f06107881a55c0ebdef22288bfe0d6a8270fb368930b1989378c4df"}
+
       const result = await injectedProvider.connect();
 
       // const network = await injectedProvider.getNetwork();
@@ -106,7 +110,8 @@ const useOkx = () => {
       // }
       // console.log(result);
 
-      handleAccountsChanged(result.address, result.publicKey);
+      handleAccountsChanged(result.address, result.compressedPublicKey);
+      // handleAccountsChanged(result.address, result.publicKey);
     } catch (error) {
       console.log(error);
       const msg = (error as any)?.message;

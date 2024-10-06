@@ -186,6 +186,8 @@ const useSignPsbt = () => {
     if (wallet.walletName === config.walletName.okx) {
       const signedPsbt = await okxHook.injectedProvider?.signPsbt(psbtHex, {
         autoFinalized: true,
+        disableTweakSigner: true,
+        ...signParams,
       });
 
       return signedPsbt;
