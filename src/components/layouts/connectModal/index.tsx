@@ -57,20 +57,20 @@ const ConnectModal: FC<IProps> = (props) => {
     //   },
     // },
     // { text: 'Leather', icon: LeatherIcon },
-    // {
-    //   text: 'OKX',
-    //   icon: okxIcon,
-    //   onClick: async () => {
-    //     if (okxHook.isWalletInstalled) {
-    //       await okxHook.connect();
-    //       handleCancel();
-    //     } else {
-    //       enqueueSnackbar('Please install OKX wallet', {
-    //         variant: 'error',
-    //       });
-    //     }
-    //   },
-    // },
+    {
+      text: 'OKX',
+      icon: okxIcon,
+      onClick: async () => {
+        // if (okxHook.isWalletInstalled) {
+        //   await okxHook.connect();
+        //   handleCancel();
+        // } else {
+        //   enqueueSnackbar('Please install OKX wallet', {
+        //     variant: 'error',
+        //   });
+        // }
+      },
+    },
   ];
 
   return (
@@ -86,7 +86,7 @@ const ConnectModal: FC<IProps> = (props) => {
             </h1>
             <ul className={cn(styles.line, 'd-flex flex-column align-items-center justify-content-center')}>
               {walletItems.map((item) => (
-                <li onClick={item.onClick} key={item.text} className={cn(styles.row, 'd-flex  align-items-center')}>
+                <li onClick={item.onClick} key={item.text} className={cn(styles.row, 'd-flex  align-items-center', { [styles.disabled]: item.text === 'OKX' })}>
                   <i>
                     <img alt={item.text} src={item.icon} />
                   </i>

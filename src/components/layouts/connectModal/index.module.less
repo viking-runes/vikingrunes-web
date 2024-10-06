@@ -1,18 +1,18 @@
-.close{
+.close {
   display: block;
   width: 1.875rem;
 }
 
-.modal{
+.modal {
   --ex-connect-modal-width: 25rem;
 
-  .title{
+  .title {
     position: relative;
     padding-top: 1.875rem;
     font-size: 1.5rem;
     text-align: center;
 
-    i{
+    i {
       position: absolute;
       top: 0.57rem;
       right: 0.57rem;
@@ -20,7 +20,7 @@
       width: 2.5625rem;
       cursor: pointer;
 
-      img{
+      img {
         display: block;
         width: 100%;
       }
@@ -28,11 +28,11 @@
   }
 }
 
-.line{
+.line {
   padding: 3.125rem;
   gap: 2.1875rem;
 
-  .row{
+  .row {
     width: 100%;
     box-sizing: border-box;
     padding: 0.625rem 1.875rem;
@@ -41,5 +41,10 @@
     background-color: var(--ex-modal-bg);
     cursor: pointer;
     gap: 3rem;
+  }
+  .disabled {
+    cursor: not-allowed;
+    background-color: var(--border-default-color);
+    color: rgba(255, 255, 255, 0.8);
   }
 }
