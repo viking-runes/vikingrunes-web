@@ -57,20 +57,20 @@ const ConnectModal: FC<IProps> = (props) => {
     //   },
     // },
     // { text: 'Leather', icon: LeatherIcon },
-    {
-      text: 'OKX',
-      icon: okxIcon,
-      onClick: async () => {
-        if (okxHook.isWalletInstalled) {
-          await okxHook.connect();
-          handleCancel();
-        } else {
-          enqueueSnackbar('Please install OKX wallet', {
-            variant: 'error',
-          });
-        }
-      },
-    },
+    // {
+    //   text: 'OKX',
+    //   icon: okxIcon,
+    //   onClick: async () => {
+    //     if (okxHook.isWalletInstalled) {
+    //       await okxHook.connect();
+    //       handleCancel();
+    //     } else {
+    //       enqueueSnackbar('Please install OKX wallet', {
+    //         variant: 'error',
+    //       });
+    //     }
+    //   },
+    // },
   ];
 
   return (
