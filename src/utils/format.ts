@@ -42,6 +42,22 @@ export const formatStakeDiffDays = (data: IResponseStakeItem) => {
   return diffInDays > 0 ? diffInDays : 0;
 };
 
+export const formatLockedTime = (data: IResponseStakeItem) => {
+  if (!data) return '';
+
+  // const endDate = getEndDate(data);
+
+  switch (data.ts_value_type) {
+    // one day second : 86400
+    case 'incr':
+      return `${data.ts_value / 86400} Days`;
+    case 'fixed':
+    default:
+      // return dayjs.unix(data.ts_value).format('YYYY-MM-DD');
+      return dayjs.unix(data.ts_value).format('YYYY-MM-DD');
+  }
+};
+
 const getEndDate = (data: IResponseStakeItem) => {
   if (!data) return dayjs(0);
 

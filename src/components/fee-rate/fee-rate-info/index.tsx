@@ -22,7 +22,7 @@ export const FeeRateInfo = ({ networkFee, serviceFee, discount = false }: Props)
         <Typography fontSize={12}>Estimate Network Fee:</Typography>
 
         <Stack direction="row" spacing={2}>
-          <Typography fontSize={12}>~{networkFee} Sats</Typography>
+          <Typography fontSize={12}>~{networkFee.toLocaleString()} Sats</Typography>
 
           <Typography color="#777E91" fontSize={12}>
             ~${networkFeePrice}
@@ -33,7 +33,7 @@ export const FeeRateInfo = ({ networkFee, serviceFee, discount = false }: Props)
         <Typography fontSize={12}>Service Fee:</Typography>
 
         <Stack direction="row" spacing={2}>
-          <Typography fontSize={12}>~{serviceFee} Sats</Typography>
+          <Typography fontSize={12}>~{serviceFee.toLocaleString()} Sats</Typography>
 
           <Typography color="#777E91" fontSize={12}>
             ~${serviceFeePrice}
@@ -44,7 +44,7 @@ export const FeeRateInfo = ({ networkFee, serviceFee, discount = false }: Props)
         <Typography fontSize={12}>Total:</Typography>
 
         <Stack direction="row" spacing={2}>
-          <Typography fontSize={12}>~{total} Sats</Typography>
+          <Typography fontSize={12}>~{total.toLocaleString()} Sats</Typography>
 
           <Typography color="#777E91" fontSize={12}>
             ~${totalPrice}

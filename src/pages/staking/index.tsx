@@ -10,7 +10,6 @@ import faqImg from '@/assets/images/staking/faq.png';
 import nextImg from '@/assets/images/staking/next.png';
 import { onFormat } from '@/utils';
 import { useEffect, useState } from 'react';
-import { CommonTable, TableSkeleton } from '@/components';
 
 import services from '@/service';
 import { defaultPagination, defaultResponseList, IResponseStakeItem, IResponseStakePools, ProfileTab } from '@/types';
@@ -18,7 +17,7 @@ import { useWallet } from '@/stores/wallet';
 import { FeeRateSelector } from '@/components/fee-rate';
 import { LoadingButton } from '@mui/lab';
 import { FeeRateInfo } from '@/components/fee-rate';
-import { formatBalance, formatStakeDiffDays, formatStakeDiffHours } from '@/utils/format';
+import { formatBalance, formatLockedTime, formatStakeDiffDays, formatStakeDiffHours } from '@/utils/format';
 import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
 import { generate_stake_psbt, secondFromNow, setLocalStorageArray } from '@/utils/stake';
@@ -28,7 +27,6 @@ import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
 import { useDialog } from '@/hooks/use-dialog';
 import { useNavigate } from 'react-router-dom';
 import { fetcStakingOverView } from '@/service/stake';
-import config from '@/config';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -428,13 +426,14 @@ export default function StakingView() {
             <Typography color="#777E91">Locked Time</Typography>
 
             {/* <Typography>{formatStakeDiffDays(currentSelectedPool)} Days</Typography> */}
-            <Typography>{formatStakeDiffHours(currentSelectedPool)} Hours</Typography>
+            {/* <Typography>{formatStakeDiffHours(currentSelectedPool)} Hours</Typography> */}
+            <Typography>{formatLockedTime(currentSelectedPool)} </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
             <Typography color="#777E91">Reward once</Typography>
 
-            {/* <Typography>{currentSelectedPool && currentSelectedPool?.runes[0].amount} $VIKING</Typography> */}
-            <Typography>{config.staking.rewardOnce} $VIKING</Typography>
+            <Typography>{currentSelectedPool && currentSelectedPool?.runes[0].amount} $VIKING</Typography>
+            {/* <Typography>{config.staking.rewardOnce} $VIKING</Typography> */}
           </Stack>
           {/* <SatsSelect sats={props?.sats} selectType={inputProps?.select} onChange={onChange} value={value} /> */}
           <FeeRateSelector polling={stakeDialog.open} />
