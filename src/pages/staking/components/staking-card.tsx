@@ -6,6 +6,7 @@ import faqGrayImg from '@/assets/images/staking/faq-gray.png';
 import { LoadingButton } from '@mui/lab';
 import { IResponseStakeItem } from '@/types';
 import { formatBalance, formatStakeDiffDays, formatStakeDiffHours, isLockedTimeExpired } from '@/utils/format';
+import config from '@/config';
 
 type Props = {
   data: IResponseStakeItem;
@@ -82,7 +83,8 @@ export function StakingCard({ data, onClick }: Props) {
                   <img src={isDisabled ? faqGrayImg : faqImg} width={12} height={12} />
                 </Tooltip>
               </Stack>
-              <Typography color={textColor}>{data.runes[0].amount} $VIKING</Typography>
+              {/* <Typography color={textColor}>{data.runes[0].amount} $VIKING</Typography> */}
+              <Typography color={textColor}>{config.staking.rewardOnce} $VIKING</Typography>
             </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>

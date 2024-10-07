@@ -28,6 +28,7 @@ import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
 import { useDialog } from '@/hooks/use-dialog';
 import { useNavigate } from 'react-router-dom';
 import { fetcStakingOverView } from '@/service/stake';
+import config from '@/config';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -432,7 +433,8 @@ export default function StakingView() {
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
             <Typography color="#777E91">Reward once</Typography>
 
-            <Typography>{currentSelectedPool && currentSelectedPool?.runes[0].amount} $VIKING</Typography>
+            {/* <Typography>{currentSelectedPool && currentSelectedPool?.runes[0].amount} $VIKING</Typography> */}
+            <Typography>{config.staking.rewardOnce} $VIKING</Typography>
           </Stack>
           {/* <SatsSelect sats={props?.sats} selectType={inputProps?.select} onChange={onChange} value={value} /> */}
           <FeeRateSelector polling={stakeDialog.open} />

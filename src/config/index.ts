@@ -41,6 +41,10 @@ const config = {
   protocol: `https://doc.vikingrunes.io/utxo-staking-protocol/introduce`,
   tokenEconomics: 'https://doc.vikingrunes.io/vikingrunes.io/tokenomics',
   roadmap: 'https://doc.vikingrunes.io/vikingrunes.io/roadmap',
+
+  staking: {
+    rewardOnce: 1000,
+  },
 };
 
 export default config;
