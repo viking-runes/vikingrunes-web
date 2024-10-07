@@ -44,6 +44,7 @@ const config = {
 
   staking: {
     rewardOnce: 1000,
+    rewardTotalSupply: 20_000_000,
   },
 };
 

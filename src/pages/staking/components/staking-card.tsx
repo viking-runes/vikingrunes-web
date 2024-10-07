@@ -91,7 +91,8 @@ export function StakingCard({ data, onClick }: Props) {
               <Stack direction="row" alignItems="center">
                 <Typography color="#777E91">Total supply</Typography>
               </Stack>
-              <Typography color={textColor}>{+data.runes[0].amount * data.total} $VIKING</Typography>
+              {/* <Typography color={textColor}>{+data.runes[0].amount * data.total} $VIKING</Typography> */}
+              <Typography color={textColor}>{config.staking.rewardTotalSupply.toLocaleString()} $VIKING</Typography>
             </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
