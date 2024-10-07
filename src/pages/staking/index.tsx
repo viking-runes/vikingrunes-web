@@ -203,7 +203,7 @@ export default function StakingView() {
         start_time: startTime,
       };
 
-      setLocalStorageArray('locked_txids', staker_utxo.txid);
+      setLocalStorageArray('locked_txids_vouts', `${staker_utxo.txid}_${staker_utxo.vout}`);
 
       const response = await services.stake.txStake(body);
       console.log('🚀 ~ handleStakeConfirm ~ response:', response);

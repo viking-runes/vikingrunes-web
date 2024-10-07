@@ -45,13 +45,12 @@ export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee)
   const utxos_result = await unisat_fetch.address_utxo(p2tr_ddress);
   const utxos = utxos_result.data.data;
 
-  const locked_txids = getLocalStorageArray('locked_txids');
-  console.log('🚀 ~ select_staker_utxo ~ locked_txids:', locked_txids);
+  const locked_txids_vouts = getLocalStorageArray('locked_txids_vouts');
+  console.log('🚀 ~ select_staker_utxo ~ locked_txids:', locked_txids_vouts);
 
-  // console.log( utxos )
   let selected_utxo;
   for (const u of utxos) {
-    if (locked_txids.includes(u.txid)) {
+    if (locked_txids_vouts.includes(`${u.txid}_${u.vout}`)) {
       continue;
     }
 
