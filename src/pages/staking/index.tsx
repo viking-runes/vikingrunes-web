@@ -18,7 +18,7 @@ import { useWallet } from '@/stores/wallet';
 import { FeeRateSelector } from '@/components/fee-rate';
 import { LoadingButton } from '@mui/lab';
 import { FeeRateInfo } from '@/components/fee-rate';
-import { formatBalance, formatStakeDiffDays } from '@/utils/format';
+import { formatBalance, formatStakeDiffDays, formatStakeDiffHours } from '@/utils/format';
 import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
 import { useSnackbar } from '@/components/snackbar';
 import { generate_stake_psbt, secondFromNow, setLocalStorageArray } from '@/utils/stake';
@@ -426,7 +426,8 @@ export default function StakingView() {
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
             <Typography color="#777E91">Locked Time</Typography>
 
-            <Typography>{formatStakeDiffDays(currentSelectedPool)} Days</Typography>
+            {/* <Typography>{formatStakeDiffDays(currentSelectedPool)} Days</Typography> */}
+            <Typography>{formatStakeDiffHours(currentSelectedPool)} Hours</Typography>
           </Stack>
           <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
             <Typography color="#777E91">Reward once</Typography>

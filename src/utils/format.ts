@@ -36,7 +36,7 @@ export const hexToBase64 = (hex: string) => {
 export const formatStakeDiffDays = (data: IResponseStakeItem) => {
   if (!data) return 0;
 
-  const endDate = dayjs(data.ts_value * 1000);
+  const endDate = getEndDate(data);
   const beginDate = dayjs(Date.now());
   const diffInDays = endDate.diff(beginDate, 'day');
   return diffInDays > 0 ? diffInDays : 0;
@@ -48,9 +48,9 @@ const getEndDate = (data: IResponseStakeItem) => {
   switch (data.ts_value_type) {
     case 'incr':
       return dayjs((secondFromNow() + data.ts_value) * 1000);
-
+    case 'fixed':
     default:
-      return dayjs(data.ts_value);
+      return dayjs.unix(data.ts_value);
   }
 };
 
@@ -58,8 +58,11 @@ export const formatStakeDiffHours = (data: IResponseStakeItem) => {
   if (!data) return 0;
 
   const endDate = getEndDate(data);
-  const beginDate = dayjs(Date.now());
+  // console.log('🚀 ~ formatStakeDiffHours ~ endDate:', endDate.toISOString());
+  const beginDate = dayjs();
+  // console.log('🚀 ~ formatStakeDiffHours ~ beginDate:', beginDate.toISOString());
   const diffInHours = endDate.diff(beginDate, 'hour');
+
   return diffInHours > 0 ? diffInHours : 0;
 };
 
