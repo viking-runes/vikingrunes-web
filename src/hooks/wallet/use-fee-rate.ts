@@ -52,7 +52,7 @@ export function useFeeRate(polling = false) {
   };
 
   const getNetworkFee = (vsize: number = 0) => {
-    console.log(getCurrentSelectedRate());
+    // console.log(getCurrentSelectedRate());
     return vsize * getCurrentSelectedRate();
   };
 

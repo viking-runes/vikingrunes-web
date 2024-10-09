@@ -91,8 +91,8 @@ const VikingWarrior = () => {
     <Box sx={{ background: 'url("/assets/advisors.png") no-repeat center', backgroundSize: 'cover' }}>
       <Container>
         <Box pt={7} pb={18.875}>
-          <Stack direction={'row'} justifyContent={'space-between'}>
-            <Stack spacing={4} maxWidth={580}>
+          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent={'space-between'}>
+            <Stack spacing={4} maxWidth={{ xs: '100%', md: 580 }}>
               <Typography fontSize={40} fontWeight={400} color={'#EBB94C'}>
                 <span style={{ color: '#fff' }}>#</span> Viking Warrior
               </Typography>

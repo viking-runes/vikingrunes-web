@@ -2,6 +2,7 @@ import { FC } from 'react';
 import styles from './index.module.less';
 import commonStyles from '../../index.module.less';
 import cn from 'classnames';
+import { Box } from '@mui/material';
 const Advisors: FC = () => {
   const advisors = [
     {
@@ -63,7 +64,7 @@ const Advisors: FC = () => {
   ];
 
   return (
-    <div className={styles.bg}>
+    <Box className={styles.bg}>
       <div className={styles.content}>
         <h1 className={commonStyles.hello}>Welcome</h1>
         <h2 className={commonStyles.title}>Influencers & Advisors</h2>
@@ -85,7 +86,7 @@ const Advisors: FC = () => {
           ))}
         </ul>
       </div>
-    </div>
+    </Box>
   );
 };
 export default Advisors;

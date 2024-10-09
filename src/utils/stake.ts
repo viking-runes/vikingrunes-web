@@ -48,13 +48,18 @@ export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee)
   const locked_txids_vouts = getLocalStorageArray('locked_txids_vouts');
   console.log('🚀 ~ select_staker_utxo ~ locked_txids:', locked_txids_vouts);
 
+  const needAmount = +stake_amount + service_fee;
+  console.log('🚀 ~ select_staker_utxo ~ needAmount:', needAmount);
+
   let selected_utxo;
   for (const u of utxos) {
     if (locked_txids_vouts.includes(`${u.txid}_${u.vout}`)) {
       continue;
     }
 
-    if (u.satoshis >= +stake_amount + service_fee) {
+    console.log(u.txid, u.satoshis, needAmount, u.satoshis >= needAmount);
+
+    if (u.satoshis >= +needAmount) {
       if (selected_utxo) {
         if (selected_utxo.satoshis > u.satoshis) {
           selected_utxo = u;
@@ -65,6 +70,7 @@ export async function select_staker_utxo(p2tr_ddress, stake_amount, service_fee)
     }
   }
 
+  console.log('🚀 ~ select_staker_utxo ~ selected_utxo:', selected_utxo);
   if (!selected_utxo) {
     throw new Error(`No enough UTXO, please transfer or split.`);
   }

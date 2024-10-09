@@ -1,27 +1,25 @@
-.bg{
-  background: url("../../../../assets/images/home/bg/advisors.png") no-repeat;
+.bg {
+  background: url('../../../../assets/images/home/bg/advisors.png') no-repeat;
   background-size: cover;
   //height: 42.625rem;
   display: flex;
   justify-content: center;
-  @media (max-width: 765px){
+  @media (max-width: 765px) {
     height: auto;
   }
-  .content{
+  .content {
     width: var(--max-width);
-    @media (max-width: 765px){
-      padding: 0 1.5em 0 2.5em;
-    }
-    .advisors{
+
+    .advisors {
       display: flex;
       flex-wrap: wrap;
       gap: 1%;
       padding-top: 71px;
-      @media (max-width: 765px){
+      @media (max-width: 765px) {
         gap: 7.5%;
       }
 
-      li{
+      li {
         width: 19%;
         display: flex;
         flex-direction: column;
@@ -29,29 +27,29 @@
         padding-bottom: 71px;
         cursor: pointer;
         align-items: center;
-        &.filter{
+        &.filter {
           opacity: 0.5;
         }
 
-        @media (max-width: 765px){
-            width: 40%;
+        @media (max-width: 765px) {
+          width: 40%;
         }
-        p{
+        p {
           font-size: 20px;
           padding-top: 8px;
           text-align: center;
         }
-        span{
+        span {
           font-size: 16px;
           text-align: center;
           line-height: 16px;
         }
-        i{
-          img{
+        i {
+          img {
             border-radius: 50%;
             overflow: hidden;
             box-sizing: border-box;
-            border: 4px #FFFFFF solid;
+            border: 4px #ffffff solid;
             width: 100px;
             height: 100px;
             display: block;
