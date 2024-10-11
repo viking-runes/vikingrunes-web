@@ -5,6 +5,7 @@ import { validate } from 'bitcoin-address-validation';
 import { useWallet } from '@/stores/wallet';
 import { useSnackbar } from '../../components/snackbar';
 import services from '@/service';
+import { validateBTCAddress } from '@/utils/validate';
 
 const useUnisat = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -39,7 +40,7 @@ const useUnisat = () => {
     console.log('🚀 ~ handleAccountsChanged ~ account:', account);
 
     if (account) {
-      const isBTC = validate(account);
+      const isBTC = validateBTCAddress(account);
 
       if (isBTC) {
         setWallet((prev) => ({
@@ -60,7 +61,7 @@ const useUnisat = () => {
           }));
         });
       } else {
-        enqueueSnackbar('Please connect to the correct btc wallet address', {
+        enqueueSnackbar(config.invalidAddress, {
           variant: 'error',
         });
         disconnect();
@@ -104,7 +105,7 @@ const useUnisat = () => {
       console.log(error);
       const msg = (error as any)?.message;
       if (msg) {
-        enqueueSnackbar('Please connect to the correct btc wallet address', {
+        enqueueSnackbar(config.invalidAddress, {
           variant: 'error',
         });
       }

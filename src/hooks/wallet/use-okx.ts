@@ -5,6 +5,7 @@ import config from '@/config';
 import { validate } from 'bitcoin-address-validation';
 import { useWallet } from '@/stores/wallet';
 import services from '@/service';
+import { validateBTCAddress } from '@/utils/validate';
 
 const useOkx = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -44,7 +45,7 @@ const useOkx = () => {
     console.log('🚀 ~ handleAccountsChanged ~ account:', account);
 
     if (account) {
-      const isBTC = validate(account);
+      const isBTC = validateBTCAddress(account);
 
       if (isBTC) {
         setLocalWallet(walletName, account, publicKey);
@@ -66,7 +67,7 @@ const useOkx = () => {
           }));
         });
       } else {
-        enqueueSnackbar('Please connect to the correct btc wallet address', {
+        enqueueSnackbar(config.invalidAddress, {
           variant: 'error',
         });
         disconnect();
@@ -116,7 +117,7 @@ const useOkx = () => {
       console.log(error);
       const msg = (error as any)?.message;
       if (msg) {
-        enqueueSnackbar('Please connect to the correct btc wallet address', {
+        enqueueSnackbar(config.invalidAddress, {
           variant: 'error',
         });
       }

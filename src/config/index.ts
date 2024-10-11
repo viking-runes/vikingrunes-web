@@ -5,6 +5,7 @@ const isMainnet = networkName === 'mainnet';
 const mempoolUrl = isMainnet ? 'https://mempool.space' : 'https://mempool.space/testnet';
 
 const stakeUrl = (import.meta.env.VITE_STAKE_URL as string).includes('/stake') ? import.meta.env.VITE_STAKE_URL : '';
+const addressPrefix = isMainnet ? 'bc1p' : 'tb1p';
 
 const config = {
   networkName,
@@ -46,6 +47,8 @@ const config = {
     rewardOnce: 1000,
     rewardTotalSupply: 20_000_000,
   },
+
+  invalidAddress: `Please connect to the correct BTC wallet address, the address must start with ${addressPrefix}`,
 };
 
 export default config;
