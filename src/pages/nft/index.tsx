@@ -7,13 +7,13 @@ import { FeeRateSelector } from '@/components/fee-rate';
 import { PrimaryButton } from '@/components';
 import CountBox from '@/pages/nft/components/countBox';
 import NftVideo from '@/components/nft-video';
-import { fetchMintEnv } from '@/service/stake';
 import { useWallet } from '@/stores/wallet';
 import { useSnackbar } from '@/components/snackbar';
 import useSignPsbt from '@/hooks/wallet/use-sign-psbt';
 import { sendBitcoinToMint } from '@/utils/stake';
 import services from '@/service';
 import useSendBitcoin from '@/hooks/wallet/use-send-bitcoin';
+import { defaultPagination } from '@/types';
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -25,6 +25,8 @@ const NftDetail = () => {
   const { sendBitcoin } = useSendBitcoin();
   const { signPsbt, signPsbtWthoutBroadcast } = useSignPsbt();
   const mintCount = useRef(1);
+
+  const [whitelist, setWhitelist] = useState<string[]>([]);
 
   const [mintLoading, setMintLoading] = useState(false);
 
@@ -38,15 +40,23 @@ const NftDetail = () => {
 
   const mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
 
+  const fetchMintEnv = async () => {
+    const res = await services.stake.fetchMintEnv();
+    setMintEnv(res);
+  };
+
+  const fetchWhitelist = async () => {
+    const res = await services.stake.fetchWhitelist();
+    setWhitelist(res);
+  };
+
   useEffect(() => {
-    fetchMintEnv().then((res) => {
-      setMintEnv(res);
-    });
+    fetchMintEnv();
+
+    fetchWhitelist();
 
     setInterval(() => {
-      fetchMintEnv().then((res) => {
-        setMintEnv(res);
-      });
+      fetchMintEnv();
     }, 10000);
   }, []);
 
@@ -60,9 +70,35 @@ const NftDetail = () => {
       return;
     }
 
+    if (!whitelist.includes(wallet.address)) {
+      enqueueSnackbar('You are not on the whitelist.', {
+        variant: 'warning',
+      });
+      return;
+    }
+
     const hasMinted = localStorage.getItem(`${wallet.address}`);
 
     if (hasMinted) {
+      enqueueSnackbar('You have already minted', {
+        variant: 'warning',
+      });
+      return;
+    }
+
+    const body = {
+      pag: defaultPagination,
+      filter: {
+        to_address: wallet.address,
+      },
+      sort: {
+        createdAt: 1,
+      },
+    };
+
+    const freeMints = await services.stake.fetchFreeMints(body);
+
+    if (freeMints.rows.length >= 1) {
       enqueueSnackbar('You have already minted', {
         variant: 'warning',
       });
