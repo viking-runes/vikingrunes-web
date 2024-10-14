@@ -1,7 +1,6 @@
 import config from '@/config';
 // import { checkIsBTCAddress } from '@/utils';
 
-import { validate } from 'bitcoin-address-validation';
 import { useWallet } from '@/stores/wallet';
 import { useSnackbar } from '../../components/snackbar';
 import services from '@/service';
@@ -61,7 +60,7 @@ const useUnisat = () => {
           }));
         });
       } else {
-        enqueueSnackbar(config.invalidAddress, {
+        enqueueSnackbar(config.messages.invalidAddress, {
           variant: 'error',
         });
         disconnect();
@@ -105,7 +104,7 @@ const useUnisat = () => {
       console.log(error);
       const msg = (error as any)?.message;
       if (msg) {
-        enqueueSnackbar(config.invalidAddress, {
+        enqueueSnackbar(config.messages.invalidAddress, {
           variant: 'error',
         });
       }

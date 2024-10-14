@@ -67,7 +67,7 @@ const useOkx = () => {
           }));
         });
       } else {
-        enqueueSnackbar(config.invalidAddress, {
+        enqueueSnackbar(config.messages.invalidAddress, {
           variant: 'error',
         });
         disconnect();
@@ -117,7 +117,7 @@ const useOkx = () => {
       console.log(error);
       const msg = (error as any)?.message;
       if (msg) {
-        enqueueSnackbar(config.invalidAddress, {
+        enqueueSnackbar(config.messages.invalidAddress, {
           variant: 'error',
         });
       }

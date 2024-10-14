@@ -48,7 +48,9 @@ const config = {
     rewardTotalSupply: 20_000_000,
   },
 
-  invalidAddress: `Please connect to the correct BTC wallet address, the address must start with ${addressPrefix}`,
+  messages: {
+    invalidAddress: `Please connect to the correct BTC wallet address, the address must start with ${addressPrefix}`,
+  },
 };
 
 export default config;
