@@ -46,7 +46,7 @@ const router = createBrowserRouter([
       { path: '/runesPump', element: <RunesPump />, errorElement: <ErrorBoundary /> },
       { path: '/staking', element: <Staking />, errorElement: <ErrorBoundary /> },
       { path: '/freemint', element: <Freemint />, errorElement: <ErrorBoundary /> },
-      { path: '/nft', element: <NftDetail />, errorElement: <ErrorBoundary /> },
+      { path: '/vikingwarriors', element: <NftDetail />, errorElement: <ErrorBoundary /> },
     ],
   },
 ]);
