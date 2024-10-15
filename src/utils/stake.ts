@@ -239,7 +239,7 @@ export async function claim(claimItem: IGraphQLClaimItem, stakerAddress: string,
   const unlock_time = claimItem.locked_time;
 
   // const fee = order.network_fee;
-  const fee = 180 * 10;
+  const fee = 180 * 30;
 
   const locked_script = lock_script(unlock_time, stakerPubkey);
 
