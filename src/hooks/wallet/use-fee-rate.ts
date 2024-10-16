@@ -4,9 +4,9 @@ import { atom, useAtom } from 'jotai';
 import { useEffect } from 'react';
 
 const feeRateAtom = atom({
-  fastestFee: 1,
-  halfHourFee: 1,
-  hourFee: 1,
+  fastestFee: 200,
+  halfHourFee: 50,
+  hourFee: 100,
   economyFee: 1,
   minimumFee: 1,
 });
