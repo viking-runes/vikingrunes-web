@@ -51,6 +51,8 @@ const config = {
   messages: {
     invalidAddress: `Please connect to the correct BTC wallet address, the address must start with ${addressPrefix}`,
   },
+
+  claimVSize: 180,
 };
 
 export default config;

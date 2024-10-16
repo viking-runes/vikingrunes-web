@@ -68,7 +68,7 @@ function ResponsiveBox({ children }: any) {
 
 export default function StakingView() {
   const navigate = useNavigate();
-  const [currentTab, setCurrentTab] = useState(0);
+  const [currentTab, setCurrentTab] = useState(2);
   const [stakeLoading, setStakeLoading] = useState(false);
 
   const { TipDialog, ...tipDialog } = useTipDialog(
@@ -77,6 +77,7 @@ export default function StakingView() {
   const feeRate = useFeeRate();
 
   const [stakePoolData, setStakePoolData] = useState<IResponseStakePools>(defaultResponseList);
+  const [stakePoolData2, setStakePoolData2] = useState<IResponseStakePools>(defaultResponseList);
 
   const [loading, setLoading] = useState(false);
   // const [params, setParams] = useState({ tab: 'all', holder: true, all_in_search: '' });
@@ -116,26 +117,28 @@ export default function StakingView() {
     },
   });
 
-  const fetchPools = async () => {
+  const fetchPools = async (id, tabIndex) => {
     const body = {
       pag: pagination,
-      filter: {},
-      sort: {
-        begin_date: 1,
+      filter: {
+        batch: id,
       },
+      sort: {},
     };
-
-    // if (currentTab === 0) {
-    //   body.filter['address'] = wallet.address;
-    // }
 
     const data = await services.stake.fetchPools(body);
 
-    if (pagination.offset === 0) {
+    if (tabIndex === 1) {
       setStakePoolData(data);
-    } else {
-      setStakePoolData((pre) => ({ ...pre, rows: [...pre.rows, ...data.rows] }));
+    } else if (tabIndex === 2) {
+      setStakePoolData2(data);
     }
+
+    // if (pagination.offset === 0) {
+    //   setStakePoolData(data);
+    // } else {
+    //   setStakePoolData((pre) => ({ ...pre, rows: [...pre.rows, ...data.rows] }));
+    // }
   };
 
   const fetchOverView = async () => {
@@ -163,7 +166,8 @@ export default function StakingView() {
 
   useEffect(() => {
     if (wallet.address) {
-      fetchPools();
+      fetchPools('P-20241015', 2);
+      fetchPools('p-20241001', 1);
       fetchOverView();
     }
   }, [pagination?.offset, wallet.address]);
@@ -377,7 +381,8 @@ export default function StakingView() {
         </Typography> */}
         <Tabs centered value={currentTab} onChange={handleTabChange}>
           {/* <Tab disableRipple label="Your pool" /> */}
-          <Tab disableRipple label="BTC Test Season 1" />
+          <Tab disableRipple value={2} label="BTC Test Season 2" />
+          <Tab disableRipple value={1} label="BTC Test Season 1" />
         </Tabs>
       </Stack>
 
@@ -393,19 +398,39 @@ export default function StakingView() {
         </CustomTabPanel>
       )}
 
+      {!wallet.address && (
+        <Box sx={{ p: 3 }}>
+          <Typography>Please connect your wallet first.</Typography>
+        </Box>
+      )}
+
       <Grid container spacing={3} mb={3}>
-        {stakePoolData.rows.map((item, index) => {
-          return (
-            <StakingCard
-              data={item}
-              key={index}
-              onClick={(item) => {
-                setCurrentSelectedPool(item);
-                stakeDialog.handleOpen();
-              }}
-            />
-          );
-        })}
+        {currentTab === 2 &&
+          stakePoolData2.rows.map((item, index) => {
+            return (
+              <StakingCard
+                data={item}
+                key={index}
+                onClick={(item) => {
+                  setCurrentSelectedPool(item);
+                  stakeDialog.handleOpen();
+                }}
+              />
+            );
+          })}
+        {currentTab === 1 &&
+          stakePoolData.rows.map((item, index) => {
+            return (
+              <StakingCard
+                data={item}
+                key={index}
+                onClick={(item) => {
+                  setCurrentSelectedPool(item);
+                  stakeDialog.handleOpen();
+                }}
+              />
+            );
+          })}
       </Grid>
 
       <CommonDialog handleClose={btcCurrentLockedDialog.handleClose} open={btcCurrentLockedDialog.open} title="BTC Current Locked">
