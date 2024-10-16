@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 
 const feeRateAtom = atom({
   fastestFee: 200,
-  halfHourFee: 50,
-  hourFee: 100,
+  halfHourFee: 100,
+  hourFee: 50,
   economyFee: 1,
   minimumFee: 1,
 });
