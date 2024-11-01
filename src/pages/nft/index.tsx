@@ -20,10 +20,9 @@ import { defaultPagination } from '@/types';
 const NftDetail = () => {
   const feeRate = useFeeRate();
 
-  const { wallet, getSignedPublicKey } = useWallet();
+  const { wallet } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
   const { sendBitcoin } = useSendBitcoin();
-  const { signPsbt, signPsbtWthoutBroadcast } = useSignPsbt();
   const mintCount = useRef(1);
 
   const [whitelist, setWhitelist] = useState<string[]>([]);
@@ -187,7 +186,7 @@ const NftDetail = () => {
             </Stack>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14}>
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                <Typography color={'#363944'} display={'inherit'}>
+                <Typography color={'#000000'} display={'inherit'}>
                   Total supply
                 </Typography>
                 <Typography display={'inherit'}>{mintEnv?.supply}</Typography>
