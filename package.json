@@ -4,9 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode testnet",
     "dev:testnet": "vite --mode testnet",
+    "dev:production": "vite --mode production",
     "build": "vite build",
+    "build:testnet": "vite build --mode testnet",
+    "build:production": "vite build --mode production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

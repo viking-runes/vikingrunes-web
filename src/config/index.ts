@@ -7,6 +7,8 @@ const mempoolUrl = isMainnet ? 'https://mempool.space' : 'https://mempool.space/
 const stakeUrl = (import.meta.env.VITE_STAKE_URL as string).includes('/stake') ? import.meta.env.VITE_STAKE_URL : '';
 const addressPrefix = isMainnet ? 'bc1p' : 'tb1p';
 
+const assetsUrl = import.meta.env.VITE_ASSETS || 'https://cdn.vikingrunes.io/assets/images';
+
 const config = {
   networkName,
   isMainnet,
@@ -53,6 +55,7 @@ const config = {
   },
 
   claimVSize: 180,
+  assetsUrl,
 };
 
 export default config;
