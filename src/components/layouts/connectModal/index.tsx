@@ -10,7 +10,7 @@ import cn from 'classnames';
 import { Box, ThemeProvider } from '@mui/material';
 import { modalBoxStyle } from '@/assets/styles/modalBox';
 // import { verseConnect } from '@/components/layouts/connectModal/XverseConnect';
-import useXverse from '@/hooks/wallet/use-xverse';
+// import useXverse from '@/hooks/wallet/use-xverse';
 import { useSnackbar } from '@/components/snackbar';
 import useOkx from '@/hooks/wallet/use-okx';
 import useUnisat from '@/hooks/wallet/use-unisat';
@@ -22,7 +22,7 @@ interface IProps {
 const ConnectModal: FC<IProps> = (props) => {
   const { isModalOpen, handleCancel } = props;
 
-  const xverseHook = useXverse();
+  // const xverseHook = useXverse();
   const okxHook = useOkx();
   const unisatHook = useUnisat();
   const { enqueueSnackbar } = useSnackbar();
@@ -42,20 +42,20 @@ const ConnectModal: FC<IProps> = (props) => {
         }
       },
     },
-    {
-      text: 'Xverse',
-      icon: xverseIcon,
-      onClick: async () => {
-        if (xverseHook.isWalletInstalled) {
-          await xverseHook.connect();
-          handleCancel();
-        } else {
-          enqueueSnackbar('Please install Xverse wallet', {
-            variant: 'error',
-          });
-        }
-      },
-    },
+    // {
+    //   text: 'Xverse',
+    //   icon: xverseIcon,
+    //   onClick: async () => {
+    //     if (xverseHook.isWalletInstalled) {
+    //       await xverseHook.connect();
+    //       handleCancel();
+    //     } else {
+    //       enqueueSnackbar('Please install Xverse wallet', {
+    //         variant: 'error',
+    //       });
+    //     }
+    //   },
+    // },
     // { text: 'Leather', icon: LeatherIcon },
     {
       text: 'OKX',
@@ -86,6 +86,8 @@ const ConnectModal: FC<IProps> = (props) => {
             </h1>
             <ul className={cn(styles.line, 'd-flex flex-column align-items-center justify-content-center')}>
               {walletItems.map((item) => (
+                // <li onClick={item.onClick} key={item.text} className={cn(styles.row, 'd-flex  align-items-center', { [styles.disabled]: item.text === 'OKX' })}>
+                // TODO: OKX
                 <li onClick={item.onClick} key={item.text} className={cn(styles.row, 'd-flex  align-items-center')}>
                   <i>
                     <img alt={item.text} src={item.icon} />

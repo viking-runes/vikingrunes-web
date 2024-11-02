@@ -1,6 +1,6 @@
-import { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { formModalStyle } from '@/assets/styles/modalBox';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import styles from './index.module.less';
 import cn from 'classnames';
@@ -13,11 +13,13 @@ interface IProps {
   onClose?: () => void;
   disabled?: boolean;
   errorMsg?: string;
+  text?: React.ReactNode;
 }
-const ModalBox: FC<PropsWithChildren<IProps>> = ({ errorMsg, data, disabled, onClose, onConfirm, title, children }) => {
+const ModalBox: FC<PropsWithChildren<IProps>> = ({ errorMsg, data, disabled, text, onClose, onConfirm, title, children }) => {
+  const matches = useMediaQuery('(max-width: 765px)');
   return (
     <div>
-      <Box sx={{ ...formModalStyle, width: '41.75rem' }}>
+      <Box sx={{ ...formModalStyle, width: matches ? '90vw' : '41.75rem' }}>
         <div className={styles.content}>
           <div className={cn(styles.header, 'd-flex justify-content-between align-items-center')}>
             <p>{title}</p>
@@ -26,15 +28,19 @@ const ModalBox: FC<PropsWithChildren<IProps>> = ({ errorMsg, data, disabled, onC
             </i>
           </div>
           <div className={styles['container']}>
-            <div className={cn(styles.rune, 'd-flex')}>
-              <i className={styles.avatar}>
-                <img src={data?.rune_logo} alt={'avatar'} />
-              </i>
-              <p className={cn(styles['rune-text'], 'd-flex flex-column')}>
-                <span>{data?.rune}</span>
-                {data?.subInfo && <span className={styles['sub-info']}>{data?.subInfo}</span>}
-              </p>
-            </div>
+            {text ? (
+              text
+            ) : (
+              <div className={cn(styles.rune, 'd-flex')}>
+                <i className={styles.avatar}>
+                  <img src={data?.rune_logo} alt={'avatar'} />
+                </i>
+                <p className={cn(styles['rune-text'], 'd-flex flex-column')}>
+                  <span>{data?.rune}</span>
+                  {data?.subInfo && <span className={styles['sub-info']}>{data?.subInfo}</span>}
+                </p>
+              </div>
+            )}
             <div className={styles.box}>{children}</div>
           </div>
           <footer className={styles.footer}>

@@ -38,14 +38,14 @@ const RuneItemInfo: FC<{ dataSource: IRuneDetailItem; fee_rate?: string }> = ({ 
           <div className={cn('d-media-mobile d-flex')}>
             <AvatarContent text={dataSource?.rune} avatar={dataSource?.rune_logo} />
           </div>
-          <dd
+          {/* <dd
             className={styles['btn-wrapper']}
             onClick={() => {
               navigate(`/fairMint?id=${dataSource.rune_id}`);
             }}
           >
             <a className={styles['btn']}>Mint</a>
-          </dd>
+          </dd> */}
         </div>
       )}
     </div>

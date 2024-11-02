@@ -75,6 +75,7 @@ export const listingFormItems: IFormItems[] = [
     rules: [{ required: true, message: 'Please input your unit price!' }],
   },
 ];
+
 export const transferFormItems: IFormItems[] = [
   {
     type: 'insert-input',

@@ -1,45 +1,70 @@
 import { getFees } from '@/service/mempool';
+import { CurrentSelectedRate } from '@/types';
 import { atom, useAtom } from 'jotai';
 import { useEffect } from 'react';
 
 const feeRateAtom = atom({
-  fastestFee: 1,
-  halfHourFee: 1,
-  hourFee: 1,
+  fastestFee: 200,
+  halfHourFee: 100,
+  hourFee: 50,
   economyFee: 1,
   minimumFee: 1,
 });
 
-export function useFeeRate(polling = true) {
-  const [feeRate, setFeeRate] = useAtom(feeRateAtom);
+const currentSelectedRateAtom = atom(CurrentSelectedRate.halfHourFee);
 
-  const getFee = async () => {
+let interval: NodeJS.Timeout | null = null;
+
+export function useFeeRate(polling = false) {
+  const [feeRate, setFeeRate] = useAtom(feeRateAtom);
+  const [currentSelectedRate, setCurrentSelectedRate] = useAtom(currentSelectedRateAtom);
+
+  const getFee = async (inited = false) => {
     const data = await getFees();
     setFeeRate(data);
+    if (inited) {
+      setCurrentSelectedRate(CurrentSelectedRate.halfHourFee);
+    }
   };
 
   useEffect(() => {
-    getFee();
-
     if (!polling) {
+      interval && clearInterval(interval);
       return;
     }
-    const interval = setInterval(() => {
+
+    interval = setInterval(() => {
       getFee();
-    }, 5 * 1000);
+    }, 3 * 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [polling]);
 
   const lowFee = feeRate.hourFee;
   const standardFee = feeRate.halfHourFee;
   const highFee = feeRate.fastestFee;
+  // const highFee = 30;
+
+  const getCurrentSelectedRate = () => {
+    // TODO
+    // if (currentSelectedRate === CurrentSelectedRate.hourFee) return 20;
+    return feeRate[currentSelectedRate];
+  };
+
+  const getNetworkFee = (vsize: number = 0) => {
+    // console.log(getCurrentSelectedRate());
+    return vsize * getCurrentSelectedRate();
+  };
 
   return {
+    getFee,
     feeRate,
     setFeeRate,
     lowFee,
     standardFee,
     highFee,
+    getNetworkFee,
+    getCurrentSelectedRate,
+    setCurrentSelectedRate,
   };
 }

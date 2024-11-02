@@ -1,5 +1,5 @@
 import { Modal } from '@mui/material';
-import { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import ModalBox from '../modalBox';
 import { ControlForm, ProfileBTCInfo } from '@/components';
 import { TControlFormHandler } from '@/components/form/types.ts';
@@ -10,14 +10,16 @@ import { useWallet } from '@/stores/wallet.ts';
 import { enqueueSnackbar } from 'notistack';
 import { useRune } from '@/hooks/rune/useRune.tsx';
 import commaNumber from 'comma-number';
+import { ProfileTab } from '@/types/index.ts';
 interface IProps {
   open: boolean;
   onClose: () => void;
   title?: string;
   modalType: string;
   data: Partial<IRuneDetailItem>;
+  text?: React.ReactNode;
 }
-const TransferModal: FC<IProps> = ({ open, onClose, modalType, data, title }) => {
+const TransferModal: FC<IProps> = ({ open, text, onClose, modalType, data, title }) => {
   const { wallet, getSignedPublicKey } = useWallet();
   const { signPsbt } = useSignPsbt();
   const formInstance = useRef<TControlFormHandler>(null);
@@ -72,7 +74,7 @@ const TransferModal: FC<IProps> = ({ open, onClose, modalType, data, title }) =>
   };
   return (
     <Modal open={open} onClose={onModalClose}>
-      <ModalBox errorMsg={errorMsg} disabled={!!errorMsg} data={{ ...runeDetail, subInfo: `Available: ${commaNumber(data.balance?.toString())}` }} title={title || (isTransfer ? 'Transfer' : 'Listing')} onClose={onModalClose} onConfirm={onConfirm}>
+      <ModalBox errorMsg={errorMsg} disabled={!!errorMsg} text={text} data={{ ...runeDetail, subInfo: `Available: ${commaNumber(data.balance?.toString())}` }} title={title || (isTransfer ? 'Transfer' : 'Listing')} onClose={onModalClose} onConfirm={onConfirm}>
         <ControlForm
           onSatUpdate={(value) => {
             if (value !== currentRate) {
@@ -84,15 +86,27 @@ const TransferModal: FC<IProps> = ({ open, onClose, modalType, data, title }) =>
           }}
           sats={runeDetail?.fees_recommended}
           ref={formInstance}
-          formItems={isTransfer ? transferFormItems : listingFormItems}
+          formItems={isTransfer ? transferFormItems : modalType === ProfileTab.Stakes ? [{ type: 'sats-select', name: 'fee_rate' }] : listingFormItems}
         />
         <div className={'padding-top-10'}>
-          {!isTransfer && (
+          {!(isTransfer || modalType === ProfileTab.Stakes) && (
             <div className={'padding-bottom-8 margin-bottom-12 border-bottom'}>
               <ProfileBTCInfo size={'lg'} dataSource={orderMock} columns={orderColumns} />
             </div>
           )}
-          <ProfileBTCInfo columns={isTransfer ? btcColumns : listColumns} dataSource={runeDetail?.fees} />
+          <ProfileBTCInfo
+            columns={isTransfer || modalType === ProfileTab.Stakes ? btcColumns : listColumns}
+            dataSource={
+              runeDetail?.fees || {
+                estimate_network_fee_sats: '~12173 Sats',
+                estimate_network_fee: '~4.87',
+                service_base_fee_sats: '4999 Sats',
+                service_base_fee: '2.00',
+                total_sats: '~17718 Sats',
+                total: '~7.09',
+              }
+            }
+          />
         </div>
       </ModalBox>
     </Modal>

@@ -8,7 +8,7 @@ import { AvatarContent, SmCopyText, TimestampTableCell, TransactionsCode } from 
 import { onFormat, onFormatNumber } from '@/utils';
 export interface IDataRow {
   hideable?: boolean;
-  type?: 'avatar' | 'progress' | 'timestamp' | 'end-code' | 'copy' | 'comma'|'div';
+  type?: 'avatar' | 'progress' | 'timestamp' | 'end-code' | 'copy' | 'comma' | 'div';
   render?: (record: unknown) => ReactNode;
   columnType?: 'sort';
   dataFormat?: (text: string) => string | number;

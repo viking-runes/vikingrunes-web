@@ -1,11 +1,19 @@
-'use client';
 import config from '@/config';
 // import { checkIsBTCAddress } from '@/utils';
 
-import { validate } from 'bitcoin-address-validation';
 import { useWallet } from '@/stores/wallet';
 import { useSnackbar } from '../../components/snackbar';
 import services from '@/service';
+import { validateBTCAddress } from '@/utils/validate';
+
+declare global {
+  interface Window {
+    unisat: any;
+    okxwallet: any;
+  }
+}
+
+export {};
 
 const useUnisat = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -40,7 +48,7 @@ const useUnisat = () => {
     console.log('🚀 ~ handleAccountsChanged ~ account:', account);
 
     if (account) {
-      const isBTC = validate(account);
+      const isBTC = validateBTCAddress(account);
 
       if (isBTC) {
         setWallet((prev) => ({
@@ -61,7 +69,7 @@ const useUnisat = () => {
           }));
         });
       } else {
-        enqueueSnackbar('Please connect to the correct btc wallet address', {
+        enqueueSnackbar(config.messages.invalidAddress, {
           variant: 'error',
         });
         disconnect();
@@ -105,10 +113,22 @@ const useUnisat = () => {
       console.log(error);
       const msg = (error as any)?.message;
       if (msg) {
-        enqueueSnackbar('Please connect to the correct btc wallet address', {
+        enqueueSnackbar(config.messages.invalidAddress, {
           variant: 'error',
         });
       }
+    }
+  };
+
+  const checkWalletActive = async () => {
+    const res = await injectedProvider.getAccounts();
+    return res && res.length > 0;
+  };
+
+  const autoConnect = async () => {
+    const res = await checkWalletActive();
+    if (res) {
+      await connect();
     }
   };
 
@@ -121,6 +141,7 @@ const useUnisat = () => {
     disconnect,
     injectedProvider,
     isWalletInstalled,
+    autoConnect,
   };
 };
 

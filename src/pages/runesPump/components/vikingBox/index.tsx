@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import styles from './index.module.less';
 import cn from 'classnames';
+import config from '@/config';
 const VikingBox: FC = () => {
   const imgs = ['1topLeftBack', '2topCenterBack', '3topRightBack', '4centerLeftBack', '5center', '6img', '7img', '8img', '9img'];
   return (
@@ -11,8 +12,8 @@ const VikingBox: FC = () => {
             const isCenter = key.includes('5center');
             return (
               <li key={key} className={cn(styles['flipper'], { [styles.center]: isCenter })}>
-                {!isCenter && <p className={cn({ [styles['font']]: !isCenter })}>{<img src={`${import.meta.env.VITE_ASSETS}/font.png`} alt="" />}</p>}
-                <p className={cn({ [styles['back']]: !isCenter })}>{<img src={`${import.meta.env.VITE_ASSETS}/${key}.png`} alt="" />}</p>
+                {!isCenter && <p className={cn({ [styles['font']]: !isCenter })}>{<img src={`${config.assetsUrl}/font.png`} alt="" />}</p>}
+                <p className={cn({ [styles['back']]: !isCenter })}>{<img src={`${config.assetsUrl}/${key}.png`} alt="" />}</p>
               </li>
             );
           })}

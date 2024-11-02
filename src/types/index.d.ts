@@ -7,7 +7,7 @@ interface IProgressDetails {
 }
 type IDataSource = Record<string, Record<string, string> | string>;
 
-declare interface Window {
+interface Window {
   unisat: any;
   okxwallet: any;
   XverseProviders: any;

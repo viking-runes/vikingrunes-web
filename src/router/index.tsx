@@ -11,14 +11,25 @@ import MarketDetail from '@/pages/marketDetail';
 import RunesPump from '@/pages/runesPump';
 import ErrorBoundary from '@/components/errorBoundary';
 import MyAssets from '@/pages/profile/myAssets';
+import Staking from '@/pages/staking';
+import Freemint from '@/pages/freeMint';
+import Home from '@/pages/home';
+import Viking from '@/pages/viking';
+import NftDetail from '@/pages/nft';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />,
+  },
   {
     path: '/',
     element: <Layouts />,
     errorElement: <ErrorBoundary />,
     children: [
-      { path: '/', element: <ExplorerAll />, errorElement: <ErrorBoundary /> },
+      { path: '/viking', element: <Viking />, errorElement: <ErrorBoundary /> },
+      { path: '/staking', element: <Staking />, errorElement: <ErrorBoundary /> },
+      { path: '/explorer', element: <ExplorerAll />, errorElement: <ErrorBoundary /> },
       { path: '/tx/:id', element: <Transactions />, errorElement: <ErrorBoundary /> },
       { path: '/rune/:id', element: <RuneDetail />, errorElement: <ErrorBoundary /> },
       { path: '/address/:id', element: <AddressDetail />, errorElement: <ErrorBoundary /> },
@@ -33,6 +44,9 @@ const router = createBrowserRouter([
       },
       { path: '/etch', element: <Etch />, errorElement: <ErrorBoundary /> },
       { path: '/runesPump', element: <RunesPump />, errorElement: <ErrorBoundary /> },
+      { path: '/staking', element: <Staking />, errorElement: <ErrorBoundary /> },
+      { path: '/freemint', element: <Freemint />, errorElement: <ErrorBoundary /> },
+      { path: '/vikingwarriors', element: <NftDetail />, errorElement: <ErrorBoundary /> },
     ],
   },
 ]);

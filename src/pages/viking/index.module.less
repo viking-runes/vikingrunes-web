@@ -1,0 +1,31 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 20px;
+  color: #ffffff;
+  flex-wrap: wrap;
+  .item{
+    background-color:#1A1C28;
+    border-radius: 10px;
+    border: 1px solid #242738;
+    padding: 1rem 1.5625rem;
+    box-sizing: border-box;
+    width: calc(25% - 10px);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    gap: 13px;
+    @media (max-width: 765px){
+      width: calc(50% - 7px);
+    }
+    .title{
+      font-size: 14px;
+      color: #777E91;
+    }
+    .value{
+      font-size: 16px;
+      color: #F9F9F9;
+    }
+  }
+}

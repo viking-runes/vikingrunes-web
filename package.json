@@ -4,8 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode testnet",
+    "dev:testnet": "vite --mode testnet",
+    "dev:production": "vite --mode production",
     "build": "vite build",
+    "build:testnet": "vite build --mode testnet",
+    "build:production": "vite build --mode production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -13,6 +17,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.14",
+    "@mui/lab": "^5.0.0-alpha.155",
     "@mui/material": "^5.15.13",
     "@mui/x-data-grid": "^6.19.6",
     "@scure/base": "^1.1.5",
@@ -30,11 +35,14 @@
     "lodash": "^4.17.21",
     "notistack": "^3.0.1",
     "react": "^18.2.0",
+    "react-countdown": "^2.3.6",
     "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
+    "redstone-api": "^0.4.12",
     "sats-connect": "2.2.1",
-    "stylelint-config-rational-order": "^0.1.2"
+    "stylelint-config-rational-order": "^0.1.2",
+    "tiny-secp256k1": "^2.2.3"
   },
   "devDependencies": {
     "@types/comma-number": "^2.1.2",
@@ -63,6 +71,7 @@
     "vite": "^5.1.6",
     "vite-plugin-node-polyfills": "^0.21.0",
     "vite-plugin-svgr": "^4.2.0",
+    "vite-plugin-wasm": "^3.3.0",
     "vite-svg-loader": "^5.1.0"
   }
 }
