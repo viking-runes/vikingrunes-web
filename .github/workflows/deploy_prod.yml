@@ -1,4 +1,4 @@
-name: Deploy Prod
+name: Deploy Main
 
 on:
   push:
@@ -12,44 +12,45 @@ permissions:
 jobs:
   build:
     name: Build
+    environment:
+      name: github-pages-test
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 21.x
-          cache: 'npm'
+          node-version: 20
+          cache: 'pnpm'
 
-      - name: Run Install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      - run: cp .env.testnet .env
 
       - name: Build project
-        uses: borales/actions-yarn@v4
+        run: |
+          pnpm install && pnpm build:production
+
+      - run: cp dist/index.html dist/404.html
+
+      - run: cp CNAME dist/CNAME
+
+      - name: Pushes to another repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_MAINNET_DEPLOY_KEY }}
         with:
-          cmd: build
-          
-      - run: cp dist/index.html dist/404.html  
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
-
-  deploy:
-    environment:
-      name: github-pages
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          source-directory: dist/
+          destination-github-username: 'viking-runes'
+          destination-repository-name: 'vikingrunes.io'
+          user-email: viking.astross@gmail.com
+          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+          target-branch: main
