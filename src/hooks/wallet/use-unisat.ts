@@ -6,6 +6,15 @@ import { useSnackbar } from '../../components/snackbar';
 import services from '@/service';
 import { validateBTCAddress } from '@/utils/validate';
 
+declare global {
+  interface Window {
+    unisat: any;
+    okxwallet: any;
+  }
+}
+
+export {};
+
 const useUnisat = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { wallet, setWallet, resetWallet, setLocalWallet } = useWallet();
@@ -111,6 +120,18 @@ const useUnisat = () => {
     }
   };
 
+  const checkWalletActive = async () => {
+    const res = await injectedProvider.getAccounts();
+    return res && res.length > 0;
+  };
+
+  const autoConnect = async () => {
+    const res = await checkWalletActive();
+    if (res) {
+      await connect();
+    }
+  };
+
   const isWalletInstalled = !!injectedProvider;
 
   return {
@@ -120,6 +141,7 @@ const useUnisat = () => {
     disconnect,
     injectedProvider,
     isWalletInstalled,
+    autoConnect,
   };
 };
 

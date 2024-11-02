@@ -14,6 +14,8 @@ import { sendBitcoinToMint } from '@/utils/stake';
 import services from '@/service';
 import useSendBitcoin from '@/hooks/wallet/use-send-bitcoin';
 import { defaultPagination } from '@/types';
+import Countdown from 'react-countdown';
+import { getCountDown } from '@/utils/format';
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -170,7 +172,13 @@ const NftDetail = () => {
 
         {/* {mintEnv && ( */}
         <Stack width={'100%'}>
-          <Typography sx={{ fontSize: 18, color: '#EBB94C', pb: 2 }}>Viking Warrior</Typography>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography sx={{ fontSize: 18, color: '#EBB94C', pb: 2 }}>Viking Warrior</Typography>
+            <Typography sx={{ fontSize: 18, color: '#EBB94C', pb: 2 }}>
+              {/* Countdown: <Countdown date={1730678400000} daysInHours={true} /> */}
+              Countdown: <Countdown date={1730678400000} />
+            </Typography>
+          </Stack>
           {/* <Typography sx={{ fontSize: 14, pb: 3.75 }}>Quantity: {mintEnv?.supply - mintEnv?.minted} &nbsp;&nbsp; Price: Freemint</Typography> */}
 
           {/* free box */}
@@ -186,8 +194,8 @@ const NftDetail = () => {
             </Stack>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14}>
               <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-                <Typography color={'#000000'} display={'inherit'}>
-                  Total supply
+                <Typography color={'white'} display={'inherit'}>
+                  Total supply &nbsp;
                 </Typography>
                 <Typography display={'inherit'}>{mintEnv?.supply}</Typography>
 

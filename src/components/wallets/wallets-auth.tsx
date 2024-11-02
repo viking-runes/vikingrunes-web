@@ -1,13 +1,13 @@
 import config from '@/config';
 import useOkx from '@/hooks/wallet/use-okx';
 import useUnisat from '@/hooks/wallet/use-unisat';
-import useXverse from '@/hooks/wallet/use-xverse';
+// import useXverse from '@/hooks/wallet/use-xverse';
 import { useWallet } from '@/stores/wallet';
 import { useEffect } from 'react';
 
 const WalletAuth = () => {
   const { getLocalWallet } = useWallet();
-  const xverseHook = useXverse();
+  // const xverseHook = useXverse();
   const okxHook = useOkx();
   const unisatHook = useUnisat();
 
@@ -18,15 +18,12 @@ const WalletAuth = () => {
 
     const currentWallet = getLocalWallet();
 
-    if (currentWallet.walletName === config.walletName.unisat) {
-      if (currentWallet.address && currentWallet.publicKey) {
-        unisatHook.handleAccountsChanged(currentWallet.address);
-      }
-
-      window.unisat?.on('accountsChanged', (accounts) => {
-        console.log('🚀 ~ window.unisat?.on ~ accounts:', accounts);
-        unisatHook.handleAccountsChanged(accounts[0]);
-      });
+    if (currentWallet.walletName === config.walletName.unisat && currentWallet.address && currentWallet.publicKey) {
+      unisatHook.autoConnect();
+      // unisatHook.handleAccountsChanged(
+      //   currentWallet.address,
+      //   currentWallet.publicKey,
+      // );
     }
   }, []);
 
@@ -37,26 +34,28 @@ const WalletAuth = () => {
 
     const currentWallet = getLocalWallet();
 
-    if (currentWallet.walletName === config.walletName.okx) {
-      if (currentWallet.address && currentWallet.publicKey) {
-        okxHook.handleAccountsChanged(currentWallet.address, currentWallet.publicKey);
-      }
+    if (currentWallet.walletName === config.walletName.okx && currentWallet.address && currentWallet.publicKey) {
+      okxHook.autoConnect();
+      // okxHook.handleAccountsChanged(
+      //   currentWallet.address,
+      //   currentWallet.publicKey,
+      // );
     }
   }, []);
 
-  useEffect(() => {
-    // if (!xverseHook.isWalletInstalled) {
-    //   return;
-    // }
+  // useEffect(() => {
+  //   // if (!xverseHook.isWalletInstalled) {
+  //   //   return;
+  //   // }
 
-    const currentWallet = getLocalWallet();
+  //   const currentWallet = getLocalWallet();
 
-    if (currentWallet.walletName === config.walletName.xverse) {
-      if (currentWallet.address && currentWallet.publicKey) {
-        xverseHook.handleAccountsChanged(currentWallet.address, currentWallet.publicKey);
-      }
-    }
-  }, []);
+  //   if (currentWallet.walletName === config.walletName.xverse) {
+  //     if (currentWallet.address && currentWallet.publicKey) {
+  //       xverseHook.handleAccountsChanged(currentWallet.address, currentWallet.publicKey);
+  //     }
+  //   }
+  // }, []);
 
   return <></>;
 };

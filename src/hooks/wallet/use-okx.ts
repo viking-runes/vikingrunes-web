@@ -126,6 +126,18 @@ const useOkx = () => {
 
   const isWalletInstalled = !!injectedProvider;
 
+  const checkWalletActive = async () => {
+    const res = await injectedProvider.getAccounts();
+    return res && res.length > 0;
+  };
+
+  const autoConnect = async () => {
+    const res = await checkWalletActive();
+    if (res) {
+      await connect();
+    }
+  };
+
   return {
     handleAccountsChanged,
     handleNetworkChanged,
@@ -133,6 +145,7 @@ const useOkx = () => {
     disconnect,
     injectedProvider,
     isWalletInstalled,
+    autoConnect,
   };
 };
 

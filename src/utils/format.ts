@@ -2,7 +2,11 @@ import { IResponseStakeItem } from '@/types';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 import { secondFromNow } from '@/utils/stake';
+
+dayjs.extend(utc);
 
 export const formatAddress = (address: string) => {
   if (!address) return '';
@@ -106,4 +110,14 @@ export const formatStakeCountDown = (time: number) => {
 export const isLockedTimeExpired = (time: any) => {
   const diff = time * 1000 - Date.now();
   return diff < 0;
+};
+
+export const getCountDown = (unixTime: number) => {
+  if (!unixTime) return '';
+  dayjs.extend(relativeTime);
+
+  return dayjs
+    .utc(unixTime * 1000)
+    .local()
+    .toNow(true);
 };
