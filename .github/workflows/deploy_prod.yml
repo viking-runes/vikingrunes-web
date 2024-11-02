@@ -2,18 +2,12 @@ name: Deploy Main
 
 on:
   push:
-    branches:
-      - master
-
-permissions:
-  pages: write
-  id-token: write
+    branches: [ master, filter-files ]
+  pull_request:
+    branches: [ master, filter-files ]
 
 jobs:
   build:
-    name: Build
-    environment:
-      name: github-pages
     runs-on: ubuntu-latest
 
     steps:
