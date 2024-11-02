@@ -32,8 +32,6 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - run: cp .env.testnet .env
-
       - name: Build project
         run: |
           pnpm install && pnpm build:production
@@ -46,7 +44,7 @@ jobs:
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          SSH_DEPLOY_KEY: ${{ secrets.SSH_MAINNET_DEPLOY_KEY }}
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
           source-directory: dist/
           destination-github-username: 'viking-runes'
