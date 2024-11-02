@@ -13,7 +13,7 @@ jobs:
   build:
     name: Build
     environment:
-      name: github-pages-test
+      name: github-pages
     runs-on: ubuntu-latest
 
     steps:
