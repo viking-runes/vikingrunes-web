@@ -36,8 +36,7 @@ jobs:
 
       - name: Build project
         run: |
-          pnpm install && pnpm build
-
+          pnpm install && pnpm build:testnet
 
       - run: cp dist/index.html dist/404.html
 
