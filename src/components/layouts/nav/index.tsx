@@ -35,6 +35,11 @@ const navs: NavItem[] = [
     name: 'UTXO-Staking Protocol',
     path: config.protocol,
   },
+  {
+    name: 'Viking Warriors',
+    tooltip: 'Viking Warriors',
+    path: '/vikingwarriors',
+  },
   // {
   //   name: '$Viking',
   //   path: '/viking',
