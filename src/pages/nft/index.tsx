@@ -199,7 +199,9 @@ const NftDetail = () => {
                 </Typography>
                 <Typography display={'inherit'}>{mintEnv?.supply}</Typography>
 
-                <Typography sx={{ fontSize: 14 }}> &nbsp;&nbsp; Price: Freemint</Typography>
+                <Typography color={'white'} display={'inherit'}>
+                  &nbsp;&nbsp; Price: Freemint
+                </Typography>
               </Stack>
               <Typography fontSize={20} color={isEnded ? '#363944' : '#EBB94C'}>
                 {isEnded ? 'ENDED' : 'START'}
