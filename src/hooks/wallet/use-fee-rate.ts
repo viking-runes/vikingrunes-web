@@ -1,12 +1,13 @@
+import config from '@/config';
 import { getFees } from '@/service/mempool';
 import { CurrentSelectedRate } from '@/types';
 import { atom, useAtom } from 'jotai';
 import { useEffect } from 'react';
 
 const feeRateAtom = atom({
-  fastestFee: 200,
-  halfHourFee: 100,
-  hourFee: 50,
+  fastestFee: config.isMainnet ? 1 : 200,
+  halfHourFee: config.isMainnet ? 1 : 100,
+  hourFee: config.isMainnet ? 1 : 50,
   economyFee: 1,
   minimumFee: 1,
 });
