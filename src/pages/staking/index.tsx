@@ -27,6 +27,7 @@ import BTCLockedTable from '@/pages/staking/components/btc-locked-table';
 import { useDialog } from '@/hooks/use-dialog';
 import { useNavigate } from 'react-router-dom';
 import { fetcStakingOverView } from '@/service/stake';
+import config from '@/config';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -70,6 +71,21 @@ export default function StakingView() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState(2);
   const [stakeLoading, setStakeLoading] = useState(false);
+
+  if (config.isMainnet) {
+    return (
+      <Stack spacing={5}>
+        <Typography pt={3} variant={'h4'}>
+          The native staking feature is not yet available on the mainnet. Please test it on the testnet.
+        </Typography>
+        <Stack direction={'row'} justifyContent={'center'}>
+          <Button fullWidth onClick={() => window.open(config.isMainnet ? 'https://testnet.vikingrunes.io' : '/staking', '_blank')} variant="outlined" sx={{ fontSize: 20, maxWidth: { md: '60%', sm: '100%' } }}>
+            Testnet Staking
+          </Button>
+        </Stack>
+      </Stack>
+    );
+  }
 
   const { TipDialog, ...tipDialog } = useTipDialog(
     `Don't worry, the assets are still in your address. But because the wallet has not yet adapted to the UTXO-Staking Protocol, the staked and rewarded assets are not visible in the wallet. You need to claim after the countdown ends, and the assets will be released and visible.`
