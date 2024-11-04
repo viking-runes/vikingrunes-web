@@ -15,6 +15,7 @@ import services from '@/service';
 import useSendBitcoin from '@/hooks/wallet/use-send-bitcoin';
 import { defaultPagination } from '@/types';
 import Countdown from 'react-countdown';
+import config from '@/config';
 
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
@@ -39,7 +40,7 @@ const NftDetail = () => {
     minted: number;
   }>(null);
 
-  const startTime = 1730764800000;
+  const startTime = config.mintStartTime;
 
   const mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
   const countDisabled = startTime >= Date.now();
@@ -246,7 +247,7 @@ const NftDetail = () => {
 
           <Stack spacing={2.5} mb={5}>
             <FeeRateSelector polling={true} />
-            <FeeRateInfo networkFee={feeRate.getCurrentSelectedRate()} serviceFee={0} discount={true} />
+            <FeeRateInfo networkFee={feeRate.getNetworkFee(151) + 330} discount={true} />
           </Stack>
           <PrimaryButton disabled={mintDisabled} size={'lg'} text={'Mint'} type={mintDisabled || countDisabled ? 'disabled' : 'primary'} onClick={onSubmitMint} />
         </Stack>
