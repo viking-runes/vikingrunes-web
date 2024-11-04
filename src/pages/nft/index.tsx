@@ -42,8 +42,11 @@ const NftDetail = () => {
 
   const startTime = config.mintStartTime;
 
-  const mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
   const countDisabled = startTime >= Date.now();
+  if (countDisabled && mintEnv) {
+    mintEnv.minted = 0;
+  }
+  const mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
 
   const fetchMintEnv = async () => {
     const res = await services.stake.fetchMintEnv();
