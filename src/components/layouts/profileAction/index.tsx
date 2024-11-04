@@ -14,6 +14,7 @@ import { formatAddress } from '@/utils/format';
 import ProfileContext from '@/context';
 import { fixedNumber, onFormat } from '@/utils';
 import { ProfileTab } from '@/types';
+import config from '@/config';
 interface IMenuItems {
   [K: string]: {
     icon: ReactNode;
@@ -57,6 +58,10 @@ const ProfileAction: FC<{ onDisconnect: () => void }> = ({ onDisconnect }) => {
                   return (
                     <li
                       onClick={() => {
+                        // Mainnet hidden
+                        if (item.text != 'Disconnect' && config.isMainnet) {
+                          return;
+                        }
                         if (item.onClick) {
                           item.onClick();
                           return;
@@ -64,7 +69,7 @@ const ProfileAction: FC<{ onDisconnect: () => void }> = ({ onDisconnect }) => {
                         item.path && navigate(item.path);
                         onClose();
                       }}
-                      className={cn(styles.item, 'gap-8 d-flex align-items-center')}
+                      className={cn(styles.item, 'gap-8 d-flex align-items-center', { [styles.disabled]: item.text != 'Disconnect' && config.isMainnet })}
                       key={index + index}
                     >
                       <i className={styles.icon}>{item.icon}</i>

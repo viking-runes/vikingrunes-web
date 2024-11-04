@@ -25,7 +25,8 @@ type NavItem = {
 };
 
 const navs: NavItem[] = [
-  { name: 'Explorer', icon: <ExplorerIcon />, path: '/explorer', includes: ['/explorer', '/rune'], needConnect: false },
+  // { name: 'Explorer', icon: <ExplorerIcon />, path: '/explorer', includes: ['/explorer', '/rune'], needConnect: false },
+  ...(config.isMainnet ? [] : [{ name: 'Explorer', icon: <ExplorerIcon />, path: '/explorer', includes: ['/explorer', '/rune'], needConnect: false }]),
   // { name: 'Fair mint', icon: <FairMintIcon />, mobile: 'FairMint', path: '/fairMint', includes: ['/fairMint'], needConnect: true },
   // { name: 'Market', path: '/market', includes: ['/market'], needConnect: true },
   // { name: 'Freemint', icon: <MarketIcon />, mobile: 'Freemint', tooltip: 'Freemint', path: '/freemint', includes: ['/freemint'], needConnect: true, normalNav: true },
@@ -39,6 +40,8 @@ const navs: NavItem[] = [
     name: 'Viking Warriors',
     tooltip: 'Viking Warriors',
     path: '/vikingwarriors',
+    includes: ['/vikingwarriors'],
+    needConnect: true,
   },
   // {
   //   name: '$Viking',
