@@ -28,7 +28,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       { path: '/viking', element: <Viking />, errorElement: <ErrorBoundary /> },
-      { path: '/staking', element: <Staking />, errorElement: <ErrorBoundary /> },
       { path: '/explorer', element: <ExplorerAll />, errorElement: <ErrorBoundary /> },
       { path: '/tx/:id', element: <Transactions />, errorElement: <ErrorBoundary /> },
       { path: '/rune/:id', element: <RuneDetail />, errorElement: <ErrorBoundary /> },
