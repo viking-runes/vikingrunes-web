@@ -15,7 +15,7 @@ import services from '@/service';
 import useSendBitcoin from '@/hooks/wallet/use-send-bitcoin';
 import { defaultPagination } from '@/types';
 import Countdown from 'react-countdown';
-import { getCountDown } from '@/utils/format';
+
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -39,7 +39,10 @@ const NftDetail = () => {
     minted: number;
   }>(null);
 
+  const startTime = 1730764800000;
+
   const mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
+  const countDisabled = startTime >= Date.now();
 
   const fetchMintEnv = async () => {
     const res = await services.stake.fetchMintEnv();
@@ -176,7 +179,7 @@ const NftDetail = () => {
             <Typography sx={{ fontSize: 18, color: '#EBB94C', pb: 2 }}>Viking Warrior</Typography>
             <Typography sx={{ fontSize: 18, color: '#EBB94C', pb: 2 }}>
               {/* Countdown: <Countdown date={1730678400000} daysInHours={true} /> */}
-              Countdown: <Countdown date={1730678400000} />
+              Countdown: <Countdown date={startTime} />
             </Typography>
           </Stack>
           {/* <Typography sx={{ fontSize: 14, pb: 3.75 }}>Quantity: {mintEnv?.supply - mintEnv?.minted} &nbsp;&nbsp; Price: Freemint</Typography> */}
@@ -245,7 +248,7 @@ const NftDetail = () => {
             <FeeRateSelector polling={true} />
             <FeeRateInfo networkFee={feeRate.getCurrentSelectedRate()} serviceFee={0} discount={true} />
           </Stack>
-          <PrimaryButton disabled={mintDisabled} size={'lg'} text={'Mint'} type={mintDisabled ? 'disabled' : 'primary'} onClick={onSubmitMint} />
+          <PrimaryButton disabled={mintDisabled} size={'lg'} text={'Mint'} type={mintDisabled || countDisabled ? 'disabled' : 'primary'} onClick={onSubmitMint} />
         </Stack>
         {/* )} */}
       </Stack>
