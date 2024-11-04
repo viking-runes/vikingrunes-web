@@ -56,6 +56,8 @@ const config = {
 
   claimVSize: 180,
   assetsUrl,
+
+  mintStartTime: 1730764800000,
 };
 
 export default config;
