@@ -3,6 +3,7 @@
 // import commonStyles from '../../index.module.less';
 import NftVideo from '@/components/nft-video';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const VikingWarrior = () => {
   // const advisors = [
@@ -63,7 +64,10 @@ const VikingWarrior = () => {
   //     isDisabled: false,
   //   },
   // ];
-
+  const navigate = useNavigate();
+  const handleToMint = () => {
+    navigate({ pathname: '/vikingwarriors' });
+  };
   return (
     // <div className={styles.bg}>
     //   <div className={styles.content}>
@@ -106,7 +110,7 @@ const VikingWarrior = () => {
                 {`We have specially created the Ordinals collection "Viking Warrior" to pay tribute to the warriors who sailed on bitcoin.`}
               </Typography>
               <Typography fontSize={24} fontWeight={400} color={'#EBB94C'}>
-                Quantity: ??,??? &nbsp; Price: Freemint
+                Quantity: 10,000 &nbsp; Price: Freemint
               </Typography>
             </Stack>
             <Stack spacing={2.75} alignItems={'center'} mt={'130px'}>
@@ -120,12 +124,16 @@ const VikingWarrior = () => {
               <Button
                 variant="contained"
                 color="primary"
-                disabled
+                // disabled
                 sx={{
                   width: 140,
                   height: 50,
                   borderRadius: '10px',
+                  '&:hover': {
+                    backgroundColor: '#EBB94C',
+                  },
                 }}
+                onClick={handleToMint}
               >
                 Mint
               </Button>
