@@ -15,6 +15,7 @@ import services from '@/service';
 import useSendBitcoin from '@/hooks/wallet/use-send-bitcoin';
 import { defaultPagination } from '@/types';
 import Countdown from 'react-countdown';
+import config from '@/config';
 
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
@@ -41,7 +42,10 @@ const NftDetail = () => {
 
   const startTime = 1730764800000;
 
-  const mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
+  let mintDisabled = !mintEnv || mintEnv.minted >= mintEnv.supply;
+  if (!config.isMainnet) {
+    mintDisabled = true;
+  }
   const countDisabled = startTime >= Date.now();
 
   const fetchMintEnv = async () => {
@@ -148,7 +152,7 @@ const NftDetail = () => {
     }
   };
 
-  const isEnded = mintEnv?.minted >= mintEnv?.supply;
+  const isEnded = config.isMainnet ? mintEnv?.minted >= mintEnv?.supply : true;
 
   return (
     <Box pt={6.25} pb={14.25}>
@@ -200,7 +204,7 @@ const NftDetail = () => {
                 <Typography color={'white'} display={'inherit'}>
                   Total supply &nbsp;
                 </Typography>
-                <Typography display={'inherit'}>{mintEnv?.supply}</Typography>
+                <Typography display={'inherit'}>{config.isMainnet ? mintEnv?.supply : '10000'}</Typography>
 
                 <Typography color={'white'} display={'inherit'}>
                   &nbsp;&nbsp; Price: Freemint
@@ -225,7 +229,7 @@ const NftDetail = () => {
           </Box>
           <LinearProgress
             variant="determinate"
-            value={(mintEnv?.minted / mintEnv?.supply) * 100}
+            value={config.isMainnet ? (mintEnv?.minted / mintEnv?.supply) * 100 : 100}
             // value={40}
             sx={{
               height: 12,
@@ -239,9 +243,7 @@ const NftDetail = () => {
           />
           <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} fontSize={14} mt={1.25} mb={4}>
             <Typography>Total Mintes</Typography>
-            <Typography>
-              {((mintEnv?.minted / mintEnv?.supply) * 100).toFixed(2)}% {mintEnv?.minted}/{mintEnv?.supply}
-            </Typography>
+            <Typography>{config.isMainnet ? `${((mintEnv?.minted / mintEnv?.supply) * 100).toFixed(2)}% ${mintEnv?.minted}/${mintEnv?.supply}` : `100.00% 10000/10000`}</Typography>
           </Stack>
 
           <Stack spacing={2.5} mb={5}>
